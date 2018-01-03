@@ -1,0 +1,4 @@
+About dataset.txt for Beethoven's op 59 nr 3
+Tuesday 4 May 2010
+
+The file dataset.txt contains bars 30-40 of the first movement (Andante con moto - Allegro vivace) of Ludwig van Beethoven's String Quartet in C Major, op 59 nr 3.

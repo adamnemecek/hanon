@@ -1,0 +1,447 @@
+\subsection{Analytic string manipulations}\label{sec:analytic-string-manipulations}
+
+The functions below are for converting
+string-based representations of quantity into
+numeric representations, and for splitting question
+strings into $n$ components.
+
+
+%%%%%
+\subsection*{append-list-of-lists}\label{fun:append-list-of-lists}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \\
+Called by & \nameref{fun:followed-by-splitter} \\
+Comments/see also & \nameref{fun:append-list}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(append-list-of-lists
+ '(("yes" 0)
+   (("crotchet" 0) ("crotchet" 0) ("crotchet" 0))
+   ("no" 4)))
+--> (("yes" 0) ("crotchet" 0) ("crotchet" 0)
+     ("crotchet" 0) ("no" 4))
+(append-list-of-lists '(("yes" 0)))
+--> (("yes" 0))
+(append-list-of-lists '(("yes" 0) ("no" 0)))
+--> (("yes" 0) ("no" 0))
+(append-list-of-lists 
+ '((("crotchet" 0) ("crotchet" 0))))
+--> (("crotchet" 0) ("crotchet" 0))
+\end{verbatim}
+
+\noindent In a list this function identifies elements
+that are lists of lists, and removes one structural
+level from these lists.
+
+
+%%%%%
+\subsection*{consecutive-question2list}\label{fun:consecutive-question2list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \nameref{fun:number-string2numberless-string},\newline \nameref{fun:number-string2numeric} \\
+Called by & \nameref{fun:followed-by-splitter} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(consecutive-question2list "three ascending seconds")
+--> (("ascending second" 0) ("ascending second" 0)
+     ("ascending second" 0))
+(consecutive-question2list "three crotchets in a row")
+--> (("crotchet" 0) ("crotchet" 0) ("crotchet" 0))
+(consecutive-question2list "two consecutive kittens")
+--> (("kitten" 0) ("kitten" 0))
+(consecutive-question2list "perfect cadence")
+--> ("perfect cadence" 0)
+(consecutive-question2list "semiquaver rest")
+--> ("semiquaver rest" 0)
+(consecutive-question2list
+ '("consecutive fifths" NIL))
+--> (("fifth" 0) ("fifth" 0))
+(consecutive-question2list "two fifths")
+--> (("fifth" 0) ("fifth" 0))
+\end{verbatim}
+
+\noindent This function turns a question string
+containing `consecutive', `in a row', or some
+implicit reference to consecutive events such as
+`three crotchets' into the appropriate number of
+question strings. A call to this function is
+embedded in the function
+\nameref{fun:followed-by-splitter}.
+
+
+%%%%%
+\subsection*{edit-out-duration-of-question-string}\label{fun:edit-out-duration-of-question-string}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/6/2015, 11/6/2015 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \\
+Called by & \nameref{fun:duration-and-pitch-class-time-intervals}, \nameref{fun:duration-and-time-intervals} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(edit-out-duration-of-question-string
+ "dotted crotchet C4")
+--> "C4"
+(edit-out-duration-of-question-string
+ "C4 dotted crotchet in the oboe")
+--> "C4   in the oboe"
+\end{verbatim}
+
+\noindent This function, new for Stravinsqi-Jun2015,
+removes any mention of a musical duration from an input
+string, returning whatever remains of the string. As the
+second example shows, it could be improved by removing
+extra white spaces, which (might) otherwise lead to
+errors in subsequent processing.
+
+
+%%%%%
+\subsection*{followed-by-splitter}\label{fun:followed-by-splitter}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \nameref{fun:concat-strings}, \nameref{fun:consecutive-question2list}, \nameref{fun:modify-by-later}, \nameref{fun:my-last}, \nameref{fun:pitch-class-sequntial-expression2list}, \nameref{fun:replace-all},\nameref{fun:space-bar-separated-string2list}, \nameref{fun:string-separated-string2list}, \nameref{fun:tied-question2list} \\
+Called by & \nameref{fun:Stravinsqi-Jun2014} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(followed-by-splitter
+ "C followed by Eb in the bass clef")
+--> (("C" 0) ("by Eb in the bass clef" 0))
+(followed-by-splitter
+ "F# followed two crotchets later by a G")
+--> (("F#" 0) ("G" 2))
+(followed-by-splitter
+ "F#, then two quavers later a G")
+--> (("F#" 0) ("G" 1))
+(followed-by-splitter "F# then two bars later a G")
+--> (("F#" 0) ("G" 2 "bars"))
+(followed-by-splitter "F# then a G")
+--> (("F#" 0) ("G" 0))
+(followed-by-splitter
+ (concatenate
+  'string "three ascending seconds followed by a fall"
+  " of a third"))
+--> (("ascending second" 0) ("ascending second" 0)
+     ("ascending second" 0) ("fall of third" 0))
+(followed-by-splitter
+ (concatenate
+  'string "two falling seconds followed three"
+  " quarter notes later by a rise of a third"))
+--> (("falling second" 0) ("falling second" 0)
+     ("rise of third" 3))
+(followed-by-splitter "consecutive fifths")
+--> (("fifth" 0) ("fifth" 0))
+(followed-by-splitter
+ (concatenate
+  'string "two falling seconds followed three"
+  " quarter notes later by a crotchet tied with a"
+  " minim"))
+\end{verbatim}
+
+\noindent If a question string refers to a sequence of
+events (e.g., `F then two crotchets later a G'), this
+function splits it into two separate questions, also
+returning the time relation that must pertain between
+the two events.
+
+
+%%%%%
+\subsection*{modify-by-later}\label{fun:modify-by-later}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \nameref{fun:number-string2numeric}, \nameref{fun:number-n-note2time-interval}, \nameref{fun:replace-all} \\
+Called by & \nameref{fun:followed-by-splitter} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(modify-by-later "two crotchets later by a G")
+--> ("G" 2)
+(modify-by-later "four eighth notes later by a G")
+--> ("G" 2)
+(modify-by-later "two measures later by a G")
+--> ("G" 2 "bars")
+(modify-by-later "F natural")
+--> ("F natural" NIL)
+(modify-by-later "four consecutive quavers")
+--> ("four consecutive quavers" NIL)
+(modify-by-later "four quavers in a row")
+--> ("four quavers in a row" NIL)
+\end{verbatim}
+
+\noindent This function edits a question string that
+refers to a subsequent musical event taking place a
+specified amount of time later. The question string
+is cleaned of the ``later'' reference and the amount
+of time later is returned (measured in crotchet
+beats). If it is a number of ``bars later'' then this
+is not possible to measure in crotchet beats unless
+the beginning ontime/bar and time signature (plus
+changes) are known. So in this case the number of bars
+is returned, plus the string ``bars'' for further
+processing.
+
+
+%%%%%
+\subsection*{my-last-string}\label{fun:my-last-string}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \\
+Called by & \nameref{fun:duration-n-pitch-class-time-intervals}, \nameref{fun:pitch-class-time-intervals} \\
+Comments/see also & \nameref{fun:my-last}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(followed-by-splitter
+ "C followed by Eb in the bass clef")
+--> (("C" NIL) ("by Eb in the bass clef" NIL))
+(followed-by-splitter
+ "F# followed two crotchets later by a G")
+--> (("F#" NIL) ("G" 2))
+(followed-by-splitter
+ "F#, then two quavers later a G")
+--> (("F#" NIL) ("G" 1))
+(followed-by-splitter
+ "F# then two bars later a G")
+--> (("F#" NIL) ("G" 2 "bars"))
+\end{verbatim}
+
+\noindent If a question string refers to a sequence of
+events (e.g., "F then two crotchets later a G"), this
+function splits it into two separate questions, also
+returning the time relation that must pertain between
+the two events.
+
+
+%%%%%
+\subsection*{number\&note2time-interval}\label{fun:number-n-note2time-interval}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \nameref{fun:duration-string2numeric},\newline \nameref{fun:number-string2numeric} \\
+Called by & \nameref{fun:modify-by-later} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(number&note2time-interval "two crotchets")
+--> 2
+(number&note2time-interval "two semiquavers")
+--> 1/2
+(number&note2time-interval
+ "four sixteenth notes")
+--> 1
+(number&note2time-interval "eighth note")
+--> 1/2
+(number&note2time-interval "quarter note")
+--> 1
+(number&note2time-interval
+ "three dotted half notes")
+--> 9
+(number&note2time-interval
+ "two consecutive crotchets")
+--> nil
+\end{verbatim}
+
+\noindent This function converts a string-based
+representations of quantity (expressed as a number and
+a note value) into the numeric representations
+measured in crotchet beats.
+
+
+%%%%%
+\subsection*{number-string2numberless-string}\label{fun:number-string2numberless-string}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \nameref{fun:min-item}, \nameref{fun:replace-once} \\
+Called by & \nameref{fun:consecutive-question2list} \\
+Comments/see also & \nameref{fun:number-string2numeric}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(number-string2numberless-string "six quarter notes")
+--> "quarter notes"
+(number-string2numberless-string "seventh")
+--> "seventh"
+\end{verbatim}
+
+\noindent This function returns a revised version of
+the input string, removing any numeric quantity that
+appears at the front.
+
+
+%%%%%
+\subsection*{number-string2numeric}\label{fun:number-string2numeric}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \nameref{fun:min-item} \\
+Called by & \nameref{fun:modify-by-later} \\
+Comments/see also & \nameref{fun:number-string2numberless-string}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(number-string2numeric "two crotchets")
+--> 2
+(number-string2numeric "quarter note")
+--> nil
+(number-string2numeric "eight crotchets")
+--> 8
+(number-string2numeric "sixteenth note")
+--> nil
+(number-string2numeric "six quarter notes")
+--> 6
+(number-string2numeric "nine consecutive crotchets")
+--> "consecutive"
+(number-string2numeric "nine crotchets")
+--> 9
+(number-string2numeric "nine crotchets in a row")
+--> "consecutive"
+(number-string2numeric "three bars")
+--> 3
+\end{verbatim}
+
+\noindent This function returns a natural number, a
+string, or nil, representing the quantity mentioned
+at the beginning of the input string argument. The
+most common use case for this function will be a
+string containing a quantity of note or bar values
+that signify a time interval (e.g., two crotchets
+later). If, however, a number of consecutive events is
+referred to (e.g., two crotchets in a row), this must
+be recognised and the string ``consecutive'' returned
+instead.
+
+
+%%%%%
+\subsection*{pitch-class-sequential-expression2list}\label{fun:pitch-class-sequential-expression2list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \nameref{fun:positions-char} \\
+Called by & \nameref{fun:followed-by-splitter} \\
+Comments/see also & \nameref{fun:consecutive-question2list}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(pitch-class-sequential-expression2list
+ (list "A sharp B flat Db" 2 "bars"))
+--> (("A sharp" 2 "bars") ("B flat" 0) ("Db" 0))
+(pitch-class-sequential-expression2list
+ (list "asecnding G B D" 1))
+--> (("G" 1) ("B" 0) ("D" 0))
+(pitch-class-sequential-expression2list
+ (list "A sharp crotchet B flat Db" 2))
+--> (("A sharp crotchet" 2) ("B flat" 0) ("Db" 0))
+(pitch-class-sequential-expression2list
+ (list "ascending A sharp crotchet" 2))
+--> ("ascending A sharp crotchet" 2)
+(pitch-class-sequential-expression2list
+ (list "quarter note F in the Alto" 0))
+--> ("quarter note F in the Alto" 0)
+\end{verbatim}
+
+\noindent This function identifies pitch classes in a
+question string, such as might be provided
+sequentially (e.g., C E$\flat$ G). It splits the
+question into separate elements consisting of these
+pitch classes (and possibly other events).
+
+
+%%%%%
+\subsection*{tied-question2list}\label{fun:tied-question2list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:analytic-string-manipulations} \\
+Calls & \nameref{fun:my-last}, \nameref{fun:string-separated-string2list} \\
+Called by & \nameref{fun:followed-by-splitter} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ question-string&time-interval
+ (list
+  (concatenate
+   'string
+   "dotted crotchet tied with a crotchet tied with a "
+   "quaver") 2 "bars"))
+(tied-question2list question-string&time-interval)
+--> (("[ dotted crotchet" 2 "bars") ("[] crotchet" 0)
+     ("] quaver" 0))
+(setq
+ question-string&time-interval
+ (list
+  (concatenate
+   'string "dotted crotchet tied with a crotchet") 1))
+(tied-question2list question-string&time-interval)
+--> (("[ dotted crotchet" 1) ("] crotchet" 0))
+(setq
+ question-string&time-interval
+ (list
+  (concatenate
+   'string "dotted crotchet") 1))
+(tied-question2list question-string&time-interval)
+--> ("dotted crotchet" 1)
+\end{verbatim}
+
+\noindent This function unpacks an expression such as
+`crotchet tied with a quaver' into the constituents
+`crotchet tied forward' and `quaver tied back'.
+

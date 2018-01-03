@@ -1,0 +1,243 @@
+  <question number="151" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>semibreve F4 in the Alto</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="1" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="7" start_offset="1"
+               end_bar="7" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="16" start_offset="1"
+               end_bar="16" end_offset="4" />
+    </answer>
+  </question>
+
+  <question number="152" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>semibreve D4 in the Bass</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="1" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="3"
+               end_bar="10" end_offset="6" />
+    </answer>
+  </question>
+
+  <question number="153" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>G# in the Bass</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="14" start_offset="5"
+               end_bar="14" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="28" start_offset="5"
+               end_bar="28" end_offset="6" />
+    </answer>
+  </question>
+
+  <question number="154" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>Alto C#</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="1"
+               end_bar="11" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="25" start_offset="5"
+               end_bar="25" end_offset="6" />
+    </answer>
+  </question>
+
+  <question number="155" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>Bass C#</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="156" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>semibreve A4 followed by minim D5</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="2" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="2" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="23" start_offset="3"
+               end_bar="24" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="25" start_offset="1"
+               end_bar="25" end_offset="6" />
+    </answer>
+  </question>
+
+  <question number="157" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>melodic fourth</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="2" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="5" start_offset="5"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="1"
+               end_bar="12" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="16" start_offset="1"
+               end_bar="17" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="19" start_offset="5"
+               end_bar="20" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="22" start_offset="5"
+               end_bar="23" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="25" start_offset="5"
+               end_bar="26" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="2" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="27" start_offset="1"
+               end_bar="28" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="5"
+               end_bar="4" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="3"
+               end_bar="11" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="19" start_offset="3"
+               end_bar="19" end_offset="6" />
+    </answer>
+  </question>
+
+  <question number="158" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>rising melodic fifth</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="18" start_offset="5"
+               end_bar="19" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="20" start_offset="5"
+               end_bar="21" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="159" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>Ia triad</text>
+  </question>
+
+  <question number="160" music_file="carissimi_o_felix_anima.xml" divisions="1">
+    <text>homophony</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="2"
+               end_beats="3" end_beat_type="2"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="1"
+               end_bar="30" end_offset="6" />
+    </answer>
+  </question>
+

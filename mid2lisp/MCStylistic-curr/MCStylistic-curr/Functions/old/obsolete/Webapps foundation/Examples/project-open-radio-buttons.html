@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title>some radio buttons</title>
+</head>
+<body>
+    <form name="projectOpen" action="project-open-this" method="post">
+    <p>This is the form for opening a project. Below is the html produced by the function project-open-radio-buttons. Immediately below this paragraph is a hidden element that I hope to be able to control in order to open folders.</p>
+    <input type="hidden" name="folderIndex" value=0>
+    composition 2
+<input type='radio' name='project-open-radio' value='composition 2'>
+<br>
+composition 3
+<input type='radio' name='project-open-radio' value='composition 3'>
+<br>
+fun 1
+<input type='radio' name='project-open' value='fun 1' disabled=''>
+<br>
+<a href='javascript:projectOpenFolder(3);'>folder 2</a>
+<br>
+	</form>
+</body>
+</html>

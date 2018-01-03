@@ -1,0 +1,805 @@
+\subsection{Generating beat MNN spacing for\&back}\label{sec:generating-beat-MNN-spacing-for-and-back}
+
+The main function here is called
+\nameref{fun:generate-beat-MNN-spacing<->}. Given initial and final
+states, forwards- and backwards-running
+state-transition matrices, and a template dataset, it
+generates datapoints (among other output) that conform
+to various criteria, which can be specified using the
+optional arguments. The idea is to join forwards- and
+backwards-generated phrases, choosing whichever pair
+leads to a phrase whose mean deviation from the
+template likelihood profile is minimal.
+
+The criteria are things like: not too many consecutive
+states from the same source, the range is comparable
+with that of the template, and the likelihood of the
+states is comparable with that of the template.
+
+
+%%%%%
+\subsection*{generate-beat-MNN-spacing$<$-$>$}\label{fun:generate-beat-MNN-spacing<->}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:generate-forwards-or-backwards-no-failure}, \nameref{fun:my-last}, \nameref{fun:segments-strict}, \nameref{fun:unite-datapoints} \\
+Called by & \\
+Comments/see also & Consider simplifying/renaming generating functions.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: see Stylistic composition with
+Racchman-Oct2010 (Sec.~\ref{sec:ex:Racchman-Oct2010},
+especially lines 498-502).
+\vspace{0.5cm}
+
+\noindent This function unites several forwards- and
+backwards running realisations of Markov models built
+on the arguments initial-states, stm-$>$, final-states,
+and stm$<$-. It is constrained by a template (the
+argument dataset-template) and various parameters:
+like not too many consecutive states from the same
+source (c-sources), the range is comparable with that
+of the template (c-bar, c-min, and c-max), and the
+likelihood of the states is comparable with that of
+the template (c-beats and c-prob).
+
+The numbers of forwards- and backwards- realisations
+generated are determined by the arguments c-forwards
+and c-backwards respectively. The output is a list of
+three hash tables (one containing the forwards
+candidates, one the backwards candidates, and one the
+united candidates). If c-forwards = $m$ and
+c-backwards = $n$, then the number of united
+candidates is $3mn$.
+
+
+%%%%%
+\subsection*{generate-beat-spacing-forced$<$-$>$}\label{fun:generate-beat-spacing-forced<->}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:generate-forced<->no-failure},\newline \nameref{fun:generate-forwards-or-backwards-no-failure}, \nameref{fun:segments-strict}, \nameref{fun:unite-datapoints} \\
+Called by & \\
+Comments/see also & Consider simplifying/renaming generating functions.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq generation-interval '(12 24))
+  (setq terminal->p nil)
+  (setq terminal<-p nil)
+  (setq
+   external-initial-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/initial-states.txt")))
+  (setq
+   internal-initial-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/internal-initial-states.txt")))
+  (setq
+   stm->
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/transition-matrix.txt")))
+  (setq
+   external-final-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/final-states.txt")))
+  (setq
+   internal-final-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/internal-final-states.txt")))
+  (setq
+   stm<-
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/transition-matrix<-.txt")))
+  (setq
+   dataset-all
+   (read-from-file
+    "/Users/tec69/Open/Music/Datasets/C-56-1-ed.txt"))
+  (setq
+   dataset-template
+   (subseq dataset-all 0 132))
+  (setq
+   pattern-region
+   '((12 60 60) (12 64 62) (25/2 57 58) (51/4 64 62)
+     (13 52 55) (13 64 62) (14 54 56) (29/2 62 61)
+     (15 55 57) (15 59 59) (63/4 64 62) (16 43 50)
+     (16 50 54) (16 66 63) (17 67 64) (18 57 58)
+     (18 60 60) (18 64 62) (75/4 66 63) (19 43 50)
+     (19 50 54) (19 67 64) (20 66 63) (20 69 65)
+     (21 59 59) (21 67 64) (21 71 66) (87/4 74 68)
+     (22 43 50) (22 50 54) (22 74 68) (23 62 61)
+     (24 60 60) (24 64 62)))
+  (setq state-context-pair-> nil)
+  (setq state-context-pair<- nil)
+  (setq
+   checklist
+   (list "originalp" "mean&rangep" "likelihoodp"))
+  (setq
+   *rs* #.(CCL::INITIALIZE-RANDOM-STATE 6086 61144))
+  (setq time-a (get-internal-real-time))
+  (setq
+   output
+   (generate-beat-spacing-forced<->
+    generation-interval terminal->p terminal<-p
+    external-initial-states internal-initial-states
+    stm-> external-final-states internal-final-states
+    stm<- dataset-template pattern-region
+    state-context-pair-> state-context-pair<-
+    checklist 3 10 4 19 12 12 12 0.2 3 3))
+  (setq time-b (get-internal-real-time))
+  (float
+   (/
+    (- time-b time-a)
+    internal-time-units-per-second)))
+--> 15.091431 seconds.
+(setq
+ output-datapoints
+ (gethash
+  '"united,2,3,backwards-dominant" (third output)))
+(saveit
+ (concatenate
+  'string
+  *MCStylistic-Oct2010-example-files-path*
+  "/united,2,3,backwards-dominant.mid")
+ (modify-to-check-dataset
+  (translation
+   output-datapoints
+   (list
+    (- 0 (first (first output-datapoints)))
+    0 0 0 0)) 900))
+\end{verbatim}
+
+\noindent This function is similar to the function
+\nameref{fun:generate-beat-MNN-spacing<->}. The difference is that
+there are some extra arguments here, which allow for
+using either external or internal initial/final
+states, and for using information from a discovered
+pattern or previous/next state to further guide the
+generation.
+
+The function unites several forwards- and backwards
+running realisations of Markov models built on the
+arguments initial-states, stm->, final-states, and
+stm<-. It is constrained by a template (the argument
+dataset-template) and various parameters: like not too
+many consecutive states from the same source
+(c-sources), the range is comparable with that of the
+template (c-bar, c-min, and c-max), and the likelihood
+of the states is comparable with that of the template
+(c-beats and c-prob).
+
+The numbers of forwards- and backwards- realisations
+generated are determined by the arguments c-forwards
+and c-backwards respectively. The output is a list of
+three hash tables (one containing the forwards
+candidates, one the backwards candidates, and one the
+united candidates). If c-forwards = $m$ and
+c-backwards = $n$, then the number of united
+candidates is $3mn$.
+
+
+%%%%%
+\subsection*{generate-forced$<$-$>$no-failure}\label{fun:generate-forced<->no-failure}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:generate-beat-spacing-forcing->},\newline \nameref{fun:generate-beat-spacing-forcing<-},\newline \nameref{fun:segments-strict} \\
+Called by & \nameref{fun:generate-beat-spacing-forced<->} \\
+Comments/see also & Consider simplifying/renaming generating functions.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   internal-states->
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/internal-initial-states.txt")))
+  (setq
+   internal-states<-
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/internal-final-states.txt")))
+  (setq
+   stm->
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/transition-matrix.txt")))
+  (setq
+   stm<-
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/transition-matrix<-.txt")))
+  (setq no-ontimes> 29)
+  (setq
+   dataset-all
+   (read-from-file
+    "/Users/tec69/Open/Music/Datasets/C-17-1-ed.txt"))
+  (setq
+   dataset-template
+   (subseq dataset-all 0 250))
+  (setq generation-interval '(25 29))
+  (setq
+   pattern-region
+   '((25 60 60) (25 67 64) (25 70 66) (25 76 69)
+     (25 82 73) (53/2 60 60) (53/2 67 64) (53/2 70 66)
+     (53/2 76 69) (53/2 81 72) (27 60 60) (27 67 64)
+     (27 70 66) (27 76 69) (27 78 70) (111/4 60 60)
+     (111/4 67 64) (111/4 70 66) (111/4 76 69)
+     (111/4 79 71) (28 60 60) (28 67 64) (28 70 66)
+     (28 76 69) (28 81 72) (29 60 60) (29 67 64)
+     (29 70 66) (29 76 69) (29 79 71)))
+  (setq
+   checklist
+   (list "originalp" "mean&rangep" "likelihoodp"))
+  (setq
+   *rs* #.(CCL::INITIALIZE-RANDOM-STATE 6086 61144))
+  (setq
+   output
+   (generate-forced<->no-failure
+    "forwards" nil nil internal-states-> stm->
+    no-ontimes> dataset-template generation-interval
+    pattern-region nil checklist 3 10 4 19 12 12 12
+    0.2))
+  (first output))
+--> 0.335408 seconds
+(if (listp (fifth output))
+  (saveit
+   (concatenate
+    'string
+    *MCStylistic-Oct2010-example-files-path*
+    "/test.mid")
+   (modify-to-check-dataset
+    (translation
+     (fifth output)
+     (list
+      (- 0 (first (first (fifth output))))
+      0 0 0 0)) 900)))
+\end{verbatim}
+
+\noindent This function is similar to the function
+generate-forwards-or-backwards-no-failure. The
+difference is that this can take a pattern or a 
+previous or next state as extra constraints. This is
+necessary when generating a passage according to a
+template. It generates states (and realisations of
+those states), taking initial (or final) states and
+a forwards- (or backwards-) running stm as arguments.
+The direction must be specified as the first
+argument, so that the appropriate generating function
+is called. Depending on the values of the
+parameters, a call to a generating function can fail
+to produce a generated passage, in which case this
+function runs again, until a passage has been
+generated, hence `no failure'.
+
+
+%%%%%
+\subsection*{generate-forwards-or-backwards-no-failure}\label{fun:generate-forwards-or-backwards-no-failure}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:generate-beat-MNN-spacing->},\newline \nameref{fun:generate-beat-MNN-spacing<-},\newline \nameref{fun:segments-strict} \\
+Called by & \nameref{fun:generate-beat-MNN-spacing<->},\newline \nameref{fun:generate-beat-spacing-forced<->} \\
+Comments/see also & Consider simplifying/renaming generating functions.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   initial-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/initial-states.txt")))
+  (setq
+   stm
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/transition-matrix.txt")))
+  (setq no-ontimes> 24)
+  (setq
+   dataset-all
+   (read-from-file
+    "/Users/tec69/Open/Music/Datasets/C-59-3-ed.txt"))
+  (setq
+   dataset-template (subseq dataset-all 48 184))
+  (setq
+   checklist
+   (list "originalp" "mean&rangep" "likelihoodp"))
+  (setq
+   *rs* (CCL::INITIALIZE-RANDOM-STATE 2249 23752))
+  (setq
+   output
+   (generate-forwards-or-backwards-no-failure
+    "forwards" initial-states stm no-ontimes>
+    dataset-template checklist 3 10 4 19 12 12 12
+    0.2))
+  (first output))
+--> 0.048711 seconds.
+(if (listp (fifth output))
+  (saveit
+   (concatenate
+    'string
+    *MCStylistic-Oct2010-example-files-path*
+    "/test.mid")
+   (modify-to-check-dataset
+    (translation
+     (fifth output)
+     (list
+      (- 0 (first (first (fifth output))))
+      0 0 0 0)) 900)))
+\end{verbatim}
+
+This function generates states (and realisations of
+those states), taking initial (or final) states and
+a forwards- (or backwards-) running stm as arguments.
+The direction must be specified as the first
+argument, so that the appropriate generating function
+is called. Depending on the values of the
+parameters, a call to a generating function can fail
+to produce a generated passage, in which case this
+function runs again, until a passage has been
+generated, hence `no failure'.
+
+
+%%%%%
+\subsection*{keys-of-states-in-transition-matrix}\label{fun:keys-of-states-in-transition-matrix}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:state-in-transition-matrixp} \\
+Called by & \nameref{fun:most-plausible-join} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq A (make-hash-table :test #'equal))
+(setf
+ (gethash '"cand,1,1,superimpose" A)
+ '((3/4 60 60 1 0) (3/4 64 62 1 0) (3/4 67 64 1 0)))
+(setf
+ (gethash '"cand,1,2,superimpose" A)
+ '((0 60 60 1 0) (3/4 64 62 1 0) (2 67 64 1 0)))
+(setf
+ (gethash '"cand,2,1,superimpose" A)
+ '((3/4 60 60 1 0) (3/4 64 62 1 0) (3/4 69 65 1 0)))
+(setf
+ (gethash '"cand,2,2,superimpose" A)
+ '((3/4 60 60 1 0) (3/4 64 62 1 0) (3/4 72 67 1 0)))
+(setq
+ dataset-keys
+ '("cand,1,1,superimpose" "cand,1,2,superimpose"
+   "cand,2,1,superimpose" "cand,2,2,superimpose"))
+(setq ontime 3/4)
+(setq
+ stm
+ '(((7/4 (4 5)) "etc") ((7/4 (4 3)) "etc")
+   ((7/4 (4 3 17)) "etc")))
+(keys-of-states-in-transition-matrix
+ A dataset-keys ontime stm "beat-spacing-states" 3 3
+ 1)
+--> ("cand,1,1,superimpose" "cand,2,1,superimpose")
+\end{verbatim}
+
+\noindent This function takes a hash table consisting
+of datasets and a list of keys for that hash table as
+its first two arguments. The function state-in-
+transition-matrixp is applied to the dataset
+associated with each key, and if it is in the state-
+transition matrix, this key is included in the
+returned list. This function can be used to check
+that the composer actually wrote the chords that are
+created at the bisection.
+
+
+%%%%%
+\subsection*{min-max-abs-diffs-for-likelihood-profiles}\label{fun:min-max-abs-diffs-for-likelihood-profiles}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:abs-differences-for-curves-at-points},\newline \nameref{fun:geom-mean-likelihood-of-states}, \nameref{fun:max-item},\newline \nameref{fun:min-argmin}, \nameref{fun:nth-list-of-lists} \nameref{fun:segments-strict} \\
+Called by & \nameref{fun:most-plausible-join} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq A (make-hash-table :test #'equal))
+(setf
+ (gethash '"cand,1,1,superimpose" A)
+ '((0 60 60 3/4 0) (0 64 62 3/4 0) (0 67 64 3/4 0)
+   (3/4 60 60 1 0) (3/4 64 62 1 0) (3/4 67 64 1 0)
+   (7/4 60 60 1 0) (7/4 64 62 1 0) (7/4 67 64 1 0)))
+(setf
+ (gethash '"cand,1,2,superimpose" A)
+ '((0 60 60 1 0) (3/4 64 62 1 0) (2 67 64 1 0)))
+(setf
+ (gethash '"cand,2,1,superimpose" A)
+ '((0 61 60 3/4 0) (0 65 62 3/4 0) (0 68 64 3/4 0)
+   (3/4 60 60 1 0) (3/4 64 62 1 0) (3/4 67 64 1 0)
+   (7/4 62 61 1 0) (7/4 66 63 1 0) (7/4 69 65 1 0)))
+(setf
+ (gethash '"cand,2,2,superimpose" A)
+ '((3/4 60 60 1 0) (3/4 64 62 1 0) (3/4 72 67 1 0)))
+(setq
+ dataset-keys
+ '("cand,1,1,superimpose" "cand,1,2,superimpose"
+   "cand,2,1,superimpose" "cand,2,2,superimpose"))
+(setq
+ template-dataset
+ '((0 60 60 3/4 0) (0 64 62 3/4 0) (0 67 64 3/4 0)
+   (3/4 59 59 1 0) (3/4 62 61 1 0) (3/4 67 64 1 0)
+   (7/4 60 60 1 0) (7/4 64 62 1 0) (7/4 67 64 1 0)))
+(setq c-beats 12)
+(min-max-abs-diffs-for-likelihood-profiles
+ A dataset-keys template-dataset c-beats)
+--> "cand,1,1,superimpose"
+\end{verbatim}
+
+\noindent This function takes a hash table consisting
+of datasets and a list of keys for that hash table as
+its first two arguments. Its third argument is the
+dataset for a template. The idea is to compare each
+of the likelihood profiles for the datasets
+associated with the keys with the likelihood profile
+of the template dataset, using the function abs-
+differences-for-curves-at-points. Each comparison will
+produce a maximal difference. The key of the dataset
+that produces the minimum of the maximal differences
+is returned, and the intuition is that this will be
+the most plausible dataset, compared with the
+template.
+
+
+%%%%%
+\subsection*{most-plausible-join}\label{fun:most-plausible-join}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:disp-ht-key}, \nameref{fun:keys-of-states-in-transition-matrix},\newline \nameref{fun:min-max-abs-diffs-for-likelihood-profiles} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq A (make-hash-table :test #'equal))
+(setf
+ (gethash '"cand,1,1,superimpose" A)
+ '((0 60 60 3/4 0) (0 64 62 3/4 0) (0 67 64 3/4 0)
+   (3/4 60 60 1 0) (3/4 64 62 1 0) (3/4 67 64 1 0)
+   (7/4 60 60 1 0) (7/4 64 62 1 0) (7/4 67 64 1 0)))
+(setf
+ (gethash '"cand,1,2,superimpose" A)
+ '((0 60 60 1 0) (3/4 64 62 1 0) (2 67 64 1 0)))
+(setf
+ (gethash '"cand,2,1,superimpose" A)
+ '((0 61 60 3/4 0) (0 65 62 3/4 0) (0 68 64 3/4 0)
+   (3/4 60 60 1 0) (3/4 64 62 1 0) (3/4 67 64 1 0)
+   (7/4 62 61 1 0) (7/4 66 63 1 0) (7/4 69 65 1 0)))
+(setf
+ (gethash '"cand,2,2,superimpose" A)
+ '((3/4 60 60 1 0) (3/4 64 62 1 0) (3/4 72 67 1 0)))
+(setq
+ template-dataset
+ '((0 60 60 3/4 0) (0 64 62 3/4 0) (0 67 64 3/4 0)
+   (3/4 59 59 1 0) (3/4 62 61 1 0) (3/4 67 64 1 0)
+   (7/4 60 60 1 0) (7/4 64 62 1 0) (7/4 67 64 1 0)))
+(setq
+ stm
+ '(((7/4 (4 5)) "etc") ((1 (4 3)) "etc")
+   ((11/4 (4 3 17)) "etc")))
+(setq c-beats 12)
+(most-plausible-join A 3/4 template-dataset stm 3 3 1)
+--> "cand,1,1,superimpose"
+\end{verbatim}
+
+\noindent This function applies the function keys-of-
+states-in-transition-matrix, followed by the function
+min-max-abs-diffs-for-likelihood-profiles, to
+determine which dataset, out of several candidates, is
+the most plausible fit with the template dataset.
+
+
+%%%%%
+\subsection*{remove-coincident-datapoints}\label{fun:remove-coincident-datapoints}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:remove-datapoints-coincident-with-datapoint} \\
+Called by & \nameref{fun:unite-datapoints} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(remove-coincident-datapoints
+ '((12 64 61 1) (14 63 62 1) (31/2 65 63 1/2))
+ '((9 60 60 1) (10 64 62 3) (13 63 62 1)
+   (13 72 67 5) (15 65 63 1) (16 65 63 2)) 1 3)
+--> ((9 60 60 1) (13 63 62 1) (13 72 67 5)
+     (16 65 63 2))
+\end{verbatim}
+
+This function removes any datapoints (second argument)
+that sound at the same time as datapoints provided as
+the first argument.
+
+
+%%%%%
+\subsection*{remove-datapoints-coincident-with-datapoint}\label{fun:remove-datapoints-coincident-with-datapoint}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:append-offtimes}, \nameref{fun:my-last} \\
+Called by & \nameref{fun:remove-coincident-datapoints} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(remove-datapoints-coincident-with-datapoint
+ '(12 64 61 1)
+ '((9 60 60 1) (10 64 62 3) (13 63 62 1)
+   (13 72 67 5) (15 65 63 1) (16 65 63 2)) 1 3)
+--> ((9 60 60 1) (13 63 62 1) (13 72 67 5)
+     (15 65 63 1) (16 65 63 2))
+\end{verbatim}
+
+This function removes any datapoints (second argument)
+that sound at the same time as a datapoint provided as
+the first argument.
+
+
+%%%%%
+\subsection*{remove-datapoints-with-nth-item$<$}\label{fun:remove-datapoints-with-nth-item<}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:index-1st-sublist-item>=}, \nameref{fun:nth-list-of-lists} \\
+Called by & \nameref{fun:unite-datapoints} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(remove-datapoints-with-nth-item<
+ '((9 60) (10 64) (13 63) (13 72) (15 65) (16 65)) 10
+ 0)
+--> ((10 64) (13 63) (13 72) (15 65) (16 65))
+\end{verbatim}
+
+This function removes any datapoints whose nth-items
+are less than the second argument. Datapoints are
+assumed to be in lexicographic order.
+
+
+%%%%%
+\subsection*{remove-datapoints-with-nth-item$<$=}\label{fun:remove-datapoints-with-nth-item<=}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:index-1st-sublist-item>}, \nameref{fun:nth-list-of-lists} \\
+Called by & \nameref{fun:unite-datapoints} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(remove-datapoints-with-nth-item<=
+ '((9 60) (10 64) (13 63) (13 72) (15 65) (16 65)) 10
+ 0)
+--> ((13 63) (13 72) (15 65) (16 65))
+\end{verbatim}
+
+This function removes any datapoints whose nth-items
+are less than or equal to the second argument.
+Datapoints are assumed to be in lexicographic
+order.
+
+
+%%%%%
+\subsection*{remove-datapoints-with-nth-item$>$}\label{fun:remove-datapoints-with-nth-item>}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:index-1st-sublist-item>}, \nameref{fun:nth-list-of-lists} \\
+Called by & \nameref{fun:unite-datapoints} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(remove-datapoints-with-nth-item>
+ '((9 60) (10 64) (13 63) (13 72) (15 65) (16 65)) 15
+ 0)
+--> ((9 60) (10 64) (13 63) (13 72) (15 65))
+\end{verbatim}
+
+This function removes any datapoints whose nth-items
+are greater than the second argument. Datapoints are
+assumed to be in lexicographic order.
+
+
+%%%%%
+\subsection*{remove-datapoints-with-nth-item$>$=}\label{fun:remove-datapoints-with-nth-item>=}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:index-1st-sublist-item>=}, \nameref{fun:nth-list-of-lists} \\
+Called by & \nameref{fun:unite-datapoints} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(remove-datapoints-with-nth-item>=
+ '((9 60) (10 64) (13 63) (13 72) (15 65) (16 65)) 15
+ 0)
+--> ((9 60) (10 64) (13 63) (13 72))
+\end{verbatim}
+
+This function removes any datapoints whose nth-items
+are greater than or equal to the second argument.
+Datapoints are assumed to be in lexicographic
+order.
+
+
+%%%%%
+\subsection*{state-in-transition-matrixp}\label{fun:state-in-transition-matrixp}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:beat-spacing-states}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:segments-strict}, \nameref{fun:spacing-holding-states} \\
+Called by & \nameref{fun:keys-of-states-in-transition-matrix} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(state-in-transition-matrixp
+ '((0 60 60 1 0) (0 64 62 1 0) (0 67 64 1 0))
+ 0
+ '(((7/4 (4 5)) "etc") ((1 (4 3)) "etc")
+   ((11/4 (4 3 17)) "etc"))
+ "beat-spacing-states" 3 3 1)
+--> T
+\end{verbatim}
+
+\noindent This function checks a state, which exists
+at a specified ontime in a given dataset, for
+membership in a state-transition matrix. If it is a
+member, T is returned, and NIL otherwise.
+
+
+%%%%%
+\subsection*{unite-datapoints}\label{fun:unite-datapoints}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/10/2010, 13/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-for-and-back} \\
+Calls & \nameref{fun:remove-coincident-datapoints},\newline \nameref{fun:remove-datapoints-with-nth-item<},\newline \nameref{fun:remove-datapoints-with-nth-item<=}, \nameref{fun:remove-datapoints-with-nth-item>=}, \nameref{fun:remove-datapoints-with-nth-item>},\newline \nameref{fun:sort-dataset-asc} \\
+Called by & \nameref{fun:generate-beat-MNN-spacing<->},\newline \nameref{fun:generate-beat-spacing-forced<->} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(unite-datapoints
+ '((9 60 60 1) (10 64 62 2) (13 63 62 1) (14 60 60 2)
+   (15 65 63 2))
+ '((27/2 60 60 1/2) (14 60 60 1) (14 63 62 1)
+   (31/2 65 63 1/2) (16 64 62 1) (17 59 59 1))
+ 14 "superimpose")
+--> ((9 60 60 1) (10 64 62 2) (13 63 62 1)
+     (14 60 60 2) (14 63 62 1) (31/2 65 63 1/2)
+     (16 64 62 1) (17 59 59 1))
+\end{verbatim}
+
+This function unites two sets of datapoints. The third
+argument, join-at, is the ontime at which they are
+united (specified to avoid overhanging notes from
+each set sounding during the other), and the fourth
+argument, join-by, gives the option of superimposing
+the sets, or letting the first or second set take
+precedence.
+
+
+
+
+
+
+
+
+

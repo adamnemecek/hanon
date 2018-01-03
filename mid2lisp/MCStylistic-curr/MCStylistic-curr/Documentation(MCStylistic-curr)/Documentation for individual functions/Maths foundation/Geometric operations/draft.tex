@@ -1,0 +1,287 @@
+\subsection{Geometric operations}\label{sec:geometric-operations}
+
+The functions below are for finding summary
+statistics, and for taking random samples from
+data.
+
+
+%%%%%
+\subsection*{convex-hull}\label{fun:convex-hull}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq a-list '((-4 4) (-2 -2) (-2 2) (0 0) (1 1)
+               (2 -2) (2 4) (6 2)))
+(convex-hull a-list)
+--> ((-2 -2) (2 -2) (6 2) (2 4) (-4 4))
+\end{verbatim}
+
+\noindent For a set of points in the plane, this
+function returns those points that lie on the convex
+hull, using the Graham scan algorithm. Passing an
+empty set of points to this function will result in
+an error.
+
+
+%%%%%
+\subsection*{counter-clockwisep}\label{fun:counter-clockwisep}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \\
+Called by & \nameref{fun:convex-hull} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(counter-clockwisep '((-2 -2) (2 -2) (1 1)))
+--> -1
+\end{verbatim}
+
+\noindent This function takes three points in the
+plane as its argument, $p_1, p_2$, and $p_3$, arranged
+in a single list. If travelling along the line from
+$p_1$ to $p_2$, turning next to $p_3$ means turning
+counter-clockwise, then 1 is the value returned. If
+clockwise then $-1$ is returned, and if collinear then
+0 is returned.
+
+
+%%%%%
+\subsection*{dot-adjacent-points}\label{fun:dot-adjacent-points}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \\
+Called by & \nameref{fun:in-polygonp} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(dot-adjacent-points
+ '((-1 -3) (1 1) (-2 -1) (-1 -3)))
+--> (-4 -3 5)
+\end{verbatim}
+
+\noindent This function takes adjacent pairs from the
+argument list and computes their dot product.
+
+
+%%%%%
+\subsection*{in-polygonp}\label{fun:in-polygonp}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \nameref{fun:dot-adjacent-points}, \nameref{fun:fibonacci-list},\newline \nameref{fun:multiply-list-by-constant}, \nameref{fun:multiply-two-lists}, \nameref{fun:my-last}, \nameref{fun:quadrant-number}, \newline \nameref{fun:signum-adjacent-determinants}, \newline \nameref{fun:spacing-items}, \newline \nameref{fun:substitute-index-by-index-abs-x}, \nameref{fun:translation} \\
+Called by & \nameref{fun:points-in-convex-hull} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq closed-vertices
+      '((-2 -2) (2 -2) (6 2) (2 4) (-4 4) (-2 -2)))
+(in-polygonp '(1 1) closed-vertices)
+--> T
+\end{verbatim}
+
+\noindent A point in the plane and a list of closed,
+adjacent vertices are supplied as arguments. T is
+returned if the point is inside or on the polygon, and
+nil otherwise.
+
+
+%%%%%
+\subsection*{min-y-coord}\label{fun:min-y-coord}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \\
+Called by & \nameref{fun:convex-hull} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(min-y-coord '((-4 4) (-2 -2) (-2 2) (2 -2) (6 2)))
+--> (-2 -2)
+\end{verbatim}
+
+\noindent This function returns the point with the
+minimum $y$-coordinate, where the argument is assumed
+to be in the form $((x_1, y_1), (x_2, y_2),\ldots,
+(x_n, y_n))$. Ties are broken using the
+$x$-coordinate.
+
+
+%%%%%
+\subsection*{points-in-convex-hull}\label{fun:points-in-convex-hull}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(points-in-convex-hull
+ '((-1.71 -1.13) (1.27 -3.95) (3.66 -2.05)
+   (-2.65 -3.48) (1.4 -2.94) (1.53 0.51) (-2.67 0.32))
+ '((-1.33 0.3) (-1.3 -4.0) (0.83 1.41) (1.83 2.89)
+   (1.85 -0.94) (2.22 -2.93) (2.34 2.81) (2.4 -0.15)
+   (2.49 -2.71)))
+--> ((-1.33 0.3) (1.85 -0.94) (2.22 -2.93)
+     (2.49 -2.71))
+\end{verbatim}
+
+\noindent This function takes two sets of points in
+the plane as its arguments. The convex hull is found
+for the first set. It is then determined for each
+member of the second set whether or not that member is
+inside (or on) the convex hull or not. The points in
+the convex hull are returned. There is a plot for the
+above example in the \emph{Example files} folder,
+entitled \emph{convex-hull.pdf}.
+
+
+%%%%%
+\subsection*{quadrant-number}\label{fun:quadrant-number}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \\
+Called by & \nameref{fun:in-polygonp} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(quadrant-number '(-4 4))
+--> 2
+\end{verbatim}
+
+\noindent This function returns the quadrant number of
+the plane point $(x, y)$ supplied as argument.
+
+
+%%%%%
+\subsection*{signum-adjacent-determinants}\label{fun:signum-adjacent-determinants}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \\
+Called by & \nameref{fun:in-polygonp} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(signum-adjacent-determinants
+ '((-1 -3) (1 1) (-2 -1) (-1 -3)))
+--> (1 1 1)
+\end{verbatim}
+
+\noindent This function takes adjacent pairs from the
+argument list and computes the sign of the
+determinant, as though the pairs were in a
+$2\times 2$ matrix.
+
+
+%%%%%
+\subsection*{spacing-items}\label{fun:spacing-items}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \\
+Called by & \nameref{fun:in-polygonp} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(spacing-items '(0 12 1 7 4))
+--> '(12 -11 6 -3)
+\end{verbatim}
+
+\noindent A list of numbers is the only argument. The
+intervals between adjacent numbers are returned. It is
+possible to produce nonsense output if null values are
+interspersed with non-null values.
+
+
+%%%%%
+\subsection*{substitute-index-by-index-abs-x}\label{fun:substitute-index-by-index-abs-x}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 11/5/2010, 11/5/2010 \\
+Location & \nameref{sec:geometric-operations} \\
+Calls & \\
+Called by & \nameref{fun:in-polygonp} \\
+Comments/see also & \nameref{fun:replace-nth-in-list-with-x}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(substitute-index-by-index-abs-x
+ '(-4 4 -2 2 6 2) '(3 5 10 12 7 13) 2) 
+--> (-4 4 10 12 6 13)
+\end{verbatim}
+
+\noindent This function is very specific. When the
+absolute value of the $i$th item of the first argument
+is equal to the third argument, that item is replaced
+in the output with the ith item of the second
+argument.
+
+
+
+
+
+
+
+
+
+
+
+
+

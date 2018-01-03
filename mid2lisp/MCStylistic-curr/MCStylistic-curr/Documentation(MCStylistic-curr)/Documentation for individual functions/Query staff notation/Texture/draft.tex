@@ -1,0 +1,197 @@
+\subsection{Texture}\label{sec:texture}
+
+The function
+\nameref{fun:texture-from-kern} will parse a kern
+file, convert it to a point-set representation in
+which notes appear as points in pitch-time space, and
+identify different types of musical texture in the
+point set (e.g., monophonic, homophonic, melody with
+accompaniment, polyphonic, or contrapuntal). These
+textures are output as a list of quads: the first
+element is the beginning of a time window; the second
+is the end of a time window; the third is a texture
+string (from the options above) or nil, and the fourth
+is a value in $[0, 1]$ expressing the confidence with
+which the texture label has been assigned.
+
+The functions were coded hastily and require further
+testing. For examples of different textures, see the source
+code.
+
+
+%%%%%
+\subsection*{texture-from-kern}\label{fun:texture-from-kern}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 9/6/2014, 9/6/2014 \\
+Location & \nameref{sec:texture} \\
+Calls & \nameref{fun:append-offtimes},\newline \nameref{fun:append-ontimes-to-time-signatures},\newline \nameref{fun:bar-n-beat-number-of-ontime},\newline \nameref{fun:datapoints-sounding-between},\newline \nameref{fun:increment-by-x-n-times},\newline \nameref{fun:kern-file2dataset-by-col}, \nameref{fun:kern-file2lyrics-tf},\newline \nameref{fun:kern-file2ontimes-signatures}, \nameref{fun:max-item},\newline \nameref{fun:min-item}, \nameref{fun:my-last}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:ontime-of-bar-n-beat-number},\newline \nameref{fun:texture-whole-point-set} \\
+Called by & \nameref{fun:Stravinsqi-Jun2014} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ path&name
+ (merge-pathnames
+  (make-pathname
+   :directory '(:relative "C@merata2014" "misc")
+   :name "dowland_denmark_galliard" :type "krn")
+  *MCStylistic-MonthYear-data-path*))
+(setq win-size 4)
+(setq hop-size 1)
+(setq mono-thresh .95)
+(setq homo-thresh .8)
+(setq macc-thresh .8)
+(setq
+ ontimes-signatures
+ (append-ontimes-to-time-signatures
+  (kern-file2ontimes-signatures path&name)))
+(setq
+ point-set
+ (kern-file2dataset-by-col path&name))
+--> ((0 38 47 1 1) (0 57 58 1 0) (0 62 61 1 0)
+     (0 69 65 1 0) (1 50 54 2 1) (1 57 58 2 0)
+     (1 62 61 2 0) (1 69 65 1 0) (2 69 65 1 0)
+     (3 38 47 3 1) (3 57 58 3 0) (3 69 65 1 0)
+     (4 67 64 1/2 0) (9/2 66 63 1/2 0)
+     (5 64 62 1/2 0) (11/2 67 64 1/2 0) (6 38 47 2 1)
+     (6 57 58 2 0) (6 66 63 1 0) (7 64 62 1/2 0)
+     (15/2 62 61 1/2 0) (8 45 51 1 1) (8 64 62 1 0)
+     (9 50 54 1 1) (9 57 58 3 0) (9 62 61 3 0)
+     (10 38 47 2 1))
+(texture-from-kern
+ path&name win-size hop-size mono-thresh homo-thresh
+ macc-thresh ontimes-signatures point-set)
+--> ((0 12 "melody with accompaniment" 0.8333333))
+
+(setq
+ path&name
+ (merge-pathnames
+  (make-pathname
+   :directory
+   '(:relative "C@merata2014" "training_v1")
+   :name "f1" :type "krn")
+  *MCStylistic-MonthYear-data-path*))
+(texture-from-kern path&name)
+--> ((0 36 "homophonic" 0.89666665)
+     (36 64 "polyphonic" 1.0))
+\end{verbatim}
+
+\noindent This function parses a kern file, converts
+it to a point-set representation in which notes appear
+as points in pitch-time space, and identifies
+different types of musical texture in the point set
+(e.g., monophonic, homophonic, melody with
+accompaniment, polyphonic, or contrapuntal). These
+textures are output as a list of quads: the first
+element is the beginning of a time window; the second
+is the end of a time window; the third is a texture
+string (from the options above) or nil, and the fourth
+is a value in $[0, 1]$ expressing the confidence with
+which the texture label has been assigned.
+
+The function works by passing windows of specifiable
+size (four bars) and hop (one size) to the function
+\nameref{fun:texture-whole-point-set}. Windows with
+contiguous labels are elided. The thresholds for
+textural labels can be set also.
+
+The point set in the second example comes from bars
+23-30 of Morley's `April is in my mistress' face'
+(1594). Please see above for more example point
+sets.
+
+
+%%%%%
+\subsection*{texture-time-intervals}\label{fun:texture-time-intervals}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 9/6/2014, 9/6/2014 \\
+Location & \nameref{sec:texture} \\
+Calls & \\
+Called by & \nameref{fun:Stravinsqi-Jun2014} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq question-string "polyphony")
+(setq
+ texture-point-set
+ '((0 36 "homophonic" 0.89666665)
+   (36 64 "polyphonic" 1.0)))
+(texture-time-intervals
+ question-string texture-point-set)
+--> ((36 64))
+\end{verbatim}
+
+\noindent This function identifies the time intervals
+in some texture point set that correspond to the
+contents of a question string, and returns those time
+intervals.
+
+
+%%%%%
+\subsection*{texture-whole-point-set}\label{fun:texture-whole-point-set}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 9/6/2014, 9/6/2014 \\
+Location & \nameref{sec:texture} \\
+Calls & \nameref{fun:add-to-nth}, \nameref{fun:constant-vector},\newline \nameref{fun:dataset-restricted-to-m-in-nth},\newline \nameref{fun:intersection-multidimensional},\newline \nameref{fun:max-item}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:orthogonal-projection-unique-equalp},\newline \nameref{fun:set-difference-multidimensional-sorted-asc}, \nameref{fun:sky-line-clipped}, \nameref{fun:test-all-true} \\
+Called by & \nameref{fun:texture-from-kern} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ point-set
+ '((32 50 54 4 3) (32 62 61 2 2) (32 66 63 4 1)
+   (32 69 65 1 0) (33 74 68 1 0) (34 74 68 1 0)
+   (35 62 61 1 2) (35 74 68 1 0) (36 62 61 1 2)
+   (36 77 70 4 0) (37 50 54 1 3) (37 62 61 1 2)
+   (38 50 54 1 3) (38 65 63 4 2) (39 50 54 1 3)
+   (40 53 56 4 3) (41 69 65 1 1) (41 72 67 1 0)
+   (42 65 63 2 2) (42 69 65 1 1) (42 72 67 1 0)
+   (43 69 65 1 1) (43 72 67 1 0) (44 60 60 4 2)
+   (44 72 67 2 1) (44 75 69 2 0) (45 48 53 1 3)
+   (46 48 53 1 3) (46 67 64 2 1) (46 75 69 2 0)
+   (47 48 53 1 3) (48 51 55 3 3) (48 67 64 2 1)
+   (48 70 66 1 0) (49 67 64 1 0) (50 55 57 2 2)
+   (50 67 64 2 1) (50 70 66 1 0) (51 51 55 1 3)
+   (51 72 67 1 0) (52 46 52 3 3) (52 58 59 2 2)
+   (52 65 63 1 1) (52 74 68 8 0) (53 62 61 1 1)
+   (54 58 59 2 2) (54 67 64 3 1) (55 48 53 1 3)
+   (56 50 54 4 3) (56 57 58 4 2) (57 66 63 1/2 1)
+   (115/2 64 62 1/2 1) (58 66 63 2 1) (60 55 57 2 2)
+   (60 67 64 1 1) (60 71 66 4 0) (61 67 64 1 1)
+   (62 67 64 1 1) (63 55 57 1 2) (63 67 64 1 1)))
+(texture-whole-point-set point-set)
+--> ("polyphonic" 1)
+\end{verbatim}
+
+\noindent This function takes a point set as its only
+mandatory argument. Optional arguments include a
+logical to indicate whether the point set represents
+music set to words (default true) and thresholds
+between 0 and 1 for the proportion of conformant notes
+that must be surpassed in order to declare a texture
+monophonic, homophonic, melody with accompaniment,
+etc. The other possible textures are polyphonic (with
+words), contrapuntal (without words), or no texture
+defined (nil).
+
+The point set in the example comes from bars 23-30 of
+Morley's `April is in my mistress' face' (1594).
+Please see the source code for more example point
+sets.
+
+

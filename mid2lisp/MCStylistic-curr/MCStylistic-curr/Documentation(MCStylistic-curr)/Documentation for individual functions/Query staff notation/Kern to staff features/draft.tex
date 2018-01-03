@@ -1,0 +1,318 @@
+\subsection{Kern to staff features}\label{sec:kern-to-staff-features}
+
+The functions below will parse a kern
+file (http://kern.ccarh.org/) and identify various
+aspects of it. For instance,
+\nameref{fun:kern-file2ontimes-signatures} will
+identify all the time signature changes in a kern
+file and convert them to a list of bar numbers where
+they occur, and what they consist of.
+
+
+%%%%%
+\subsection*{kern2clef-changes}\label{fun:kern2clef-changes}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:kern-to-staff-features} \\
+Calls & \nameref{fun:kern-anacrusis-correction},\newline \nameref{fun:kern-col2staff-changes},\newline \nameref{fun:kern-rows2col-preserving-clefs},\newline \nameref{fun:read-from-file-arbitrary}, \nameref{fun:sort-dataset-asc}, \newline \nameref{fun:staves-info2staves-variable-robust}, \newline \nameref{fun:tab-separated-string2list}, \nameref{fun:test-all-true} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ path&name
+ (merge-pathnames
+  (make-pathname
+   :directory '(:relative "Kern")
+   :name "C-41-1-ed" :type "txt")
+  *MCStylistic-MonthYear-data-path*))
+(firstn 5 (kern2clef-changes path&name))
+--> ((0 "clefF4" 1) (0 "clefG2" 0) (121 "clefG2" 1)
+     (126 "clefF4" 1) (127 "clefG2" 1)
+     (132 "clefF4" 1) (133 "clefG2" 1))
+\end{verbatim}
+
+\noindent This function parses a kern file and returns a list
+consisting of triples: the first element in each
+triple is ontime; the second is a string specifying
+the clef change that occurs at that point in time;
+the third is the staff number to which the clef
+change belongs.
+
+
+%%%%%
+\subsection*{kern-col2staff-changes}\label{fun:kern-col2staff-changes}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:kern-to-staff-features} \\
+Calls & \nameref{fun:constant-vector}, \nameref{fun:parse-kern-spaced-notes} \\
+Called by & \nameref{fun:kern2clef-changes} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ a-list
+ '(NIL NIL NIL (("*clefG2")) NIL NIL (("16r"))
+   (("16B" "16c")) (("16d")) (("16e")) (("*clefGv2"))
+   (("16f")) (("16d")) (("16e")) (("16c"))))
+(kern-col2staff-changes a-list 0 (list 0))
+--> ((0 "clefG2") (1 "clefGv2"))
+\end{verbatim}
+
+\noindent This function plays a similar role as the
+function \nameref{fun:kern-col2dataset} in the
+function \nameref{fun:kern-file2dataset-by-col}. It
+keeps a running total of ontime in the spine of a
+kern file, and uses this to populate any encountered
+clef changes with the appropriate ontime where the
+clef change first takes effect.
+
+
+%%%%%
+\subsection*{kern-file2ontimes-signatures}\label{fun:kern-file2ontimes-signatures}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 9/5/2014, 9/5/2014 \\
+Location & \nameref{sec:kern-to-staff-features} \\
+Calls & \nameref{fun:tab-separated-string2list} \\
+Called by & \\
+Comments/see also & \nameref{fun:append-ontimes-to-time-signatures}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ kern-rows-sep
+ '(("**kern" "**kern" "**dynam" "**kern")
+   ("*staff3" "*staff2" "*staff2" "*staff1")
+   ("*clefF4" "*clefG2" "*clefG2" "*clefG2")
+   ("*k[f#c#g#]" "*k[f#c#g#]" "*k[f#c#g#]"
+    "*k[f#c#g#]")
+   ("*M6/8" "*M6/8" "*M6/8" "*M6/8")
+   ("8r" "8a/" "f" "8r")
+   ("=1" "=1" "=1" "=1")
+   ("2.r" "4.dd\\" "." "2.r")
+   ("." "4.d/" "." ".")
+   ("=2" "=2" "=2" "=2")
+   ("2.r" "4.g#/" "." "2.r")
+   ("." "4r" "." ".")
+   ("." "8g#/" "." ".")
+   ("=3" "=3" "=3" "=3")
+   ("*M4/4" "*M4/4" "*M4/4" "*M4/4")
+   ("4BB\\ 4c#\\" "4a/" "." "4g#\\ 4ff#\\")
+   ("4Cn\\ 4B-\\" "4a/" "." "4fn/ 4dd/")
+   ("2BB\\ 2cn\\" "2a/" "." "2gn\\ 2ffn\\")
+   ("=4" "=4" "=4" "=4")
+   ("1r" "1r" "." "1r")
+   ("==" "==" "==" "==")
+   ("*-" "*-" "*-" "*-")))
+(kern-file2ontimes-signatures "blah" kern-rows-sep)
+--> ((1 6 8) (3 4 4))
+\end{verbatim}
+
+\noindent This function parses a kern file looking
+for lines beginning with ``*M'', which denote
+changes in time signature. Apart from the first such
+instance, which it is assumed belongs to bar 1 of a
+piece, it then looks immediately before these lines
+to parse the bar numbers at which time signature
+changes occur. Call the function
+append-ontimes-to-time-signatures afterwards to
+include ontimes as well.
+
+
+%%%%%
+\subsection*{kern-rows2col-preserving-clefs}\label{fun:kern-rows2col-preserving-clefs}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:kern-to-staff-features} \\
+Calls & \nameref{fun:fibonacci-list}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:space-bar-separated-string2list},\newline \nameref{fun:recognised-spine-commandp},\newline \nameref{fun:tab-separated-string2list},\newline \nameref{fun:update-staves-variable} \\
+Called by & \nameref{fun:kern2clef-changes} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ rows
+ '("**kern	**kern"
+   "*staff2	*staff1"
+   "=1-	=1-"
+   "*clefF4	*clefG2"
+   "*k[]	*k[]"
+   "*M4/4	*M4/4"
+   "2r	16r"
+   ".	16B/LL 16c/LL"
+   ".	16d/"
+   ".	16e/JJ"
+   "*	*clefGv2"
+   ".	16f/LL"
+   ".	16d/"
+   ".	16e/"
+   ".	16c/JJ"))
+(kern-rows2col-preserving-clefs rows 1 '((2 1) (1 1)))
+--> (NIL NIL NIL (("*clefG2")) NIL NIL (("16r"))
+     (("16B" "16c")) (("16d")) (("16e"))
+     (("*clefGv2")) (("16f")) (("16d")) (("16e"))
+     (("16c")))
+\end{verbatim}
+
+\noindent This function plays a similar role as the
+function \nameref{fun:kern-rows2col} in the function
+\nameref{fun:kern-file2dataset-by-col}. It keeps
+information relating to clefs as well as note
+information, and removes everything else.
+
+
+%%%%%
+\subsection*{kern-rows-sep2time-sigs\&idx}\label{fun:kern-rows-sep2time-sigs-n-idx}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 1/5/2014, 1/5/2014 \\
+Location & \nameref{sec:kern-to-staff-features} \\
+Calls & \\
+Called by & \nameref{fun:kern-file2ontimes-signatures} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ kern-rows-sep
+ '(("*M6/8" "*M6/8" "*M6/8" "*M6/8")
+   ("8r" "8a/" "f" "8r")
+   ("=1" "=1" "=1" "=1")
+   ("2.r" "4.dd\\" "." "2.r")
+   ("." "4.d/" "." ".")
+   ("=2" "=2" "=2" "=2")
+   ("*M4/4" "*M4/4" "*M4/4" "*M4/4")
+   ("4BB\\ 4c#\\" "4a/" "." "4g#\\ 4ff#\\")
+   ("4Cn\\ 4B-\\" "4a/" "." "4fn/ 4dd/")
+   ("2BB\\ 2cn\\" "2a/" "." "2gn\\ 2ffn\\")
+   ("==" "==" "==" "==")
+   ("*-" "*-" "*-" "*-")))
+(kern-rows-sep2time-sigs&idx kern-rows-sep)
+--> (((6 8) 0) ((4 4) 6))
+\end{verbatim}
+
+\noindent This function parses rows from a kern file
+that have already been converted from tab-separated
+text into lists of strings. It looks for lists that
+begin with the substring ``*M'', which specifies a
+change in time signature, converts the rest of such
+strings to the upper and lower number of the
+following time signature (for instance ``*M8/8''
+maps to 6 and 8), and returns this in a list along
+with the index of the row.
+
+
+%%%%%
+\subsection*{staves-info2staff\&clef-names}\label{fun:staves-info2staff-n-clef-names}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:kern-to-staff-features} \\
+Calls & \nameref{fun:nth-list}, \nameref{fun:positions}, \nameref{fun:read-from-file-arbitrary},\newline \nameref{fun:replace-all}, \nameref{fun:tab-separated-string2list} \\
+Called by & \nameref{fun:Stravinsqi-Jun2014} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(staves-info2staff&clef-names
+ '("!!!COM: Chopin, Frederic"
+   "**kern	**kern	**dynam"
+   "*thru	*thru	*thru"
+   "*staff2	*staff1	*staff1/2"
+   "*>A	*>A	*>A"
+   "*clefF4	*clefG2	*clefG2"))
+--> (("piano left hand" "bass clef")
+     ("piano right hand" "treble clef"))
+(staves-info2staff&clef-names
+ '("!!!COM: Beethoven, Ludwig van"
+   "!!!CDT: 1770///-1827///"
+   "**kern	**dynam"
+   "*Ipiano	*Ipiano"
+   "*clefG2	*clefG2"
+   "*k[b-]	*k[b-]"
+   "*F:	*F:" "*M3/4	*M3/4" "*MM40	*MM40"
+   "8.c/L	." "16c/Jk	." "=1	=1" "*	*"))
+--> (("piano right hand" "treble clef"))
+(staves-info2staff&clef-names
+ '("!!!AGN:	chorale"
+   "**kern	**kern	**kern	**kern"
+   "*ICvox	*ICvox	*ICvox	*ICvox"
+   "*Ibass	*Itenor	*Ialto	*Isoprn"
+   "*I\"Bass	*I\"Tenor	*I\"Alto	*I\"Soprano"
+   "*>[A,A,B]	*>[A,A,B]	*>[A,A,B]	*>[A,A,B]"
+   "*>norep[A,B]	*>norep[A,B]	*>norep[A,B]	*>norep[A,B]"
+   "*>A	*>A	*>A	*>A"
+   "*clefF4	*clefGv2	*clefG2	*clefG2"
+   "*k[f#]	*k[f#]	*k[f#]	*k[f#]"))
+--> (("bass" "bass clef") ("tenor" "tenor clef")
+     ("alto" "treble clef") ("soprn" "treble clef"))
+(staves-info2staff&clef-names
+ '("**kern	**kern"
+   "*staff2	*staff1"
+   "=1-	=1-"
+   "*clefF4	*clefG2"
+   "*k[f#c#g#d#]	*k[f#c#g#d#]"
+   "*M3/8	*M3/8"))
+--> (("piano left hand" "bass clef")
+     ("piano right hand" "treble clef"))
+(staves-info2staff&clef-names
+ '("**kern	**text	**kern	**text	**kern	**text	**kern	**text"
+   "*staff4	*staff4	*staff3	*staff3	*staff2	*staff2	*staff1	*staff1"
+   "=1-	=1-	=1-	=1-	=1-	=1-	=1-	=1-"
+   "*clefF4	*	*clefGv2	*	*clefG2	*	*clefG2	*"
+   "*k[b-e-]	*	*k[b-e-]	*	*k[b-e-]	*	*k[b-e-]	*"
+   "*M4/4	*	*M4/4	*	*M4/4	*	*M4/4	*"
+   "1BB-	place.	2B-\	place.	2f/	place.	2b-\	place"))
+--> (("staff4" "bass clef") ("staff3" "tenor clef")
+     ("staff2" "treble clef")
+     ("staff1" "treble clef"))
+\end{verbatim}
+
+\noindent This function parses rows supplied from a
+kern file and returns a list of string pairs: the first
+element in each pair is a label for a staff in the
+score. If none is provided, ``staff$x$'' will appear;
+the second element is a label for the clef type with
+which the staff begins (e.g., ``bass clef''). This is
+useful because often users refer to ``bass clef''
+when they mean the lower part of the keyboard staff,
+for instance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,191 @@
+\subsection{Structural induction merge}\label{sec:structural-induction-merge}
+
+These functions implement SIA (Structural Induction
+Algorithm, \citeauthor{meredith2002},
+\citeyear{meredith2002}) using a merge sort.
+
+
+%%%%%
+\subsection*{collect-by-car}\label{fun:collect-by-car}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:structural-induction-merge} \\
+Calls & \\
+Called by & \nameref{fun:collect-by-cars}, \nameref{fun:collect-by-cars-partition} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(collect-by-car
+ '(((1 -14) 7/2 60) ((1 -14) 2 74) ((1 -2) 5/2 64)))
+--> ((2 74))
+\end{verbatim}
+
+\noindent A list is the only argument to this
+function. The car of the first element is compared
+with the cars of proceeding elements, and these
+proceeding elements are returned so long as there is
+equality.
+
+
+%%%%%
+\subsection*{collect-by-cars}\label{fun:collect-by-cars}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:structural-induction-merge} \\
+Calls & \nameref{fun:collect-by-car}, \nameref{fun:restn} \\
+Called by & \nameref{fun:collect-by-cars-partition},\newline \nameref{fun:SIA-reflected-merge-sort} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(collect-by-cars
+ '(((1/2 -14) 7/2 60) ((1/2 -10) 2 74)
+   ((1/2 -2) 5/2 64) ((1/2 -2) 3 62) ((1/2 2) 1/2 67)
+   ((1/2 2) 1 69) ((1/2 3) 3/2 71) ((1/2 14) 0 53)
+   ((1 21) 2 74) ((1 21) 3 62) ((1 21) 4 46)
+   ((1 -7) 3/2 71) ((1 -4) 5/2 64) ((1 4) 1/2 67)))
+--> (((1/2 -14) (7/2 60)) ((1/2 -10) (2 74))
+     ((1/2 -2) (5/2 64) (3 62))
+     ((1/2 2) (1/2 67) (1 69))
+     ((1/2 3) (3/2 71)) ((1/2 14) (0 53))
+     ((1 21) (2 74) (3 62) (4 46))
+     ((1 -7) (3/2 71)) ((1 -4) (5/2 64))
+     ((1 4) (1/2 67)))
+\end{verbatim}
+
+\noindent A list is the only argument to this
+function. The function collect-by-car is applied to
+each new vector appearing as the car of each element
+of the list.
+
+
+%%%%%
+\subsection*{collect-by-cars-partition}\label{fun:collect-by-cars-partition}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:structural-induction-merge} \\
+Calls & \nameref{fun:collect-by-cars}, \nameref{fun:write-to-file-append} \\
+Called by & \nameref{fun:SIA-reflected-merge-sort} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(collect-by-cars-partition
+ '(((1/2 -14) 7/2 60) ((1/2 -10) 2 74)
+   ((1/2 -2) 5/2 64) ((1/2 -2) 3 62) ((1/2 2) 1/2 67)
+   ((1/2 2) 1 69) ((1/2 3) 3/2 71) ((1/2 14) 0 53)
+   ((1 21) 2 74) ((1 21) 3 62) ((1 21) 4 46)
+   ((1 -7) 3/2 71) ((1 -4) 5/2 64) ((1 4) 1/2 67))
+ (concatenate
+  'string
+  *MCStylistic-Oct2010-example-files-path*
+  "/collected-by-cars.txt") 5)
+--> NIL
+\end{verbatim}
+
+\noindent The function collect-by-cars can cause a
+stack overflow for moderately sized lists. This
+function writes the output of collect-by-cars to a
+text file (using write-to-file-append) every so often
+to prevent stack overflow. The example causes a file
+to be created in the specified location.
+
+
+%%%%%
+\subsection*{SIA-reflected-merge-sort}\label{fun:SIA-reflected-merge-sort}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:structural-induction-merge} \\
+Calls & \nameref{fun:collect-by-cars-partition}, \nameref{fun:subtract-two-lists},\newline \nameref{fun:vector<vector-car} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: see Discovering and rating musical
+patterns (Sec. \ref{sec:disc&rate-musical-patterns}), 
+especially lines 83-88).
+\vspace{0.5cm}
+
+\noindent This function is a faster version of the
+function SIA-reflected. The improved runtime is due to
+the use of merge-sort.
+
+
+%%%%%
+\subsection*{vector$<$vector-car}\label{fun:vector<vector-car}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:structural-induction-merge} \\
+Calls & \nameref{fun:vector<vector-t-or-nil} \\
+Called by & \nameref{fun:SIA-reflected-merge-sort} \\
+Comments/see also & \nameref{fun:vector<vector}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(vector<vector-car '((1 1) . (1 3)) '((2 2) . (1 3)))
+--> T
+\end{verbatim}
+
+\noindent Applies the function
+vector$<$vector-t-or-nil to the car of each list (the
+two arguments).
+
+
+%%%%%
+\subsection*{vector$<$vector-t-or-nil}\label{fun:vector<vector-t-or-nil}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:structural-induction-merge} \\
+Calls & \\
+Called by &\nameref{fun:vector<vector-car} \\
+Comments/see also & \nameref{fun:vector<vector}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(vector<vector-t-or-nil '(4 6 7) '(4 6 7.1))
+--> T
+\end{verbatim}
+
+\noindent The function vector$<$vector returns "equal"
+if the arguments were equal. This function returns nil
+in such a scenario.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

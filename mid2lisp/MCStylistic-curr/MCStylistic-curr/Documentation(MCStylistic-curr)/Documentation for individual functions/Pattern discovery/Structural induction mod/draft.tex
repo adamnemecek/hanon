@@ -1,0 +1,639 @@
+\subsection{Structural induction mod}\label{sec:structural-induction-mod}
+
+The functions below include two early implementations
+of SIA (Structure induction algorithm,
+\citeauthor{meredith2002}, \citeyear{meredith2002}),
+one version working modulo $n$.
+
+
+%%%%%
+\subsection*{assoc-files}\label{fun:assoc-files}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/3/2013, 13/3/2013 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:read-from-file} \\
+Called by & \nameref{fun:SIA-reflected}, \nameref{fun:SIA-reflected-mod-2nd-n} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(assoc-files
+ '(2 (2 6)) nil 1 1
+ (merge-pathnames
+  (make-pathname
+   :directory '(:relative "Racchman-Oct2010 example")
+   :name "initial-states" :type "txt")
+  *MCStylistic-Aug2013-example-files-results-path*))
+--> (1
+     ((2 (2 6))
+      (NIL NIL "C-17-4"
+       ((1 57 58 1 1 2 0) (1 59 59 1 1 2 1)
+        (1 65 63 1 1 2 2)))))
+\end{verbatim}
+
+\noindent The arguments to this function are a probe,
+a path\&name, and a positive integer. The integer
+indicates how many files there are with the specified
+path\&name. Each one, assumed to contain an assoc-
+list, is read in turn and probed for the presence of
+the argument in probe. If it is present the relevant
+row is returned.
+
+
+%%%%%
+\subsection*{add-two-lists-mod-2nd-n}\label{fun:add-two-lists-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:add-two-lists} \\
+Called by & \nameref{fun:maximal-translatable-pattern-mod-2nd-n},\newline \nameref{fun:test-equal<potential-translator-mod-2nd-n}, \nameref{fun:translation-mod-2nd-n} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(add-two-lists-mod-2nd-n '(4 2 -3) '(8 60 -3) 12)
+--> (12 2 -6)
+\end{verbatim}
+
+\noindent Adds two lists element-by-element, treating
+the second elements of each list modulo $n$.
+
+
+%%%%%
+\subsection*{check-potential-translators-mod-2nd-n}\label{fun:check-potential-translators-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:read-from-file} \\
+Called by & \nameref{fun:translators-of-pattern-in-dataset-mod-2nd-n} \\
+Comments/see also & \nameref{fun:check-potential-translators}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(check-potential-translators-mod-2nd-n
+ '(3 4) '((0 0) (1 2) (1 5) (2 9))
+ '((0 0) (3 4) (4 9) (5 1)) 12)
+--> ((0 0) (1 5) (2 9))
+\end{verbatim}
+
+\noindent This function is very similar to the
+function check-potential-translators. The difference
+is that the translation of the 2nd element is being
+carried out modulo n.
+
+
+%%%%%
+\subsection*{dataset-restricted-to-m-in-nth}\label{fun:dataset-restricted-to-m-in-nth}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(dataset-restricted-to-m-in-nth
+ '((12 41 49 1 1) (12 81 72 2 0) (13 53 56 1 1)
+   (14 55 57 1 1) (14 74 68 2 0) (15 43 50 1 1)
+   (16 36 46 2 1) (16 72 67 1/2 0)) 1 4) 
+--> ((12 41 49 1 1) (13 53 56 1 1) (14 55 57 1 1)
+     (15 43 50 1 1) (16 36 46 2 1))
+\end{verbatim}
+
+\noindent This function acts on a list of sublists.
+The nth item of each sublist is tested for equality
+(equalp) with the second argument. If it is equal it
+is retained, otherwise it is not included in the
+output.
+
+
+%%%%%
+\subsection*{indices-of-matrix-passing-tests}\label{fun:indices-of-matrix-passing-tests}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:test-all-true} \\
+Called by & \nameref{fun:occurrence-matrixnrel-idx} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(indices-of-matrix-passing-tests
+ '((2 4 -1 6 9) (0 0 4 2 -7) (-3 -2 -1 4 1)
+   (2 4 -1 3.3 9) (0 0 4 6.8 -7)) (list #'>= #'<) 
+   '(3.9 6.8))
+--> ((0 1) (0 3) (1 2) (2 3) (3 1) (4 2))
+\end{verbatim}
+
+\noindent The first argument to this function is a
+matrix in list representation (a list of sublists,
+where each sublist correspond to a row, and the $j$th
+item of each sublist to the $j$th column). The tests
+specified in the second argument are applied for
+constants specified in the third argument. If an
+element of the matrix passes all tests, its index in
+$(i, j)$ form is appended to the output list.
+
+
+%%%%%
+\subsection*{maximal-translatable-pattern-mod-2nd-n}\label{fun:maximal-translatable-pattern-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:add-two-lists-mod-2nd-n}, \nameref{fun:test-equal<list-elements} \\
+Called by & \\
+Comments/see also & As with \nameref{fun:maximal-translatable-pattern}, the implementation could be improved.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(maximal-translatable-pattern-mod-2nd-n
+ '(2 0) '((0 0) (1 1) (1 2) (2 0) (2 5) (3 1)) 12)
+--> ((0 0) (1 1))
+\end{verbatim}
+
+\noindent This function computes the maximal
+translatable pattern of an arbitrary vector
+$\mathbf{u}$, searching in some dataset $D$, and
+treating the second element of each datapoint modulo
+$n$.
+
+
+%%%%%
+\subsection*{mod-column}\label{fun:mod-column}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:firstn}, \nameref{fun:lastn} \\
+Called by & \nameref{fun:test-translation-mod-2nd-n-no-length-check} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(mod-column
+ '((1 2 12 4) (1 2 16 -1) (2 4 32 6) (5 2 50 6)) 7 2)
+--> ((1 2 5 4) (1 2 2 -1) (2 4 4 6) (5 2 1 6))
+\end{verbatim}
+
+\noindent The first argument to this function is a
+list, assumed to contain sublists of equal length. The
+second argument specifies what modulo will be
+calculated for the $n$th item of each sublist, where
+$n$ is given by the third argument.
+
+
+%%%%%
+\subsection*{mod-list}\label{fun:mod-list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/3/2013, 13/3/2013 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \\
+Called by & \nameref{fun:segments2MNNs-mod12} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(mod-list '(1 2 3 4 5 7) 3)
+--> (1 2 0 1 2 1)
+\end{verbatim}
+
+\noindent This function gives the value of each item
+of a list, modulo $b$.
+
+
+%%%%%
+\subsection*{restrict-dataset-in-nth-to-xs}\label{fun:restrict-dataset-in-nth-to-xs}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(restrict-dataset-in-nth-to-xs
+ '((2 4 -1 6 9) (0 0 4 2 -7) (-3 -2 -1 -1 1)
+   (12 0 -7 5 3) (1 2 3 4 3) (1 2 5 4 5)
+   (12 0 -6 5 4) (-3 -2 1 -1 0) (12 0 -7 5 4))
+ 3 '(4 5 6))
+--> ((2 4 -1 6 9) (12 0 -7 5 3) (1 2 3 4 3)
+     (1 2 5 4 5) (12 0 -6 5 4) (12 0 -7 5 4))
+\end{verbatim}
+
+\noindent The first argument to this function is a
+dataset. We are interested in the $n$th dimension of
+each vector, where $n$ is the second argument.
+A datapoint is retained in the output if its $n$th
+value is a member of the list specified by the third
+argument. Note it will not recognise 1.0 as 1.
+
+
+%%%%%
+\subsection*{restrict-dataset-in-nth-to-tests}\label{fun:restrict-dataset-in-nth-to-tests}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/3/2013, 13/3/2013 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(restrict-dataset-in-nth-to-tests
+ '((2 4 -1 6 9) (0 0 4 2 -7) (-3 -2 -1 4 1)
+   (2 4 -1 3.3 9) (0 0 4 6.8 -7))
+ 3 (list #'>= #'<) '(3.9 6.8))
+--> ((2 4 -1 6 9) (12 0 -7 5 3) (1 2 3 4 3)
+     (1 2 5 4 5) (12 0 -6 5 4) (12 0 -7 5 4))
+\end{verbatim}
+
+\noindent The first argument to this function is a
+dataset. We are interested in the $n$th dimension of
+each vector, where $n$ is the second argument. A
+datapoint is retained in the output if its $n$th value
+is true compared with the each element of the third
+argument using the test supplied as each element of
+the fourth argument.
+
+
+%%%%%
+\subsection*{SIA-reflected}\label{fun:SIA-reflected}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/3/2013, 13/3/2013 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:assoc-files}, \nameref{fun:subtract-two-lists}, \nameref{fun:update-written-file}, \nameref{fun:write-to-file} \\
+Called by & \\
+Comments/see also & \nameref{fun:SIA-reflected-merge-sort} for a more efficient implementation.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(SIA-reflected
+ '((0 61) (0 65) (1 64) (4 62) (4 66) (5 65) (8 60)
+   (8 64) (9 63) (12 56) (13 69) (15 65) (16 57)
+   (16 59) (17 64) (19 63))
+ (concatenate
+  'string
+  *MCStylistic-Oct2010-example-files-path*
+  "/SIA output") 50)
+--> 2
+\end{verbatim}
+
+\noindent This function is a version of the SIA
+algorithm. It is called `SIA-reflected' because the
+results (pairs of vectors and the corresponding MTPs)
+are the other way round to the algorithm specified by
+\citet{meredith2002}. The example causes two files to
+be created in the specified location.
+
+
+%%%%%
+\subsection*{SIA-reflected-mod-2nd-n}\label{fun:SIA-reflected-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/3/2013, 13/3/2013 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:assoc-files}, \nameref{fun:subtract-two-lists-mod-2nd-n}, \nameref{fun:update-written-file}, \nameref{fun:write-to-file} \\
+Called by & \\
+Comments/see also & \nameref{fun:SIA-reflected}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(SIA-reflected-mod-2nd-n
+ '((0 61) (0 65) (1 64) (4 62) (4 66) (5 65) (8 60)
+   (8 64) (9 63) (12 56) (13 69) (15 65) (16 57)
+   (16 59) (17 64) (19 63))
+ 12
+ (merge-pathnames
+  (make-pathname
+   :name "SIA mod 2nd n output" :type "txt")
+  *MCStylistic-Aug2013-example-files-results-path*)
+ 50)
+--> 2
+\end{verbatim}
+
+\noindent This function is a version of the SIA
+algorithm that works with a pitch representation
+modulo $n$. The example causes two files to be created
+in the specified location.
+
+
+%%%%%
+\subsection*{split-point-set-by-staff}\label{fun:split-point-set-by-staff}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:dataset-restricted-to-m-in-nth} \\
+Called by & \nameref{fun:melodic-interval-of-a} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(split-point-set-by-staff
+ '((13 55 3 1) (13 60 2 0) (13 64 1 0) (14 55 2 0)
+   (15 55 1/2 1) (15 59 1/2 1) (15 65 1/2 0)
+   (15 55 1/2 0)) 3)
+--> (((13 60 2 0) (13 64 1 0) (14 55 2 0)
+     (15 65 1/2 0) (15 55 1/2 0))
+    ((13 55 3 1) (15 55 1/2 1) (15 59 1/2 1)))
+\end{verbatim}
+
+\noindent This function splits the input point set
+into different point sets depending on the value in
+the staff index.
+
+\emph{Unlike} the function \nameref{fun:monophonise},
+this function does not create monophonic lines within
+staves, or translate (or 'unfold') point sets
+belonging to successive staves.
+
+
+%%%%%
+\subsection*{subtract-list-from-each-list-mod-2nd-n}\label{fun:subtract-list-from-each-list-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:subtract-two-lists-mod-2nd-n} \\
+Called by & \nameref{fun:translators-of-pattern-in-dataset-mod-2nd-n} \\
+Comments/see also & \nameref{fun:subtract-list-from-each-list}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(subtract-list-from-each-list-mod-2nd-n
+ '((8 -2 -3) (4 6 6) (0 0 0) (4 7 -3)) '(4 7 -3) 12)
+--> ((4 3 0) (0 11 9) (-4 5 3) (0 0 0))
+\end{verbatim}
+
+\noindent The function subtract-two-lists-mod-2nd-n is
+applied recursively to each sublist in the first list
+argument, and the second argument.
+
+
+%%%%%
+\subsection*{subtract-two-lists-mod-2nd-n}\label{fun:subtract-two-lists-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:subtract-two-lists} \\
+Called by & \nameref{fun:subtract-list-from-each-list-mod-2nd-n} \\
+Comments/see also & \nameref{fun:subtract-two-lists}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(subtract-two-lists-mod-2nd-n '(8 60 1) '(4 67 2) 12)
+--> (4 5 -1)
+\end{verbatim}
+
+\noindent Subtracts the second list from the first,
+element-by-element. The subtraction of the second
+elements is performed modulo $n$, where $n$ is the
+third argument to the function. It is assumed that the
+list is at least of length 2.
+
+
+%%%%%
+\subsection*{test-equal$<$potential-translator-mod-2nd-n}\label{fun:test-equal<potential-translator-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:add-two-lists-mod-2nd-n} \\
+Called by & \nameref{fun:check-potential-translators-mod-2nd-n} \\
+Comments/see also & \nameref{fun:test-equal<potential-translator}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(test-equal<potential-translator-mod-2nd-n
+ '((0 0) (3 4) (4 9) (5 1)) '(2 9) '(3 4) 12)
+--> ((3 4))
+\end{verbatim}
+
+\noindent This function is very similar to the
+function test-equal$<$potential-translator. The
+difference is the call to the function add-two-lists-
+mod-2nd-n (as oppposed to calling add-two-lists), and
+this requires the inclusion of an extra argument.
+
+
+%%%%%
+\subsection*{test-translation-mod-2nd-n}\label{fun:test-translation-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:test-translation-mod-2nd-n-no-length-check} \\
+Called by & \\
+Comments/see also & \nameref{fun:test-translation}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(test-translation-mod-2nd-n
+ '((2 2) (4 5)) '((11 9) (13 0)) 12)
+--> T
+\end{verbatim}
+
+\noindent This function is very similar to the
+function test-translation, except that here the
+translation in the second dimension is performed
+modulo the third argument.
+
+
+%%%%%
+\subsection*{test-translation-mod-2nd-n-no-length-check}\label{fun:test-translation-mod-2nd-n-no-length-check}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:mod-column}, \nameref{fun:sort-dataset-asc}, \nameref{fun:subtract-two-lists-mod-2nd-n}, \nameref{fun:translation-mod-2nd-n} \\
+Called by & \nameref{fun:test-translation-mod-2nd-n} \\
+Comments/see also & \nameref{fun:test-translation-no-length-check}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(test-translation-mod-2nd-n-no-length-check
+ '((40 0) (40 10) (43 7)) '((44 7) (44 9) (47 4)) 12)
+--> T
+\end{verbatim}
+
+\noindent This function ought to be very similar to
+the function test-translation-no-length-check.
+However simply altering the translation in the second
+dimension to modulo $n$ (the third argument) can be
+problematic: In the above example, the pitch classes
+B$\flat$, C, G are a translation of G, A, E, but
+when these are ordered modulo 12, the C and the
+B$\flat$ swap positions. The function below accounts
+for this but will generally take longer to return an
+answer than test-translation-no-length-check.
+
+
+%%%%%
+\subsection*{translation-mod-2nd-n}\label{fun:translation-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:add-two-lists-mod-2nd-n} \\
+Called by & \nameref{fun:test-translation-mod-2nd-n-no-length-check}, \nameref{fun:translations-mod-2nd-n} \\
+Comments/see also & \nameref{fun:translation}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translation-mod-2nd-n
+ '((8 0 3) (9 11 1) (9 4 2)) '(3 3 0) 12)
+--> ((11 3 3) (12 2 1) (12 7 2))
+\end{verbatim}
+
+\noindent The first argument is a list of sublists,
+but we imagine it as a set of vectors (all members of
+the same n-dimensional vector space). The second
+argument---another list---is also an $n$-dimensional
+vector, and this is added to each of the members of
+the first argument. `Added' means vector addition,
+that is element-wise, and addition in the second
+dimension is performed modulo the third argument. The
+resulting set is a translation of the first argument
+by the second.
+
+
+%%%%%
+\subsection*{translations-mod-2nd-n}\label{fun:translations-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:translation-mod-2nd-n} \\
+Called by & \\
+Comments/see also & \nameref{fun:translations}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translations-mod-2nd-n
+ '((8 0 3) (9 11 1) (9 4 2)) '((0 0 0) (3 3 0)) 12)
+--> (((8 0 3) (9 4 1) (9 11 2))
+     ((11 3 3) (12 2 1) (12 7 2)))
+\end{verbatim}
+
+\noindent There are three arguments to this function,
+a pattern, some translators and a modulo argument. The
+pattern is translated by each translator, modulo $n$
+in the second dimension, and the results returned.
+
+
+%%%%%
+\subsection*{translators-of-pattern-in-dataset-mod-2nd-n}\label{fun:translators-of-pattern-in-dataset-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/1/2010, 15/1/2010 \\
+Location & \nameref{sec:structural-induction-mod} \\
+Calls & \nameref{fun:check-potential-translators-mod-2nd-n}, \nameref{fun:subtract-list-from-each-list-mod-2nd-n} \\
+Called by & \\
+Comments/see also & As with \nameref{fun:translators-of-pattern-in-dataset}, the implementation could be improved.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translators-of-pattern-in-dataset-mod-2nd-n
+ '((8 3) (8 7))
+ '((4 7) (8 3) (8 4) (8 7) (9 3) (10 7)
+   (11 3) (13 0) (13 4)) 12)
+--> ((0 0) (5 9))
+\end{verbatim}
+
+\noindent A pattern and dataset are provided. The
+transaltors of the pattern in the dataset are
+returned.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

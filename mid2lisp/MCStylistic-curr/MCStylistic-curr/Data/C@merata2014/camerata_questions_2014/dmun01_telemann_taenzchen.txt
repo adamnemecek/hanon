@@ -1,0 +1,1111 @@
+  <question number="81" music_file="telemann_taenzchen.xml" divisions="1">
+    <text>G2</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="1" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="3"
+               end_bar="3" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="3"
+               end_bar="11" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="82" music_file="telemann_taenzchen.xml" divisions="4">
+    <text>F#4</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="3"
+               end_bar="5" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="7"
+               end_bar="5" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="11"
+               end_bar="5" end_offset="12" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="9" start_offset="1"
+               end_bar="9" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="11" start_offset="1"
+               end_bar="11" end_offset="1" />
+    </answer>
+  </question>
+
+  <question number="83" music_file="telemann_taenzchen.xml" divisions="1">
+    <text>quarter note</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="2"
+               end_bar="1" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="1" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="1"
+               end_bar="2" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="2"
+               end_bar="2" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="3"
+               end_bar="2" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="2"
+               end_bar="3" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="3"
+               end_bar="3" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="1"
+               end_bar="4" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="2"
+               end_bar="4" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="3"
+               end_bar="4" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="1"
+               end_bar="6" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="2"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="3"
+               end_bar="6" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="1"
+               end_bar="8" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="2"
+               end_bar="8" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="3"
+               end_bar="8" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="1"
+               end_bar="9" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="2"
+               end_bar="9" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="3"
+               end_bar="9" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="2"
+               end_bar="10" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="3"
+               end_bar="10" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="1"
+               end_bar="11" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="2"
+               end_bar="11" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="3"
+               end_bar="11" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="1"
+               end_bar="12" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="2"
+               end_bar="12" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="3"
+               end_bar="12" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="84" music_file="telemann_taenzchen.xml" divisions="4">
+    <text>sixteenth note F#</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="1" start_offset="10"
+               end_bar="1" end_offset="10" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="3" start_offset="10"
+               end_bar="3" end_offset="10" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="1"
+               end_bar="5" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="5"
+               end_bar="5" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="9"
+               end_bar="5" end_offset="9" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="7" start_offset="2"
+               end_bar="7" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="7" start_offset="6"
+               end_bar="7" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="7" start_offset="10"
+               end_bar="7" end_offset="10" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="9" start_offset="1"
+               end_bar="9" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="9" start_offset="10"
+               end_bar="9" end_offset="10" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="11" start_offset="1"
+               end_bar="11" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="11" start_offset="10"
+               end_bar="11" end_offset="10" />
+    </answer>
+  </question>
+
+  <question number="85" music_file="telemann_taenzchen.xml" divisions="1">
+    <text>quarter note D</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="3"
+               end_bar="4" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="3"
+               end_bar="4" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="2"
+               end_bar="8" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="3"
+               end_bar="8" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="1"
+               end_bar="9" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="1"
+               end_bar="11" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="3"
+               end_bar="12" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="3"
+               end_bar="12" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="86" music_file="telemann_taenzchen.xml" divisions="1">
+    <text>D in the left hand</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="3"
+               end_bar="4" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="2"
+               end_bar="8" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="3"
+               end_bar="8" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="1"
+               end_bar="9" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="1"
+               end_bar="11" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="3"
+               end_bar="12" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="87" music_file="telemann_taenzchen.xml" divisions="1">
+    <text>quarter note G followed by quarter note A</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="2" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="3"
+               end_bar="4" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="1"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="3"
+               end_bar="10" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="3"
+               end_bar="12" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="2"
+               end_bar="1" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="2" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="1"
+               end_bar="2" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="2"
+               end_bar="2" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="3"
+               end_bar="3" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="2"
+               end_bar="3" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="3"
+               end_bar="4" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="1"
+               end_bar="4" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="2"
+               end_bar="4" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="1"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="2"
+               end_bar="6" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="1"
+               end_bar="8" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="2"
+               end_bar="8" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="3"
+               end_bar="9" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="1"
+               end_bar="9" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="2"
+               end_bar="9" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="3"
+               end_bar="10" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="2"
+               end_bar="10" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="3"
+               end_bar="11" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="1"
+               end_bar="11" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="2"
+               end_bar="11" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="3"
+               end_bar="12" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="1"
+               end_bar="12" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="2"
+               end_bar="12" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="88" music_file="telemann_taenzchen.xml" divisions="2">
+    <text>eighth note E followed by eighth note C</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="2" start_offset="1"
+               end_bar="2" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="4" start_offset="1"
+               end_bar="4" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="6" start_offset="4"
+               end_bar="6" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="6" start_offset="5"
+               end_bar="6" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="7" start_offset="6"
+               end_bar="8" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="12" start_offset="1"
+               end_bar="12" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="1" start_offset="6"
+               end_bar="2" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="2" start_offset="1"
+               end_bar="2" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="2" start_offset="2"
+               end_bar="2" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="2" start_offset="3"
+               end_bar="2" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="2" start_offset="4"
+               end_bar="2" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="2" start_offset="5"
+               end_bar="2" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="3" start_offset="6"
+               end_bar="4" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="4" start_offset="1"
+               end_bar="4" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="4" start_offset="2"
+               end_bar="4" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="4" start_offset="3"
+               end_bar="4" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="5" start_offset="6"
+               end_bar="6" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="6" start_offset="1"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="6" start_offset="2"
+               end_bar="6" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="6" start_offset="3"
+               end_bar="6" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="6" start_offset="4"
+               end_bar="6" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="6" start_offset="5"
+               end_bar="6" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="7" start_offset="6"
+               end_bar="8" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="8" start_offset="1"
+               end_bar="8" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="8" start_offset="2"
+               end_bar="8" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="8" start_offset="3"
+               end_bar="8" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="8" start_offset="4"
+               end_bar="8" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="8" start_offset="5"
+               end_bar="8" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="9" start_offset="6"
+               end_bar="10" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="10" start_offset="2"
+               end_bar="10" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="10" start_offset="3"
+               end_bar="10" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="10" start_offset="4"
+               end_bar="10" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="10" start_offset="5"
+               end_bar="10" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="11" start_offset="6"
+               end_bar="12" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="12" start_offset="1"
+               end_bar="12" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="12" start_offset="2"
+               end_bar="12" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="12" start_offset="3"
+               end_bar="12" end_offset="4" />
+    </answer>
+  </question>
+
+  <question number="89" music_file="telemann_taenzchen.xml" divisions="1">
+    <text>rising octave</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="1"
+               end_bar="2" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="1"
+               end_bar="4" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="3"
+               end_bar="9" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="1"
+               end_bar="12" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="90" music_file="telemann_taenzchen.xml" divisions="4">
+    <text>harmonic octave</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="2" start_offset="7"
+               end_bar="2" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="4" start_offset="5"
+               end_bar="4" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="6" start_offset="7"
+               end_bar="6" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="8" start_offset="7"
+               end_bar="8" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="9" start_offset="5"
+               end_bar="9" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="12" start_offset="5"
+               end_bar="12" end_offset="6" />
+    </answer>
+  </question>
+

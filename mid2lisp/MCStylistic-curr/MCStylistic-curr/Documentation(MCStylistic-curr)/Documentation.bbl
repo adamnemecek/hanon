@@ -1,0 +1,222 @@
+\begin{thebibliography}{30}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Aarden(2003)]{aarden2003}
+Bret~J. Aarden.
+\newblock \emph{Dynamic melodic expectancy}.
+\newblock PhD thesis, School of Music, Ohio State University, 2003.
+
+\bibitem[Arzt et~al.(2012)Arzt, B{\"o}ck, and Widmer]{arzt2012}
+Andreas Arzt, Sebastian B{\"o}ck, and Gerhard Widmer.
+\newblock Fast identification of piece and score position via symbolic
+  fingerprinting.
+\newblock In Fabien Gouyon, Perfecto Herrera, Luis~Gustavo Martin, and Meinard
+  M{\"u}ller, editors, \emph{Proceedings of the International Symposium on
+  Music Information Retrieval}, pages 433--438, Porto, 2012. International
+  Society for Music Information Retrieval.
+\newblock Retrieved 15 January, 2013 from
+  \href{http://www.cp.jku.at/research/papers/Arzt_etal_ISMIR_2012.pdf}{http://www.cp.jku.at/research/papers/Arzt\_etal\_ISMIR\_2012.pdf}.
+
+\bibitem[Cohn(1998)]{cohn1998}
+Richard Cohn.
+\newblock An introduction to neo-riemannian theory: a survey and historical
+  perspective.
+\newblock \emph{Journal of Music Theory}, 42\penalty0 (2):\penalty0 167--180,
+  1998.
+
+\bibitem[Collins(2011)]{collins2011b}
+Tom Collins.
+\newblock \emph{Improved methods for pattern discovery in music, with
+  applications in automated stylistic composition}.
+\newblock PhD thesis, Faculty of Mathematics, Computing and Technology, The
+  Open University, 2011.
+
+\bibitem[Collins(2014)]{collins2014}
+Tom Collins.
+\newblock Stravinsqi/{D}e {M}ontfort {U}niversity at the {M}edia{E}val 2014
+  {C}@merata task.
+\newblock In \emph{Proceedings of the MediaEval 2014 Workshop}, page 6 pages,
+  Barcelona, Spain, 2014.
+
+\bibitem[Collins and Coulon(2012)]{collins2012}
+Tom Collins and Christian Coulon.
+\newblock Fresh{J}am: suggesting continuations of melodic fragments in a
+  specific style.
+\newblock In \emph{Proceedings of the International Workshop on Musical
+  Metacreation}, pages 73--75, Palo Alto, CA, 2012. AAAI Press.
+
+\bibitem[Collins et~al.()Collins, Laney, Willis, and Garthwaite]{collins2015}
+Tom Collins, Robin Laney, Alistair Willis, and Paul~H. Garthwaite.
+\newblock Developing and evaluating computational models of musical style.
+\newblock \emph{Artificial Intelligence for Engineering Design, Analysis and
+  Manufacturing}.
+\newblock In press.
+
+\bibitem[Collins et~al.(2010)Collins, Thurlow, Laney, Willis, and
+  Garthwaite]{collins2010b}
+Tom Collins, Jeremy Thurlow, Robin Laney, Alistair Willis, and Paul~H.
+  Garthwaite.
+\newblock A comparative evaluation of algorithms for discovering translational
+  patterns in baroque keyboard works.
+\newblock In J.~Stephen Downie and Remco Veltkamp, editors, \emph{Proceedings
+  of the International Symposium on Music Information Retrieval}, pages 3--8,
+  Utrecht, 2010. International Society for Music Information Retrieval.
+
+\bibitem[Collins et~al.(2011)Collins, Laney, Willis, and
+  Garthwaite]{collins2011a}
+Tom Collins, Robin Laney, Alistair Willis, and Paul~H. Garthwaite.
+\newblock Modelling pattern importance in chopin's mazurkas.
+\newblock \emph{Music Perception}, 28\penalty0 (4):\penalty0 387--414, 2011.
+
+\bibitem[Conklin and Bergeron(2008)]{conklin2008a}
+Darrell Conklin and Mathieu Bergeron.
+\newblock Feature set patterns in music.
+\newblock \emph{Computer Music Journal}, 32\penalty0 (1):\penalty0 60--70,
+  2008.
+
+\bibitem[Cope(1996)]{cope1996}
+David Cope.
+\newblock \emph{Experiments in musical intelligence}.
+\newblock The Computer Music and Digital Audio Series. A-R Editions, Madison,
+  WI, 1996.
+
+\bibitem[Cope(2001)]{cope2001}
+David Cope.
+\newblock \emph{Virtual music: computer synthesis of musical style}.
+\newblock MIT Press, Cambridge, MA, 2001.
+\newblock (Includes essays by Douglas Hofstadter, Eleanor Selfridge-Field,
+  Bernard Greenberg, Steve Larson, Jonathan Berger, and Daniel Dennett).
+
+\bibitem[Cope(2005)]{cope2005}
+David Cope.
+\newblock \emph{Computer models of musical creativity}.
+\newblock MIT Press, Cambridge, MA, 2005.
+
+\bibitem[Eerola and North(2000)]{eerola2000}
+Tuomas Eerola and Adrian~C. North.
+\newblock Expectancy-based model of melodic complexity.
+\newblock In Chris Woods, Geoff Luck, Renaud Brochard, Fred Seddon, and John~A.
+  Sloboda, editors, \emph{Proceedings of the International Conference on Music
+  Perception and Cognition}, page 7 pages, Keele, UK, 2000. Department of
+  Psychology, Keele University.
+\newblock Retrieved 12 June, 2010 from
+  \href{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.110.3186}{http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.110.3186}.
+
+\bibitem[Forth and Wiggins(2009)]{forth2009}
+Jamie Forth and Geraint~A. Wiggins.
+\newblock An approach for identifying salient repetition in multidimensional
+  representations of polyphonic music.
+\newblock In Joseph Chan, Jackie Daykin, and M.~Sohel Rahman, editors,
+  \emph{London algorithmics 2008: Theory and practice}, Texts in Algorithmics,
+  pages 44--58. College Publications, London, UK, 2009.
+
+\bibitem[Krumhansl(1990)]{krumhansl1990}
+Carol~L. Krumhansl.
+\newblock \emph{Cognitive foundations of musical pitch}.
+\newblock Oxford University Press, New York, NY, 1990.
+
+\bibitem[Krumhansl and Kessler(1982)]{krumhansl1982}
+Carol~L. Krumhansl and Edward~J. Kessler.
+\newblock Tracing the dynamic changes in perceived tonal organization in a
+  spatial representation of musical keys.
+\newblock \emph{Psychological Review}, 89\penalty0 (4):\penalty0 334--368,
+  1982.
+
+\bibitem[Lewin(2007)]{lewin1987}
+David Lewin.
+\newblock \emph{Generalized interval systems and transformations}.
+\newblock Oxford University Press, Oxford, UK, 2007.
+\newblock (Original work published 1987 by Yale University Press, New Haven).
+
+\bibitem[Meredith(2006)]{meredith2006b}
+David Meredith.
+\newblock Point-set algorithms for pattern discovery and pattern matching in
+  music.
+\newblock In Tim Crawford and Remco~C. Veltkamp, editors, \emph{Proceedings of
+  the Dagstuhl Seminar on Content-Based Retrieval}, page 23 pages, Dagstuhl,
+  Germany, 2006. IBFI.
+\newblock Retrieved 10 August, 2009 from
+  \href{http://drops.dagstuhl.de/opus/volltexte/2006/652/pdf/06171.MeredithDavid.Paper.652.pdf}{http://drops.dagstuhl.de/opus/volltexte/2006/652/pdf/06171\\.MeredithDavid.Paper.652.pdf}.
+
+\bibitem[Meredith et~al.(2002)Meredith, Lemstr{\"o}m, and
+  Wiggins]{meredith2002}
+David Meredith, Kjell Lemstr{\"o}m, and Geraint~A. Wiggins.
+\newblock Algorithms for discovering repeated patterns in multidimensional
+  representations of polyphonic music.
+\newblock \emph{Journal of New Music Research}, 31\penalty0 (4):\penalty0
+  321--345, 2002.
+
+\bibitem[Meredith et~al.(2003)Meredith, Lemstr{\"o}m, and
+  Wiggins]{meredith2003}
+David Meredith, Kjell Lemstr{\"o}m, and Geraint~A. Wiggins.
+\newblock Algorithms for discovering repeated patterns in multidimensional
+  representations of polyphonic music.
+\newblock In \emph{Cambridge Music Processing Colloquium}, page 11 pages,
+  Cambridge, UK, 2003. Department of Engineering, University of Cambridge.
+\newblock Retrieved 10 August, 2009 from
+  \href{http://www.titanmusic.com/papers/public/cmpc2003.pdf}{http://www.titanmusic.com/papers/public/cmpc2003.pdf}.
+
+\bibitem[Paderewski(1953)]{paderewski1953}
+Ignacy~J. Paderewski, editor.
+\newblock \emph{Fryderyk {C}hopin: Complete works}, volume~10.
+\newblock Instytut Fryderyka Chopina, Warsaw, 1953.
+
+\bibitem[Pardo and Birmingham(2002)]{pardo2002}
+Bryan Pardo and William~P. Birmingham.
+\newblock Algorithms for chordal analysis.
+\newblock \emph{Computer Music Journal}, 26\penalty0 (2):\penalty0 27--49,
+  2002.
+
+\bibitem[Pearce and Wiggins(2007)]{pearce2007}
+Marcus~T. Pearce and Geraint~A. Wiggins.
+\newblock Evaluating cognitive models of musical composition.
+\newblock In Am\'ilcar Cardoso and Geraint~A. Wiggins, editors,
+  \emph{Proceedings of the International Joint Workshop on Computational
+  Creativity}, pages 73--80, London, UK, 2007. Goldsmiths, University of
+  London.
+
+\bibitem[Roads(1996)]{roads1996}
+Curtis Roads.
+\newblock \emph{The computer music tutorial}.
+\newblock MIT Press, Cambridge, MA, 1996.
+
+\bibitem[Sapp(2005)]{sapp2005}
+Craig~Stuart Sapp.
+\newblock Visual hierarchical key analysis.
+\newblock \emph{ACM Computers in Entertainment}, 3\penalty0 (4):\penalty0 19
+  pages, 2005.
+
+\bibitem[Seibel(2005)]{seibel2005}
+Peter Seibel.
+\newblock \emph{Practical {C}ommon {L}isp}.
+\newblock Apress, Berkeley, CA, 2005.
+
+\bibitem[Ukkonen et~al.(2003)Ukkonen, Lemstr{\"o}m, and
+  M{\"a}kinen]{ukkonen2003}
+Esko Ukkonen, Kjell Lemstr{\"o}m, and Veli M{\"a}kinen.
+\newblock Geometric algorithms for transposition invariant content-based music
+  retrieval.
+\newblock In Holger~H. Hoos and David Bainbridge, editors, \emph{Proceedings of
+  the International Symposium on Music Information Retrieval}, pages 193--199,
+  Baltimore, MD, 2003. International Society for Music Information Retrieval.
+\newblock Retrieved 15 February, 2010 from
+  \href{http://ismir2003.ismir.net/papers/Ukkonen.pdf}{http://ismir2003.ismir.net/papers/Ukkonen.pdf}.
+
+\bibitem[Volk(2008)]{volk2008}
+Anja Volk.
+\newblock The study of syncopation using inner metric analysis: Linking
+  theoretical and experimental analysis of metre in music.
+\newblock \emph{Journal of New Music Research}, 37\penalty0 (4):\penalty0
+  259--273, 2008.
+
+\bibitem[von Hippel(2000)]{vonHippel2000}
+Paul von Hippel.
+\newblock Redefining pitch proximity: Tessitura and mobility as constraints on
+  melodic intervals.
+\newblock \emph{Music Perception}, 17\penalty0 (3):\penalty0 315--327, 2000.
+
+\end{thebibliography}

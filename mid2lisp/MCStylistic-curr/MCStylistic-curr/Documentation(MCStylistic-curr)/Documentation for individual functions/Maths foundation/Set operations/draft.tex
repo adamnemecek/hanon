@@ -1,0 +1,679 @@
+\subsection{Set operations}\label{sec:set-operations}
+
+These functions enable the formation of
+unions and intersections over lists that represent
+finite sets in $n$-dimensional space. It is also
+possible to find translators of a pattern in a
+dataset.
+
+
+%%%%%
+\subsection*{add-two-lists}\label{fun:add-two-lists}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \\
+Called by & \nameref{fun:test-equal<potential-translator}, \nameref{fun:translation} \\
+Comments/see also & \nameref{fun:add-two-lists-mod-2nd-n}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(add-two-lists '(4 7 -3) '(8 -2 -3))
+--> (12 5 -6)
+\end{verbatim}
+
+\noindent Adds two lists element-by-element. It is
+assumed that elements of list arguments are numbers,
+and the list arguments are of the same length. An
+empty first (but not second) argument will be
+tolerated.
+
+
+%%%%%
+\subsection*{check-potential-translators}\label{fun:check-potential-translators}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:test-equal<potential-translator} \\
+Called by & \nameref{fun:translators-of-pattern-in-dataset} \\
+Comments/see also & \nameref{fun:check-potential-translators-mod-2nd-n}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(check-potential-translators
+ '(3 52) '((0 0) (1 2) (1 5) (2 7))
+ '((0 60) (3 52) (4 57) (5 59)))
+--> ((0 0) (1 5) (2 7))
+\end{verbatim}
+
+\noindent Checks whether the first argument, when
+translated by each member of the second argument, is a
+member of the third argument. Members of the second
+argument that satisfy this property are returned.
+
+
+%%%%%
+\subsection*{equal-up-to-tol}\label{fun:equal-up-to-tol}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 9/3/2013, 9/3/2013 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \\
+Called by & \nameref{fun:cardinality-score}, \nameref{fun:equalp-score},\newline \nameref{fun:frequency-count},\newline \nameref{fun:most-frequent-difference-vector} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(equal-up-to-tol '(2 2 4 5) '(2 2 4 4.501) 1/2)
+--> T
+(equal-up-to-tol '(2 2.5 4 5) '(2 2 4 5) 1/2)
+--> T
+(equal-up-to-tol '(2 2 4.5 5) '(2 2 4 5) 1/3)
+--> NIL
+\end{verbatim}
+
+\noindent This function compares two lists for
+equality, up to a given tolerance.
+
+
+%%%%%
+\subsection*{insert-retaining-sorted-asc}\label{fun:insert-retaining-sorted-asc}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:vector<vector} \\
+Called by & \nameref{fun:union-multidimensional-sorted-asc} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(insert-retaining-sorted-asc
+ '(5 0) '((-6 2) (-4 1) (8 0)))
+--> ((-6 2) (-4 1) (5 0) (8 0))
+\end{verbatim}
+
+\noindent Two arguments are supplied to this function:
+a (real) vector and a strictly-ascending list of
+(real) vectors (of the same dimension). The first 
+argument is included in the second and output, so that
+it remains a strictly-ascending list of vectors. (Note
+this means that if the first argument is already in
+the list, then this list is output unchanged.)
+
+
+%%%%%
+\subsection*{intersection-multidimensional}\label{fun:intersection-multidimensional}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:test-equal<list-elements} \\
+Called by & \nameref{fun:intersections-multidimensional} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(intersection-multidimensional
+ '((4 8 8) (4 7 6) (5 -1 0) (2 0 0))
+ '((4 6 7) (2 0 0) (4 7 6)))
+--> ((4 7 6) (2 0 0))
+\end{verbatim}
+
+\noindent Like the built-in Lisp function
+intersection, this function returns the intersection
+of two lists. Unlike the built-in Lisp function, this
+function handles lists of lists.
+
+
+%%%%%
+\subsection*{intersections-multidimensional}\label{fun:intersections-multidimensional}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:intersection-multidimensional},\newline \nameref{fun:null-list-of-lists} \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(intersections-multidimensional
+ '(((4 8 8) (4 7 6) (5 -1 0) (2 0 0))
+   ((4 6 7) (2 0 0) (4 7 6))
+   ((4 7 6) (2 1 0) (5 -1 0) (5 0 5))))
+--> ((4 7 6))
+\end{verbatim}
+
+\noindent The single argument to this function
+consists of $n$ lists of lists (of varying length).
+Their intersection is calculated and returned.
+
+
+%%%%%
+\subsection*{null-list-of-lists}\label{fun:null-list-of-lists}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \\
+Called by & \nameref{fun:intersections-multidimensional} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(null-list-of-lists
+ '(((4 8 8) (4 7 6) (5 -1 0) (2 0 0))
+   ()
+   ((4 7 6) (2 1 0) (5 -1 0) (5 0 5))))
+--> T
+\end{verbatim}
+
+\noindent The single argument to this function
+consists of $n$ lists of lists (of varying length). If
+any one of these lists is empty then the value T is
+returned. Otherwise the value NIL is returned. Note
+that a null argument gives the output NIL.
+
+
+%%%%%
+\subsection*{set-difference-multidimensional-sorted-asc}\label{fun:set-difference-multidimensional-sorted-asc}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:test-equal<list-elements} \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(set-difference-multidimensional-sorted-asc
+ '((-1 1) (0 1) (1 1) (2 3) (4 -4) (4 3))
+ '((-1 1) (0 1) (2 3) (3 2) (4 3)))
+--> ((1 1) (4 -4))
+\end{verbatim}
+
+\noindent This function computes the set difference
+$A\backslash B = \{ a \in A \mid a \notin B \}$ for
+point sets.
+
+
+%%%%%
+\subsection*{sort-dataset-asc}\label{fun:sort-dataset-asc}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 16/6/2014 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \\
+Called by & \nameref{fun:union-multidimensional-sorted-asc},\newline \nameref{fun:unions-multidimensional-sorted-asc} \\
+Comments/see also & 16/6/2014, introduced an optional function argument.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(sort-dataset-asc
+ '((1 1) (0 1) (4 4) (0 1) (1 1) (-2 3) (4 4) (4 3)))
+--> ((-2 3) (0 1) (0 1) (1 1)
+     (1 1) (4 3) (4 4) (4 4))
+\end{verbatim}
+
+\noindent This function takes one argument: a dataset.
+It sorts the dataset ascending by each dimension in
+turn. By the definition of \emph{dataset}, the dataset
+should not contain repeated values. If it does these
+will be removed.
+
+
+%%%%%
+\subsection*{subset-multidimensional}\label{fun:subset-multidimensional}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:test-equal<list-elements} \\
+Called by & \nameref{fun:subset-score-of-pattern} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(subset-multidimensional
+ '((2 56) (6 60)) '((0 62) (2 56) (6 60) (6 72)))
+--> T
+\end{verbatim}
+
+\noindent This function returns T if and only if the
+first argument is a subset of the second, and it is
+assumed that the second list is sorted ascending.
+
+
+%%%%%
+\subsection*{subtract-list-from-each-list}\label{fun:subtract-list-from-each-list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:subtract-two-lists} \\
+Called by & \nameref{fun:translators-of-pattern-in-dataset} \\
+Comments/see also & \nameref{fun:subtract-list-from-each-list-mod-2nd-n}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(subtract-list-from-each-list
+ '((8 -2 -3) (4 6 6) (0 0 0) (4 7 -3)) '(4 7 -3))
+--> ((4 -9 0) (0 -1 9) (-4 -7 3) (0 0 0))
+\end{verbatim}
+
+\noindent The function subtract-two-lists is applied
+recursively to each sublist in the first list
+argument, and the second argument.
+
+
+%%%%%
+\subsection*{subtract-two-lists}\label{fun:subtract-two-lists}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \\
+Called by & \nameref{fun:subtract-list-from-each-list},\newline \nameref{fun:test-translation-no-length-check} \\
+Comments/see also & \nameref{fun:subtract-two-lists-mod-2nd-n}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(subtract-two-lists '(4 7 -3) '(8 -2 -3))
+--> (-4 9 0)
+\end{verbatim}
+
+\noindent Subtracts the second list from the first,
+element-by-element. It is assumed that elements of
+list arguments are numbers, and the list arguments are
+of the same length. An empty first (but not second)
+argument will be tolerated.
+
+
+%%%%%
+\subsection*{test-equal$<$list-elements}\label{fun:test-equal<list-elements}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \\
+Called by & \nameref{fun:intersection-multidimensional},\newline \nameref{fun:set-difference-multidimensional-sorted-asc} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(test-equal<list-elements
+ '((0 1) (0 2) (1 1) (3 1/4)) '(1 1))
+--> T
+\end{verbatim}
+
+\noindent The first argument is a list of sublists,
+assumed to be sorted ascending by each of its elements
+in turn. We imagine it as a set of vectors (all
+members of the same $n$-dimensional vector space). The
+second argument $\mathbf{v}$ (another list) is also an
+$n$-dimensional vector. If $v_1$ is less than $v_2$,
+the first element of the first element of the first
+argument then NIL is returned, since we know the list
+is sorted ascending. Otherwise each item is checked
+for equality.
+
+
+%%%%%
+\subsection*{test-equal$<$potential-translator}\label{fun:test-equal<potential-translator}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:add-two-lists} \\
+Called by & \nameref{fun:check-potential-translators} \\
+Comments/see also & \nameref{fun:test-equal<potential-translator-mod-2nd-n}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(test-equal<potential-translator
+ '((0 1) (0 2) (1 2) (3 1/4)) '(0 1) '(1 1))
+--> ((1 1))
+\end{verbatim}
+
+\noindent This function is very similar in spirit to
+test-equal$<$list-elements. The first argument here is a
+dataset, the second is a member of some pattern (so
+also a member of the dataset), and the third is a
+potential translator of the patternpoint. If the
+potential translator is really a translator, it is
+returned, and NIL otherwise.
+
+
+%%%%%
+\subsection*{test-translation}\label{fun:test-translation}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:test-translation-no-length-check} \\
+Called by & \nameref{fun:check-potential-translators} \\
+Comments/see also & \nameref{fun:test-translation-mod-2nd-n}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(test-translation
+ '((2 2) (4 5)) '((11 6) (13 9)))
+--> T
+\end{verbatim}
+
+\noindent If the first argument to this function, a
+list, consists of vectors of uniform dimension that
+are the pairwise translation of vectors in another
+list (the function's second argument), then T is
+returned, and nil otherwise. The length of the vectors
+is checked first for equality, then passed to the
+function test-translation-no-length-check if equal.
+
+
+%%%%%
+\subsection*{test-translation-no-length-check}\label{fun:test-translation-no-length-check}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:subtract-two-lists} \\
+Called by & \nameref{fun:test-translation} \\
+Comments/see also & \nameref{fun:test-translation-mod-2nd-n-no-length-check}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(test-translation-no-length-check
+ '((2 2) (4 5)) '((11 6) (13 9)))
+--> T
+\end{verbatim}
+
+\noindent If the first argument to this function, a
+list, consists of vectors of uniform dimension that
+are the pairwise translation of vectors in another
+list (the function's second argument), then T is
+returned, and nil otherwise. The length of the vectors
+is not checked for equality. (At present the function
+returns T if two empty lists are provided as
+arguments.)
+
+
+%%%%%
+\subsection*{translation}\label{fun:translation}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:add-two-lists} \\
+Called by & \nameref{fun:translational-equivalence-class} \\
+Comments/see also & \nameref{fun:translation-mod-2nd-n}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translation '((8 -2 -3) (4 6 6) (4 7 -3)) '(3 1 0))
+--> ((11 -1 -3) (7 7 6) (7 8 -3))
+\end{verbatim}
+
+\noindent The first argument is a list of sublists,
+but we imagine it as a set of vectors (all members of
+the same $n$-dimensional vector space). The second
+argument---another list---is also an $n$-dimensional
+vector, and this is added to each of the members of
+the first argument. `Added' means vector addition,
+that is element-wise, so the resulting set is a
+translation of the first argument by the second.
+
+
+%%%%%
+\subsection*{translational-equivalence-class}\label{fun:translational-equivalence-class}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:translation} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translational-equivalence-class
+ '((6 2) (7 1/2) (15/2 1/4) (31/4 1/4) (8 1) (9 1))
+ '((0 1) (0 4/3) (0 2) (1 1) (4/3 1/3) (5/3 1/3)
+   (2 1/2) (2 1) (5/2 1/2) (3 1/2) (3 2) (7/2 1/2)
+   (4 1/2) (4 1) (9/2 1/2) (5 1) (6 1) (6 2)
+   (7 1/2) (7 1) (15/2 1/4) (31/4 1/4) (8 1) (9 1)
+   (9 2) (10 1/2) (10 1) (21/2 1/4) (43/4 1/4)
+   (11 1) (12 1) (12 2) (13 1/2) (13 2) (27/2 1/4)
+   (55/4 1/4) (14 1) (14 2) (15 1) (16 1/3) (16 2)
+   (49/3 1/3) (50/3 1/3) (17 1)))
+--> (((6 2) (7 1/2) (15/2 1/4)
+      (31/4 1/4) (8 1) (9 1))
+     ((9 2) (10 1/2) (21/2 1/4)
+      (43/4 1/4) (11 1) (12 1))
+     ((12 2) (13 1/2) (27/2 1/4)
+      (55/4 1/4) (14 1) (15 1)))
+\end{verbatim}
+
+\noindent The function takes two arguments: a pattern
+$P$ and a dataset $D$. It returns the translational
+equivalence class of $P$ in $D$.
+
+
+%%%%%
+\subsection*{translations}\label{fun:translations}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:translation} \\
+Called by & \\
+Comments/see also & \nameref{fun:translations-mod-2nd-n}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translations
+ '((1 2) (2 4)) '((0 0) (1 2)))
+--> (((1 2) (2 4)) ((2 4) (3 6)))
+\end{verbatim}
+
+\noindent There are two arguments to this function, a
+pattern and some translators. The pattern is
+translated by each translator and the results
+returned.
+
+
+%%%%%
+\subsection*{translators-of-pattern-in-dataset}\label{fun:translators-of-pattern-in-dataset}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:check-potential-translators},\newline \nameref{fun:subtract-list-from-each-list} \\
+Called by & \nameref{fun:translational-equivalence-class} \\
+Comments/see also & Should be deprecated by implementing the version in \citet*{ukkonen2003}. See also \nameref{fun:translators-of-pattern-in-dataset-mod-2nd-n}.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translators-of-pattern-in-dataset
+ '((8 3) (8 7))
+ '((4 7) (8 -3) (8 3) (8 7) (9 -3) (10 7) (11 -3)
+   (13 -3) (13 1)))
+--> ((0 0) (5 -6))
+\end{verbatim}
+
+\noindent A pattern and dataset are provided. The
+transaltors of the pattern in the dataset are
+returned.
+
+
+%%%%%
+\subsection*{union-multidimensional-sorted-asc}\label{fun:union-multidimensional-sorted-asc}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:insert-retaining-sorted-asc}, \nameref{fun:sort-dataset-asc} \\
+Called by & \nameref{fun:union-multidimensional-sorted-asc} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(union-multidimensional-sorted-asc
+ '((-5 0 4) (-4 3 1) (8 5 3) (8 6 0))
+ '((-4 3 1) (-6 2 2) (8 5 0) (8 6 0))
+ T)
+--> ((-6 2 2) (-5 0 4) (-4 3 1) (8 5 0)
+     (8 5 3) (8 6 0))
+\end{verbatim}
+
+\noindent Two lists of (real) vectors of the same
+dimension are supplied to this function. If the first
+is sorted strictly ascending already, a third argument
+of T should be supplied to prevent it being sorted so.
+The union of these lists is output and remains
+strictly ascending.
+
+
+%%%%%
+\subsection*{unions-multidimensional-sorted-asc}\label{fun:unions-multidimensional-sorted-asc}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \nameref{fun:sort-dataset-asc},\newline \nameref{fun:union-multidimensional-sorted-asc} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(unions-multidimensional-sorted-asc
+ '(((12 10) (0 0) (1 2)) ((0 0) (1 5)) ((6 6))))
+--> ((0 0) (1 2) (1 5) (6 6) (12 10))
+\end{verbatim}
+
+\noindent The function union-multidimensional-sorted-
+asc is applied recursively to a list of $k$-dimensional vector sets.
+
+
+%%%%%
+\subsection*{vector$<$vector}\label{fun:vector<vector}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \\
+Called by & \nameref{fun:insert-retaining-sorted-asc} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(vector<vector '(4 6 7) '(4 6 7.1))
+--> T
+\end{verbatim}
+
+\noindent For $\mathbf{d} = (d_1, d_2,\ldots, d_k), \
+\mathbf{e} = (e_1, e_2,\ldots, e_k)$, we say that
+$\mathbf{d}$ is less than $\mathbf{e}$,
+denoted $\mathbf{d} \prec \mathbf{e}$, if and only if
+there exists an integer $1 \leq j \leq k$ such that
+$d_j < e_j$, and $d_i = e_i$ for $1 \leq i < j$. This
+function returns true if its first argument is `less
+than' its second argument, "equal" if the two
+arguments are equal, and nil otherwise.
+
+
+%%%%%
+\subsection*{vector$<$vector-t-or-nil}\label{fun:vector<vector-t-or-nil}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:set-operations} \\
+Calls & \\
+Called by & \nameref{fun:difference-list-sorted-asc},\newline \nameref{fun:translate-pattern-to-1st-occurrence} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(vector<vector '(4 6 7) '(4 6 7.1))
+--> T
+\end{verbatim}
+
+\noindent The function vector<vector returned `equal'
+if the arguments were equal. This function returns nil
+in such a scenario.
+

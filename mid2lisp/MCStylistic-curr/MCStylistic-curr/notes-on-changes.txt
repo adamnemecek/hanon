@@ -1,0 +1,140 @@
+Notes on changes
+**
+The function tab2dataset had problems parsing tabbed elements consisting of a dot and no other alpha-numeric characters. A fix was found using string-trim.
+**
+Added function fifth-steps-mode to keyscape.lisp. Change documented.
+**
+Added chord-labelling.lisp to the setup file. Previously these functions were not being loaded.
+**
+These changes are corrections to errors spotted in the kern files. Some of these errors were introduced by me, because I was using an inferior kern parser in the past that could not handle certain duration combinations. Other corrections are to errors found in representations from http://kern.ccarh.org/ The files have been re-checked several times, and so are very useful for producing accurate sets of ontimes, pitches, and durations in Chopin's mazurkas.
+
+Chopin op.6 no.1
+I removed duplicate notes in bars 17-24 and 60. Inserted missing rest in bar 50.
+
+Chopin op.6 no.3
+I inserted a missing C#5 in bar 39.
+
+Chopin op.6 no.4
+I added/corrected missing ties in bars 7, 20, and 22. I corrected a timing issue in bar 24.
+
+Chopin op.7 no.2
+I corrected an erroneous C#2 to D2 in bar 53 (and the repeat).
+
+Chopin op.7 no.3
+I removed a duplicate note in bar 6, and raised the final note to the correct octave.
+
+Chopin op.17 no.3
+I removed duplicate notes from bars 6, 7, 8, 30, 31, and 32 (and the repeats). I corrected straight quavers to a dotted crotchet and quaver in bar 8. I corrected an overlength Fb4 in bar 27 and its repeats. I removed a dot from the minim Ab4 in bars 8 and 32. I added a missing tie in bar 25.
+
+Chopin op.17 no.4
+I inserted missing rests in bars 43 and 44.
+
+Chopin op.24 no.1
+I removed a duplicate note from bar 10 (original statement and repetition).
+
+Chopin op.24 no.2
+I added a missing C3 in bar 108.
+
+Chopin op.24 no.3
+I removed a duplicate note from bar 21 (original statement and repetition). I added a tie in bar 37.
+
+Chopin op.24 no.4
+I removed duplicate notes from bars 28, 29, 13, 37, and 41. I added a missing rest in bar 34. I added a tie in bar 52 (1st time).
+
+Chopin op.30 no.1
+I removed duplicate notes from bars 1, 5, 13, 37, and 41. I added a missing rest in bar 34.
+
+Chopin op.41 no.1
+In bars 41, 42, 49, and 81 I added or corrected rests. I removed duplicate notes in bars 51, 
+
+I corrected ties in bars 49-50 and 57-58. I split a voicing command on to two lines and corrected a tie in bar 80. In bar 118 I corrected erroneous E octaves to G# octaves.
+
+Chopin op.50 no.1
+I removed duplicate notes in bars 17, 21, 25, 54, and 100.
+
+Chopin op.50 no.2
+I removed a duplicate note in bar 16. I also corrected voicing in bars 24, 33, 38, 40, 55, and 84. I added missing rests in bars 59 and 103.
+
+Chopin op.50 no.3
+Identified an error in bars 106 and 107 of Chopin's Mazurka op.50 no.3 that was causing unresolved ties. I did not regenerate the transition tables and initial distributions that are derived from this piece. Also found an encoding error in the kern file bar 35 that was causing the insertion of an extra beat. Same issue in bar 127. Corrected voicing error in bar 132 that led to right-left-hand asynchrony. Corrected durational error in bar 146 that led to right-left-hand asynchrony. Similar errors at bars 168 and 189. I removed duplicate notes in bars 145 and 181.
+
+Chopin op.56 no.1
+I corrected a duration and removed an erroneous dot in bars 13-14, 34-35, 92-93, and 155-156. I removed duplicate notes in bars 21, 43, and 101.
+
+Chopin op.56 no.2
+I removed duplicate notes in bars 9, 20, and 28, and corrected a dotted rhythm to straight quavers in bar 52.
+
+Chopin op.56 no.3
+I removed duplicate notes in bars 21-22, 53, and 157-158. I also corrected inconsistent voicing in edition.
+
+Chopin op.59 no.1
+In bars 48-49, I correct some voicing that was unnecessarily complicated. I removed duplicate notes in bars 57, 61, 65, and 69. I removed erroneous dots in bars 71 and 73. In bars 124-125, I added a missing tie to E3, corrected its duration, and combined some voices to avoid splitting into three voices on one stave.
+
+Chopin op.63 no.3
+I removed duplicate notes in bars 36, 40, and 71. The latter is a good example of obsessive voice-leading.
+
+Chopin op.67 no.3
+Inserted missing dot for D4 in bar 39.
+
+**
+The minor-key part of the trans variable of the function guess-morphetic used to read like this:
+; Minor keys.
+((-3 5) 6 4) ((-2 5) -1 -1) ((-1 5) 4 2)
+((0 5) -3 -2) ((1 5) 2 1) ((2 5) -5 -3)
+((3 5) 0 0) ((4 5) 5 3) ((5 5) -2 -1)
+((6 5) 3 2) ((7 5) -4 -2) ((8 5) 1 1)
+((9 5) -6 -4))
+The issue is that some of these lists, e.g., ((7 5) -4 -2) might be enharmonically represented by ((-5 5) -4 -2). So I have added them to the minor-key part:
+; Minor keys.
+((-3 5) 6 4) ((-2 5) -1 -1) ((-1 5) 4 2)
+((0 5) -3 -2) ((1 5) 2 1) ((2 5) -5 -3)
+((3 5) 0 0) ((4 5) 5 3) ((5 5) -2 -1)
+((6 5) 3 2) ((-6 5) 3 2) ((7 5) -4 -2)
+((-5 5) -4 -2) ((8 5) 1 1) ((-4 5) 1 1)
+((9 5) -6 -4))
+Change documented.
+** 
+Changes from MCStylistic-Jul2013 to MCStylistic-Oct2013
+**
+Fixed kern-by-col.lisp to handle _ and .., and updated dates in documentation.
+**
+In kern parser (specifically, kern-rows2col), added functionality (and a helper function called recognised-spine-commandp) to check for and ignore unrecognised spine commands (e.g., anything other than *^ and *v). Updated documentation.
+**
+New version of modify-to-check-dataset using mapcar, and allowing preservation of channel information as an optional argument. Updated date in documentation.
+**
+New versions of CREATE-MIDI-EVENTS, CREATE-MIDI-TRACK-DATA, FIX-DELTATIME, and MAKE-VAR-LEN using mapcar and collect, to reduce the chances of stack overflow with symphonic-length pieces. Documented, 15/7/2013.
+**
+Found a new type of ornament being encoded with Ps, in Beethoven's 3rd Symphony mvt.2. Altered kern-tie-dur-pitch2list and not-tie-dur-pitch-char-p to handle this, and updated documentation.
+**
+The string '=0-' caused problems, so added exception-handling to the functions parse-kern-row and kern-rows2col, and updated documentation.
+**
+Added functions tab-separated-reals2list and tab2dataset for converting text files such as
+0.74	64
+-0.74	76
+1.44	-60
+to lists of lists such as ((0.74 64) (-0.74 76) (1.44 -60)). Documented, 4/9/2013.
+**
+Added functions index-nth-sublist-item>= etc. to generalise index-1st-sublist-item>= etc. Documented, 14/9/2013.
+
+General wishes/helpful reminders
+**
+Need to change date on welcome message.
+
+**
+Added documentation for the function guess-morphetic (documentation in existence already for the simpler guess morphetic-in-C-major).
+
+
+
+Changes from MCStylistic-Mar2013 to MCStylistic-Jul2013
+**
+Altered the requirement for pattern discovery output: output patterns and occurrences can now be contained in one file (as a nested list) rather than one occurrence of one pattern per file.
+
+New function called metrics-for-algorithm&piece-all-patt-all-occ in evaluate-discovered-versus-annotated-patterns.
+
+Introduced one more optional argument and small change to pattern-discovery-metrics, so that it will work for above approach.
+
+**
+Added a function called sky-line-clipped after meeting with Darrell Conklin (and a supporting function called replaced-nth-in-list-with-x). Made appropriate changes to musical-properties.lisp, vector-operations.lisp, and the documentation).
+
+**
+Added an optional argument to the function monophonise, so that it could use either sky-line-clipped (default) or top-line-verbose. Documentation updated. 

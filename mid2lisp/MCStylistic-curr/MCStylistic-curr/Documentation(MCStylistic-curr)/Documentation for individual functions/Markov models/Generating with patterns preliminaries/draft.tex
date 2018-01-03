@@ -1,0 +1,365 @@
+\subsection{Generating with patterns preliminaries}\label{sec:generating-with-patterns-preliminaries}
+
+Most of these functions process lists that represent
+interval endpoints (interval in the mathematical
+sense). Others scan hash tables (typically a patterns
+hash) for instance in order to find the indices of
+elements with certain properties. There are also
+some custom merge-sort functions.
+
+
+%%%%%
+\subsection*{car$<$}\label{fun:car<}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:merge-sort-by-car<} \\
+Comments/see also & Consider changing location.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(car< '(1 "sprout") '(1.1 "purple"))
+--> T
+\end{verbatim}
+
+\noindent This function returns T if the first
+element of the first argument is less than the first
+element of the second argument, and NIL otherwise.
+
+
+%%%%%
+\subsection*{car$>$}\label{fun:car>}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:merge-sort-by-car>} \\
+Comments/see also & Consider changing location.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(car> '(1 "sprout") '(1.1 "purple"))
+--> NIL
+\end{verbatim}
+
+\noindent This function returns T if the first
+element of the first argument is greater than the
+first element of the second argument, and NIL
+otherwise.
+
+
+%%%%%
+\subsection*{generate-intervals}\label{fun:generate-intervals}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \nameref{fun:interval-intersectionsp}, \nameref{fun:interval-subsetsp} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq existing-intervals '((11 17) (20 26) (26 30)))
+(setq floor-ontime 1)
+(setq ceiling-ontime 40)
+(generate-intervals
+ floor-ontime ceiling-ontime existing-intervals)
+--> ((1 11) (17 20) (30 40))
+\end{verbatim}
+
+\noindent If $L = \{[a_1, b_1), [a_2, b_2),\ldots,
+[a_l, b_l)\}$ is a list of non-overlapping intervals,
+with each interval a subset of $[a, b)$, then this
+function returns endpoints of the non-overlapping
+intervals $M = \{[c_1, d_1), [c_2, d_2),\ldots,
+[c_m, d_m)\}$ such that $L \cup M = [a, b)$.
+
+
+%%%%%
+\subsection*{indices-of-max-subset-score}\label{fun:indices-of-max-subset-score}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \nameref{fun:merge-sort-by-car>},\newline \nameref{fun:merge-sort-by-vector<vector-car}, \nameref{fun:my-last},\newline \nameref{fun:unaddressed-patterns-subset-scores} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ patterns-hash
+ (read-from-file-balanced-hash-table
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/patterns-hash.txt")))
+(indices-of-max-subset-score patterns-hash)
+--> (3 4)
+\end{verbatim}
+
+\noindent This function takes a patterns-hash (a list
+of discovered translational equivalence classes, each
+with corresponding attributes) and returns the indices
+of the pattern that has the highest subset score. The
+first index is for the TEC, the second is for the
+occurrence.
+
+
+%%%%%
+\subsection*{interval-intersectionp}\label{fun:interval-intersectionp}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:interval-intersectionsp} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(interval-intersectionp '(7 9) '(3 7.1))
+--> T.
+\end{verbatim}
+
+\noindent This function returns T if its two
+arguments, endpoints of the intervals $X = [a, b]$
+and $Y = [c, d]$, are such that $X \cap Y \neq
+\emptyset$, and NIL otherwise.
+
+
+%%%%%
+\subsection*{interval-intersectionsp}\label{fun:interval-intersectionsp}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \nameref{fun:interval-intersectionp} \\
+Called by & \nameref{fun:generate-intervals} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(interval-intersectionsp
+ '(7 9) '((1 2) (2.2 2.4) (2 2.5) (3 7.1) (1 1)))
+--> 3
+\end{verbatim}
+
+\noindent This function has two arguments: the
+endpoints of a single interval $X = [a, b]$, and the
+endpoints of a list of intervals $L = \{[a_1, b_1],
+[a_2, b_2],\ldots, [a_l, b_l]\}$. The function returns
+the minimum value of $i$ such that $[a, b] \cap
+[a_i, b_i] \neq \emptyset$, or NIL if no such $i$
+exists.
+
+
+%%%%%
+\subsection*{interval-subsetp}\label{fun:interval-subsetp}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:interval-subsetsp} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(interval-subsetp '(7 9) '(7 10))
+--> T
+\end{verbatim}
+
+\noindent This function returns T if its two
+arguments, endpoints of the intervals $X = [a, b]$
+and $Y = [c, d]$, are such that $X \subseteq Y$, and
+NIL otherwise.
+
+
+%%%%%
+\subsection*{interval-subsetsp}\label{fun:interval-subsetsp}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \nameref{fun:interval-subsetp} \\
+Called by & \nameref{fun:generate-intervals} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(interval-subsetsp
+ '(7 9) '((1 2) (2.2 2.4) (2 8.5) (4 9.1) (1 1)))
+--> T
+\end{verbatim}
+
+\noindent This function has two arguments: the
+endpoints of a single interval $X = [a, b]$, and the
+endpoints of a list of intervals $L = \{[a_1, b_1],
+[a_2, b_2],\ldots, [a_l, b_l]\}$. The function returns
+T if there exists $1 \leq i \leq l$ such that $[a, b]
+\subseteq [a_i, b_i]$, or NIL if no such $i$
+exists.
+
+
+%%%%%
+\subsection*{merge-sort-by-car$<$}\label{fun:merge-sort-by-car<}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \nameref{fun:car<} \\
+Called by & \\
+Comments/see also & Consider changing location.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(merge-sort-by-car<
+ '((2 "b") (6 "j") (0 "a") (3 "i") (6 "h")))
+--> ((0 "a") (2 "b") (3 "i") (6 "j") (6 "h"))
+\end{verbatim}
+
+\noindent This function performs an ascending merge
+sort on a list of lists, using the first element of
+each list to determine position.
+
+
+%%%%%
+\subsection*{merge-sort-by-car$>$}\label{fun:merge-sort-by-car>}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \nameref{fun:car>} \\
+Called by & \nameref{fun:indices-of-max-subset-score} \\
+Comments/see also & Consider changing location.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(merge-sort-by-car>
+ '((2 "b") (6 "j") (0 "a") (3 "i") (6 "h")))
+--> ((6 "j") (6 "h") (3 "i") (2 "b") (0 "a"))
+\end{verbatim}
+
+\noindent This function performs a descending merge
+sort on a list of lists, using the first element of
+each list to determine position.
+
+
+%%%%%
+\subsection*{merge-sort-by-vector$<$vector-car}\label{fun:merge-sort-by-vector<vector-car}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \nameref{fun:vector<vector-car} \\
+Called by & \nameref{fun:indices-of-max-subset-score} \\
+Comments/see also & Consider changing location. See also \nameref{fun:vector<vector}.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(merge-sort-by-vector<vector-car
+ '(((1 8.968646) (0 0)) ((0 8.957496) (1 0))
+   ((0 8.167285) (2 0)) ((2 3.8855853 (3 4)))))
+--> (((0 8.167285) (2 0)) ((0 8.957496) (1 0))
+     ((1 8.968646) (0 0)) ((2 3.8855853 (3 4))))
+\end{verbatim}
+
+\noindent This function performs an ascending merge
+sort on a list of lists, using the lexicographic
+order of first elements to determine position.
+
+
+%%%%%
+\subsection*{unaddressed-patterns-subset-scores}\label{fun:unaddressed-patterns-subset-scores}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 22/10/2010, 22/10/2010 \\
+Location & \nameref{sec:generating-with-patterns-preliminaries} \\
+Calls & \nameref{fun:pair-off-lists} \\
+Called by & \nameref{fun:indices-of-max-subset-score} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ patterns-hash
+ (read-from-file-balanced-hash-table
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/patterns-hash.txt")))
+(unaddressed-patterns-subset-scores patterns-hash)
+--> ((((1 (0 0)) (1 (0 1)) (1 (0 2)) (1 (0 3)))
+      8.968646)
+     (((0 (1 0)) (0 (1 1))) 8.957496)
+     (((0 (2 0)) (0 (2 1))) 8.167285)
+     (((1 (3 0)) (1 (3 1)) (1 (3 2)) (1 (3 3))
+       (2 (3 4)) (0 (3 5)) (1 (3 6)) (2 (3 7))
+       (2 (3 8)) (1 (3 9)) (2 (3 10))) 3.8855853)).
+\end{verbatim}
+
+\noindent This function scans a patterns-hash for
+unaddressed patterns. If a pattern is unaddressed, its
+subset score and indices will appear in the output, as
+well as its pattern importance rating.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

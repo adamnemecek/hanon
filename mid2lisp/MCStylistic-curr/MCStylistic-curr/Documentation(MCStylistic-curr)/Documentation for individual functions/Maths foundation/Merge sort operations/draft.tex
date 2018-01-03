@@ -1,0 +1,46 @@
+\subsection{Merge sort operations}\label{sec:merge-sort-operations}
+
+These functions implement various merge
+sorts and related operations.
+
+
+%%%%%
+\subsection*{vector$<$vector-different-lengths}\label{fun:vector<vector-different-lengths}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/1/2010, 19/1/2010 \\
+Location & \nameref{sec:list-processing} \\
+Calls & \nameref{fun:vector<vector-t-or-nil} \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(vector<vector-different-lengths '(0 -2) '(0 -2 3))
+--> T
+\end{verbatim}
+
+\noindent If the vectors are of the same length,
+the function vector$<$vector-t-or-nil is applied. If
+the second vector $\mathbf{v}_2 = (v_{21},\ldots,
+v_{2n})$ is longer than the first $\mathbf{v}_1 =
+(v_{11},\ldots,v_{1m})$, we must allow for the
+possibility of equality $\mathbf{v}_1 = \mathbf{v}_2$,
+before applying the function vector$<$vector. When equal
+as described, $\mathbf{v}_1 < \mathbf{v}_2$.
+
+
+
+
+
+
+
+
+
+
+
+
+

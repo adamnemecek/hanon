@@ -1,0 +1,882 @@
+\subsection{MIDI import}\label{sec:MIDI-import}
+
+The main function here is load-midi-file, for
+importing a MIDI (Musical Instrument Digital
+Interface) file into the Lisp environment as a list of
+lists.
+
+
+%%%%%
+\subsection*{add-tempo}\label{fun:add-tempo}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \\
+Comments/see also & Deprecated.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(add-tempo '(5012 5012 5012))
+--> 2
+\end{verbatim}
+
+\noindent As tempo and granularity are needed to
+convert ticks to ms, this function is invoked when the
+number 81 is parsed (which indicates a tempo
+change). The format of each entry here is
+(time-in-ticks time-in-ms usec/qn). Storing the time
+of the tempo change in both formats simplifies the
+calculations.
+
+
+%%%%%
+\subsection*{convert-granularity}\label{fun:convert-granularity}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:get-header} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: within get-header example,
+\begin{verbatim}
+(convert-granularity (get-short input-stream))
+--> 120
+\end{verbatim}
+
+\noindent The treatment of division is unusual.
+Granularity is in ticks per beat (crotchet).
+
+
+%%%%%
+\subsection*{convert-vlq}\label{fun:convert-vlq}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:set-track-time} \\
+Comments/see also & \nameref{fun:get-vlq}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (convert-vlq (get-vlq input-stream)))
+--> 77
+\end{verbatim}
+
+\noindent This function converts an integer
+represented using variable-length quantity (VLQ) into
+the digit representation. In MIDI files, time is
+listed as ticks in VLQs.
+
+
+%%%%%
+\subsection*{earlier}\label{fun:earlier}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:load-midi-file} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(earlier '(5 60) '(6.5 61))
+--> T
+\end{verbatim}
+
+\noindent This function returns T if the first element
+of the first argument is less than the first element
+of the second argument, and NIL otherwise.
+
+
+%%%%%
+\subsection*{first$>=$}\label{fun:first>=}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:ticks-ms} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(first>= 60 '(59 64 67))
+--> T
+\end{verbatim}
+
+\noindent This is a test function for tempo
+searches.
+
+
+%%%%%
+\subsection*{gather-bytes}\label{fun:gather-bytes}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:get-metadata}, \nameref{fun:read-track} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(with-open-file
+    (s
+     (concatenate
+      'string
+      *MCStylistic-Oct2010-example-files-path*
+      "/temp-bytes")
+     :direction :output :element-type 'unsigned-byte)
+  (write-byte 101 s) (write-byte 111 s))
+--> 111
+(with-open-file
+    (s
+     (concatenate
+      'string
+      *MCStylistic-Oct2010-example-files-path*
+      "/temp-bytes") :element-type 'unsigned-byte)
+  (gather-bytes s 2))
+--> (101 111)
+\end{verbatim}
+
+\noindent This function reads arbitrary bytes into a
+list.
+
+
+%%%%%
+\subsection*{get-header}\label{fun:get-header}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:get-metadata}, \nameref{fun:read-track} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (setup)
+  (get-header input-stream))
+--> 120
+\end{verbatim}
+
+\noindent This function reads the file header.
+
+
+%%%%%
+\subsection*{get-metadata}\label{fun:get-metadata}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:gather-bytes} \\
+Called by & \nameref{fun:parse-events}, \nameref{fun:read-track} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (get-metadata input-stream))
+--> (84 104 100 0 0 0 6 0 1 0 12 0 120 77 84 114 107 0
+     0 0 12 0 255 81 3 15 66 64 196 56 255 47 0 77 84
+     114 107 0 0 1 196 0 192 6 0 144 49 64 0 255 3 11
+     104 97 114 112 115 105 99 104 111 114 100 0 255 4
+     11 104 97 114 112 115 105 99 104 111 114)
+\end{verbatim}
+
+\noindent This function reads a length, then gathers
+that many bytes together (representing metadata).
+
+
+%%%%%
+\subsection*{get-short}\label{fun:get-short}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:get-header} \\
+Comments/see also & \nameref{fun:get-word}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: within get-header example,
+\begin{verbatim}
+(get-short input-stream)
+--> 1
+\end{verbatim}
+
+\noindent This function is a 16-bit retriever.
+
+
+%%%%%
+\subsection*{get-track-header}\label{fun:get-track-header}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:get-type}, \nameref{fun:get-word} \\
+Called by & \nameref{fun:read-track} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (setup)
+  (get-header input-stream)
+  (get-track-header input-stream))
+--> 12
+\end{verbatim}
+
+\noindent This function reads a track header.
+
+
+%%%%%
+\subsection*{get-type}\label{fun:get-type}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:get-header}, \nameref{fun:get-track-header} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: within get-header example,
+\begin{verbatim}
+(get-type input-stream)
+--> "MThd"
+\end{verbatim}
+
+\noindent Helps to read header.
+
+
+%%%%%
+\subsection*{get-word}\label{fun:get-word}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:get-header}, \nameref{fun:get-track-header} \\
+Comments/see also & \nameref{fun:get-short}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: within get-header example,
+\begin{verbatim}
+(get-word input-stream)
+--> 6
+\end{verbatim}
+
+\noindent This function is a 32-bit retriever.
+
+
+%%%%%
+\subsection*{get-vlq}\label{fun:get-vlq}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:set-track-time} \\
+Comments/see also & \nameref{fun:convert-vlq}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (get-vlq input-stream))
+--> (77)
+\end{verbatim}
+
+\noindent All events are seperated by a delta time, so
+this function gets the VLQ.
+
+
+%%%%%
+\subsection*{handle-bend}\label{fun:handle-bend}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:parse-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(handle-bend #XA0 60 3)
+--> (160 60 3)
+\end{verbatim}
+
+\noindent This function discards bend data.
+
+
+%%%%%
+\subsection*{handle-control}\label{fun:handle-control}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:parse-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(handle-control #XA0 60 84)
+--> (160 60 84)
+\end{verbatim}
+
+\noindent This function discards control data.
+
+
+%%%%%
+\subsection*{handle-note}\label{fun:handle-note}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:ticks-ms} \\
+Called by & \nameref{fun:parse-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(handle-note #XA0 60 84)
+--> 0
+\end{verbatim}
+
+\noindent This function parses a note-on event.
+
+
+%%%%%
+\subsection*{handle-off}\label{fun:handle-off}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:match-note}, \nameref{fun:ticks-ms} \\
+Called by & \nameref{fun:parse-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(handle-off #XA0 60 84)
+--> 0
+\end{verbatim}
+
+\noindent This function searches for the note-on event
+to which a note-off event belongs and sets the
+duration accordingly. This does not handle overlapping
+notes of the same pitch.
+
+
+%%%%%
+\subsection*{handle-pressure}\label{fun:handle-pressure}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:parse-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(handle-pressure #XA0 60)
+--> (160 60)
+\end{verbatim}
+
+\noindent This function discards pressure data.
+
+
+%%%%%
+\subsection*{handle-program}\label{fun:handle-program}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:parse-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(handle-program #XA0 60)
+--> (160 60)
+\end{verbatim}
+
+\noindent This function discards program data.
+
+
+%%%%%
+\subsection*{handle-touch}\label{fun:handle-touch}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:parse-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(handle-touch #XA0 60 84)
+--> (160 60 84)
+\end{verbatim}
+
+\noindent This function discards touch data.
+
+
+%%%%%
+\subsection*{list-to-string}\label{fun:list-to-string}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:parse-metadata} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(list-to-string '(84 104 111 109 97 115))
+--> "Thomas."
+\end{verbatim}
+
+\noindent This function converts ASCII to strings.
+Note that most metadata is text.
+
+
+%%%%%
+\subsection*{load-midi-file}\label{fun:load-midi-file}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:earlier}, \nameref{fun:get-header}, \nameref{fun:read-track}, \nameref{fun:setup} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ imported-midi
+ (load-midi-file
+  (concatenate
+   'string *MCStylistic-Oct2010-example-files-path*
+   "/vivaldi-op6-no3-2.mid")))
+(subseq imported-midi 0 10)
+--> ((0 79 1 6 64) (0 69 1 4 64) (0 49 1 1 64)
+     (0 49 1 3 64) (0 76 1 5 64) (1 79 1 6 64)
+     (1 69 1 4 64) (1 76 1 5 64) (1 49 1 1 64)
+     (1 49 1 3 64))
+\end{verbatim}
+
+\noindent This main function imports a MIDI file
+into the Lisp environment.
+
+
+%%%%%
+\subsection*{match-note}\label{fun:match-note}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:handle-off} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(match-note '(#XA0 62) '(4 62 0 #XA0))
+--> T
+\end{verbatim}
+
+\noindent This function tests for a note-off event.
+
+
+%%%%%
+\subsection*{parse-events}\label{fun:parse-events}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:handle-bend}, \nameref{fun:handle-control}, \nameref{fun:handle-note},\newline \nameref{fun:handle-off}, \nameref{fun:handle-pressure}, \nameref{fun:handle-program},\newline \nameref{fun:handle-touch}, \nameref{fun:parse-metadata}, \nameref{fun:strip-sysex} \\
+Called by & \nameref{fun:read-and-parse-event} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (parse-events #XA0 60 input-stream))
+--> (160 60 77)
+\end{verbatim}
+
+\noindent This function handles track data.
+
+
+%%%%%
+\subsection*{parse-metadata}\label{fun:parse-metadata}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:list-to-string} \\
+Called by & \nameref{fun:parse-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(parse-metadata '(9 104))
+--> 1
+\end{verbatim}
+
+\noindent This function extracts tempo and end-of-
+track information from the metadata.
+
+
+%%%%%
+\subsection*{re-time}\label{fun:re-time}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:my-last} \\
+Called by & \\
+Comments/see also & Deprecated.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(re-time
+ '((1 69 1 4 64) (0 79 1 6 64) (2 49 1 3 64)
+   (0 69 1 4 64))
+ '((1 69 1 4 64) (0 79 1 6 64) (2 49 1 3 64)
+   (0 69 1 4 64)))
+--> ((1 69 1 4 64) (0 79 1 6 64) (2 49 1 3 64)
+     (0 69 1 4 64) (2 69 1 4 64) (1 79 1 6 64)
+     (3 49 1 3 64) (1 69 1 4 64))
+\end{verbatim}
+
+\noindent This function appends some events (the
+second argument) to other events (the first argument)
+by translating them by the ontime of the last event
+from the first argument.
+
+
+%%%%%
+\subsection*{read-and-parse-event}\label{fun:read-and-parse-event}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:parse-events} \\
+Called by & \nameref{fun:read-track} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (read-and-parse-event input-stream))
+--> NIL
+\end{verbatim}
+
+\noindent This function deals with running status.
+
+
+%%%%%
+\subsection*{read-track}\label{fun:read-track}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:gather-bytes}, \nameref{fun:get-track-header},\newline \nameref{fun:read-and-parse-event}, \nameref{fun:set-track-time} \\
+Called by & \nameref{fun:load-midi-file} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (setup)
+  (get-header input-stream)
+  (read-track input-stream))
+--> NIL
+\end{verbatim}
+
+\noindent This function is called once per track,
+and reads track data.
+
+
+%%%%%
+\subsection*{set-track-time}\label{fun:set-track-time}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \nameref{fun:convert-vlq}, \nameref{fun:get-vlq} \\
+Called by & \nameref{fun:read-track} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (set-track-time input-stream))
+--> 77
+\end{verbatim}
+
+\noindent There are times between events, so
+*track-time* must be accumulated across each track.
+
+
+%%%%%
+\subsection*{setup}\label{fun:setup}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:load-midi-file} \\
+Comments/see also & Consider giving more specific name.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setup)
+--> #()
+\end{verbatim}
+
+\noindent This function sets the values of three
+variables.
+
+
+%%%%%
+\subsection*{strip-sysex}\label{fun:strip-sysex}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:parse-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ fstring
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/vivaldi-op6-no3-2.mid"))
+(with-open-file
+    (input-stream
+     fstring :element-type '(unsigned-byte 8)
+     :if-does-not-exist nil)
+  (strip-sysex input-stream))
+--> "Error: Unexpected end of file"
+\end{verbatim}
+
+\noindent This function deletes sysex data. The
+example gives an error because the imported MIDI file
+does not contain any sysex.
+
+
+%%%%%
+\subsection*{ticks-ms}\label{fun:ticks-ms}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 26/1/2009, 26/1/2009 \\
+Location & \nameref{sec:MIDI-import} \\
+Calls & \\
+Called by & \nameref{fun:handle-note}, \nameref{fun:handle-off} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(ticks-ms 50)
+--> 5/12
+\end{verbatim}
+
+\noindent The time conversion function searches the
+tempo map from the end to find tempo in effect at the
+time.
+
+
+
+
+
+
+
+
+
+
+

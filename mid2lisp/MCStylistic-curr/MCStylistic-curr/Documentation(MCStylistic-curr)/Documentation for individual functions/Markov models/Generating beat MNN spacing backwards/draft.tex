@@ -1,0 +1,612 @@
+\subsection{Generating beat MNN spacing backwards}\label{sec:generating-beat-MNN-spacing-backwards}
+
+The main function here is called
+\nameref{fun:generate-beat-MNN-spacing<-}. Given final states, a
+state-transition matrix, a lower limit for the ontime
+of the first state, and a template dataset, it
+generates datapoints (among other output) that conform
+to various criteria, which can be specified using the
+optional arguments. The criteria are things like: not
+too many consecutive states from the same source, the
+range is comparable with that of the template, and the
+likelihood of the states is comparable with that of
+the template.
+
+
+%%%%%
+\subsection*{checklist$<$-p}\label{fun:checklist<-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 12/10/2010, 12/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-backwards} \\
+Calls & \nameref{fun:comparable-likelihood-profile<-p},\newline \nameref{fun:index-item-1st-doesnt-occur}, \nameref{fun:lastn},\newline \nameref{fun:mean-and-rangep}, \nameref{fun:pitch-and-octave-spellingp},\newline \nameref{fun:segments-strict} \\
+Called by & \nameref{fun:generate-beat-MNN-spacing<-},\newline \nameref{fun:generate-beat-spacing-forcing<-} \\
+Comments/see also & \nameref{fun:checklistp}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ states<-
+ '(((2 (7 5 4))
+    (NIL NIL "C-24-2"
+     ((358 48 53 2 1 360 6) (358 55 57 2 1 360 7)
+      (358 60 60 2 0 360 8) (358 64 62 2 0 360 9))))
+   ((3/2 (19 7))
+    (12 7 "C-30-2"
+     ((153 45 51 1 1 154 599) (153 64 62 1 0 154 600)
+      (307/2 71 66 1/2 0 154 602))))))
+(setq
+ datapoints
+ '((67/2 32 44 1/2 1) (67/2 51 55 5/2 0)
+   (67/2 58 59 1/2 0) (34 44 51 2 1) (34 56 58 2 0)
+   (34 60 60 2 0)))
+(setq
+ template-segments
+ '((27
+    ((27 39 48 1 1 28 91) (27 63 62 1/2 0 55/2 92)))
+   (55/2 ((27 39 48 1 1 28 91)))
+   (111/4
+    ((27 39 48 1 1 28 91) (111/4 72 67 1/4 0 28 93)))
+   (28
+    ((28 51 55 1 1 29 94) (28 60 60 1 1 29 95)
+     (28 68 65 1 1 29 96) (28 84 74 1 0 29 97)))
+   (29 ((29 82 73 1/3 0 88/3 98)))
+   (88/3 ((88/3 80 72 1/3 0 89/3 99)))
+   (89/3 ((89/3 77 70 1/3 0 30 100)))
+   (30
+    ((30 39 48 1 1 31 101) (30 79 71 1/2 0 61/2 102)))
+   (61/2
+    ((30 39 48 1 1 31 101) (61/2 77 70 1/2 0 31 103)))
+   (31
+    ((31 51 55 1 1 32 104) (31 55 57 1 1 32 105)
+     (31 61 61 1 1 32 106) (31 75 69 1/2 0 63/2 107)))
+   (63/2
+    ((31 51 55 1 1 32 104) (31 55 57 1 1 32 105)
+     (31 61 61 1 1 32 106) (63/2 73 68 1/2 0 32 108)))
+   (32
+    ((32 51 55 1 1 33 109) (32 55 57 1 1 33 110)
+     (32 61 61 1 1 33 111) (32 70 66 1/2 0 65/2 112)))
+   (65/2
+    ((32 51 55 1 1 33 109) (32 55 57 1 1 33 110)
+     (32 61 61 1 1 33 111) (65/2 65 63 1/2 0 33 113)))
+   (33
+    ((33 44 51 2 1 35 114) (33 63 62 1/2 0 67/2 115)))
+   (67/2 ((33 44 51 2 1 35 114)))
+   (135/4
+    ((33 44 51 2 1 35 114)
+     (135/4 72 67 1/4 0 34 116)))
+   (34
+    ((33 44 51 2 1 35 114) (34 51 55 1 1 35 117)
+     (34 60 60 1 1 35 118) (34 68 65 1 0 35 119)))))
+(setq
+ template-likelihood-profile
+ '((27 0.11785113) (55/2 1/6) (111/4 0.10878566)
+   (28 0.08494337) (29 1/15) (88/3 1/14) (89/3 1/7)
+   (30 0.06666667) (61/2 0.06666667) (31 0.11632561)
+   (63/2 0.11632561) (32 0.108109735)
+   (65/2 0.108109735) (33 0.16666667) (67/2 1/6)
+   (135/4 0.16666667) (34 0.16666667)))
+(setq
+ checklist '("originalp" "range&meanp" "likelihoodp"))
+(setq c-sources 3)
+(setq c-bar 12)
+(setq c-min 7)
+(setq c-max 7)
+(setq c-beats 3)
+(setq c-prob 0.1)
+(checklist<-p
+ states<- datapoints template-segments
+ template-likelihood-profile checklist c-sources c-bar
+ c-min c-max c-beats c-prob)
+--> T
+\end{verbatim}
+
+\noindent Checks are made of sources, of the range
+and mean of the notes supplied in the last element of
+the backwards-generated states, and their
+likelihoods.
+
+
+%%%%%
+\subsection*{comparable-likelihood-profile$<$-p}\label{fun:comparable-likelihood-profile<-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 12/10/2010, 12/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-backwards} \\
+Calls & \nameref{fun:geom-mean-likelihood-of-subset<-},\newline \nameref{fun:linearly-interpolate}, \nameref{fun:max-item}, \nameref{fun:min-item},\newline \nameref{fun:nth-list-of-lists},\newline \nameref{fun:orthogonal-projection-not-unique-equalp} \\
+Called by & \nameref{fun:checklist<-p} \\
+Comments/see also & \nameref{fun:comparable-likelihood-profilep}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ ontime-state-points-pair
+ '(111/4
+   ((27 39 48 1 1) (111/4 72 67 1/4 0))))
+(setq
+ datapoints
+ '((27 39 48 1 1) (27 63 62 1/2 0) (111/4 72 67 1/4 0)
+   (28 51 55 1 1) (28 60 60 1 1) (28 68 65 1 1)
+   (28 84 74 1 0) (29 82 73 1/3 0) (88/3 80 72 1/3 0)
+   (89/3 77 70 1/3 0) (30 39 48 1 1) (30 79 71 1/2 0)
+   (61/2 77 70 1/2 0) (31 51 55 1 1) (31 55 57 1 1)
+   (31 61 61 1 1) (31 75 69 1/2 0) (63/2 73 68 1/2 0)
+   (32 51 55 1 1) (32 55 57 1 1) (32 61 61 1 1)
+   (32 70 66 1/2 0) (65/2 65 63 1/2 0) (33 44 51 2 1)
+   (33 63 62 1/2 0) (135/4 72 67 1/4 0) (34 51 55 1 1)
+   (34 60 60 1 1) (34 68 65 1 0)))
+(setq c-beats 3)
+(setq
+ template-likelihood-profile
+ '((27 0.07142857) (55/2 1/14) (111/4 0.062499996)
+   (28 0.10958345) (29 0.09672784) (30 0.11785113)
+   (91/3 0.083333336) (92/3 0.11785113) (31 0.1514267)
+   (32 0.13999122) (33 0.16666667) (67/2 1/6)
+   (135/4 0.16666667) (34 0.3333333)))
+(setq c-prob 0.1)
+(comparable-likelihood-profile<-p
+ ontime-state-points-pair datapoints c-beats
+ template-likelihood-profile c-prob)
+--> T
+\end{verbatim}
+
+\noindent This function is similar to the function
+comparable-likelihood-profilep, the difference being
+it calls the function geom-mean-likelihood-of-
+subset<- (forwards looking for the empirical
+distribution) rather than geom-mean-likelihood-of-
+subset. It takes a pair consisting of an ontime and
+points that sound at the ontime. Based on an empirical
+distribution over the argument named datapoints (with
+a context governed by c-beats), it calculates the
+geometric mean of the likelihood of these points. This
+likelihood is then compared with that at the same
+ontime in the template. If the absolute difference
+between the likelihoods is less than the threshold
+c-prob, T is returned, and NIL otherwise. T will also
+be returned if there are no points.
+
+
+%%%%%
+\subsection*{generate-beat-MNN-spacing$<$-}\label{fun:generate-beat-MNN-spacing<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 12/10/2010, 12/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-backwards} \\
+Calls & \nameref{fun:checklist<-p}, \nameref{fun:choose-one},\newline \nameref{fun:choose-one-with-beat},\newline \nameref{fun:geom-mean-likelihood-of-states<-},\newline \nameref{fun:index-1st-sublist-item>=}, \nameref{fun:my-last},\newline \nameref{fun:segments-strict}, \nameref{fun:sort-dataset-asc},\newline \nameref{fun:states2datapoints-by-lookup<-},\newline \nameref{fun:translate-datapoints-to-last-ontime} \\
+Called by & \\
+Comments/see also & Consider subdividing into several functions. See also \nameref{fun:generate-beat-MNN-spacing->},\newline \nameref{fun:generate-beat-spacing-forcing<-}.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   final-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchman-Oct2010 example"
+     "/final-states.txt")))
+  (setq
+   stm<-
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchman-Oct2010 example"
+     "/transition-matrix<-.txt")))
+  (setq no-ontimes< 111/4)
+  (setq
+   dataset-all
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-data-path*
+     "/Dataset/C-24-3-ed.txt")))
+  (setq
+   dataset-template
+   (subseq dataset-all 0 120))
+  (setq
+   *rs* #.(CCL::INITIALIZE-RANDOM-STATE 477 10894))
+  "Data loaded and *rs* set.")
+(generate-beat-MNN-spacing<-
+ final-states stm<- no-ontimes< dataset-template)
+--> ((((3 NIL)
+       (NIL NIL "C-68-4" ((184 65 63 2 0 186 9))))
+      ((2 (7 5 5))
+       (16 9 "C-17-2"
+        ((10 55 57 1 1 11 34) (10 62 61 1 1 11 35)
+         (9 67 64 2 0 11 32) (9 72 67 2 0 11 33))))
+      ((1 (24 5))
+       (12 7 "C-17-2"
+        ((165 43 50 1 1 166 608)
+         (165 67 64 2 0 167 609)
+         (165 72 67 2 0 167 610))))
+      ((3 (7 3 6 6))
+       (-7 -4 "C-33-2"
+        ((212 52 55 1 1 213 956)
+         (212 59 59 1 1 213 957)
+         (212 62 61 1 0 213 958)
+         (211 68 64 2 0 213 955)
+         (212 74 68 1 0 213 959))))
+      ((2 (7 3 6 6))
+       (0 0 "C-33-2"
+        ((235 52 55 1 1 236 1057)
+         (235 59 59 1 1 236 1058)
+         (235 62 61 1 0 236 1059)
+         (235 68 64 2 0 237 1060)
+         (704/3 74 68 4/3 0 236 1056))))
+      ((1 (12 12))
+       (24 14 "C-17-1"
+        ((204 36 46 1 1 205 920)
+         (204 48 53 1 1 205 921)
+         (204 60 60 1 0 205 922))))
+      ((3 (5 4 3 5 4))
+       (-19 -11 "C-50-3"
+        ((101 52 55 1 1 102 289)
+         (101 57 58 1 1 102 290)
+         (101 61 60 1 0 102 291)
+         (101 64 62 1 1 102 292)
+         (101 69 65 1 0 102 293)
+         (101 73 67 1 0 102 294)))))
+     ((26 18 36 2 1) (26 23 39 2 1) (26 27 41 2 0)
+      (26 30 43 2 1) (26 35 46 2 0) (26 39 48 2 0)
+      (28 -1 25 1 1) (28 11 32 1 1) (28 23 39 1 0)
+      (29 23 39 1 1) (29 30 43 1 1) (29 33 45 1 0)
+      (29 39 48 3 0) (29 45 52 3 0) (30 23 39 2 1)
+      (30 30 43 2 1) (30 33 45 2 0) (32 16 35 1 1)
+      (32 40 49 2 0) (32 45 52 2 0) (33 28 42 1 1)
+      (33 35 46 1 1) (34 44 51 2 0))
+     8 (0 0 0 1 0 0 0))
+\end{verbatim}
+
+\noindent This function is similar to the function
+generate-beat-MNN-spacing->, the difference is that
+the former generates a passage backwards one state at
+a time. The checking process is analogous. Given final
+states, a state-transition matrix, a lower limit for
+ontime, and a template dataset, this function
+generates datapoints (among other output) that conform
+to various criteria, which can be specified using the
+optional arguments. The criteria are things like: not
+too many consecutive states from the same source (c-
+sources), the range is comparable with that of the
+template (c-bar, c-min, and c-max), and the likelihood
+of the states is comparable with that of the template
+(c-beats and c-prob). A record, named index-failures,
+is kept of how many times a generated state fails to
+meet the criteria. When a threshold c-failures is
+exceeded at any state index, the penultimate state is
+removed and generation continues. If the value of c-
+failures is exceeded for the first state, a message is
+returned.
+
+This function returns the states as well as the
+datapoints, and also index-failures and $i$, the total
+number of iterations.
+
+
+%%%%%
+\subsection*{generate-beat-spacing-forcing$<$-}\label{fun:generate-beat-spacing-forcing<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 12/10/2010, 12/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-backwards} \\
+Calls & \nameref{fun:beat-spacing-states}, \nameref{fun:checklist<-p},\newline \nameref{fun:choose-one}, \nameref{fun:choose-one-with-beat},\newline \nameref{fun:geom-mean-likelihood-of-states<-},\newline \nameref{fun:index-1st-sublist-item>=}, \nameref{fun:my-last}, \newline \nameref{fun:nth-list-of-lists},\newline \nameref{fun:segments-strict}, \nameref{fun:sort-dataset-asc},\newline \nameref{fun:states2datapoints-by-lookup<-},\newline \nameref{fun:translate-datapoints-to-last-ontime} \\
+Called by & \\
+Comments/see also & Consider subdividing into several functions. See also \nameref{fun:generate-beat-MNN-spacing<-},\newline \nameref{fun:generate-beat-spacing-forcing->}. 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   final-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchman-Oct2010 example"
+     "/internal-final-states.txt")))
+  (setq
+   stm<-
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchman-Oct2010 example"
+     "/transition-matrix<-.txt")))
+  (setq no-ontimes< 2)
+  (setq
+   dataset-all
+   (read-from-file
+    "/Users/tec69/Open/Music/Datasets/C-24-3-ed.txt"))
+  (setq
+   dataset-template
+   (subseq dataset-all 0 120))
+  (setq
+   *rs* #.(CCL::INITIALIZE-RANDOM-STATE 48164 60796))
+  (setq
+   datapoints-from-next-interval
+   '((5/2 63 62 1/2 0) (5/2 72 67 1/2 0)
+     (3 34 45 1 1) (3 46 52 1 1) (3 65 63 1/2 0)
+     (3 74 68 1/2 0) (15/4 65 63 1/4 0)))
+  (setq
+   next-state-context-pair
+   (first
+    (beat-spacing-states
+     datapoints-from-next-interval "No information"
+     3 1 3)))
+  (setq generation-interval '(1 3))
+  (setq
+   pattern-region
+   '((1 51 55) (1 55 57) (1 61 61) (1 63 62) (2 51 55)
+     (2 55 57) (2 61 61) (5/2 73 68)))
+  "Data loaded and variables set.")
+(generate-beat-spacing-forcing<-
+ final-states stm<- no-ontimes< dataset-template
+ generation-interval pattern-region
+ next-state-context-pair (list "originalp")
+ 3 10 4 19 12 12 12 .15)
+--> ((((7/2 (9))
+       (NIL NIL "No information"
+        ((5/2 63 62 1/2 0 3 0)
+         (5/2 72 67 1/2 0 3 1))))
+      ((3 (9))
+       (-2 -1 "C-6-3"
+        ((101 71 66 1/2 0 203/2 424)
+         (101 80 71 1/2 0 203/2 425)))))
+     ((2 65 63 1/2 0) (2 74 68 1/2 0)
+      (5/2 63 62 1/2 0) (5/2 72 67 1/2 0))
+     2 (0 0))
+\end{verbatim}
+
+\noindent This function appears to be very simiar to
+the function \nameref{fun:generate-beat-MNN-spacing<-}. The
+difference is that there are some extra arguments
+here, which allow for using either external or
+internal initial/final states, and for using
+information from a discovered pattern or previous/next
+state to further guide the generation, hence
+`forcing'.
+
+
+%%%%%
+\subsection*{geom-mean-likelihood-of-states$<$-}\label{fun:geom-mean-likelihood-of-states<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 12/10/2010, 12/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-backwards} \\
+Calls & \nameref{fun:geom-mean-likelihood-of-subset<-},\newline \nameref{fun:max-item}, \nameref{fun:min-item}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:orthogonal-projection-not-unique-equalp} \\
+Called by & \nameref{fun:generate-beat-MNN-spacing<-},\newline \nameref{fun:generate-beat-spacing-forcing<-} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ ontime-state-points-pairs
+ '((27
+    ((27 42 49 1 1 28 0) (27 70 65 1/2 0 55/2 1)))
+   (55/2 ((27 42 49 1 1 28 0)))
+   (111/4
+    ((27 42 49 1 1 28 0) (111/4 67 64 1/4 0 28 2)
+     (111/4 79 71 1/4 0 28 3)))
+   (28
+    ((28 54 56 1 1 29 4) (28 58 58 1 1 29 5)
+     (28 64 62 1 1 29 6) (28 66 63 2 0 30 7)
+     (28 78 70 2 0 30 8)))
+   (29
+    ((29 54 56 1 1 30 9) (29 58 58 1 1 30 10)
+     (29 64 62 1 1 30 11) (28 66 63 2 0 30 7)
+     (28 78 70 2 0 30 8)))
+   (30
+    ((30 47 52 1 1 31 12) (30 74 68 1/3 0 91/3 13)))
+   (91/3
+    ((30 47 52 1 1 31 12) (91/3 76 69 1/3 0 92/3 14)))
+   (92/3
+    ((30 47 52 1 1 31 12) (92/3 74 68 1/3 0 31 15)))
+   (31
+    ((31 54 56 1 1 32 16) (31 62 61 1 1 32 17)
+     (31 73 67 1 0 32 18)))
+   (32
+    ((32 54 56 1 1 33 19) (32 62 61 1 1 33 20)
+     (32 71 66 1 0 33 21)))
+   (33
+    ((33 42 49 1 1 34 22) (33 69 65 1/2 0 67/2 23)))
+   (67/2 ((33 42 49 1 1 34 22)))
+   (135/4
+    ((33 42 49 1 1 34 22) (135/4 67 64 1/4 0 34 24)))
+   (34
+    ((34 54 56 1 1 35 25) (34 57 58 1 1 35 26)
+     (34 61 60 1 1 35 27))) (35 NIL)))
+(setq
+ dataset
+ '((27 42 49 1 1) (27 70 65 1/2 0) (111/4 67 64 1/4 0)
+   (111/4 79 71 1/4 0) (28 54 56 1 1) (28 58 58 1 1)
+   (28 64 62 1 1) (28 66 63 2 0) (28 78 70 2 0)
+   (29 54 56 1 1) (29 58 58 1 1) (29 64 62 1 1)
+   (30 47 52 1 1) (30 74 68 1/3 0) (91/3 76 69 1/3 0)
+   (92/3 74 68 1/3 0) (31 54 56 1 1) (31 62 61 1 1)
+   (31 73 67 1 0) (32 54 56 1 1) (32 62 61 1 1)
+   (32 71 66 1 0) (33 42 49 1 1) (33 69 65 1/2 0)
+   (135/4 67 64 1/4 0) (34 54 56 1 1) (34 57 58 1 1)
+   (34 61 60 1 1)))
+(geom-mean-likelihood-of-states<-
+ ontime-state-points-pairs dataset 3)
+--> ((27 0.07142857) (55/2 1/14) (111/4 0.062499996)
+     (28 0.10958345) (29 0.09672784) (30 0.11785113)
+     (91/3 0.083333336) (92/3 0.11785113)
+     (31 0.1514267) (32 0.13999122) (33 0.16666667)
+     (67/2 1/6) (135/4 0.16666667) (34 0.3333333))
+\end{verbatim}
+
+\noindent Applies the function
+\nameref{fun:geom-mean-likelihood-of-subset<-}
+recursively to the first argument.
+
+
+%%%%%
+\subsection*{geom-mean-likelihood-of-subset$<$-}\label{fun:geom-mean-likelihood-of-subset<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 12/10/2010, 12/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-backwards} \\
+Calls & \nameref{fun:empirical-mass}, \nameref{fun:index-1st-sublist-item>=},\newline \nameref{fun:index-1st-sublist-item>}, \nameref{fun:likelihood-of-subset} \\
+Called by & \nameref{fun:comparable-likelihood-profilep},\newline \nameref{fun:geom-mean-likelihood-of-states} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ subset
+ '((27 42 49 1 1 28 0) (111/4 67 64 1/4 0 28 2)
+   (111/4 79 71 1/4 0 28 3)))
+(setq
+ subset-palette
+ (orthogonal-projection-not-unique-equalp
+  subset '(0 1)))
+(setq first-subset-ontime 27)
+(setq last-subset-ontime 111/4)
+(setq
+ dataset
+ '((27 42 49 1 1) (27 70 65 1/2 0) (111/4 67 64 1/4 0)
+   (111/4 79 71 1/4 0) (28 54 56 1 1) (28 58 58 1 1)
+   (28 64 62 1 1) (28 66 63 2 0) (28 78 70 2 0)
+   (29 54 56 1 1) (29 58 58 1 1) (29 64 62 1 1)
+   (30 47 52 1 1) (30 74 68 1/3 0) (91/3 76 69 1/3 0)
+   (92/3 74 68 1/3 0) (31 54 56 1 1) (31 62 61 1 1)
+   (31 73 67 1 0) (32 54 56 1 1) (32 62 61 1 1)
+   (32 71 66 1 0) (33 42 49 1 1) (33 69 65 1/2 0)
+   (135/4 67 64 1/4 0) (34 54 56 1 1) (34 57 58 1 1)
+   (34 61 60 1 1)))
+(setq
+ dataset-palette
+ (orthogonal-projection-not-unique-equalp
+  dataset '(0 1)))
+(setq
+ ontimes-list (nth-list-of-lists 0 dataset))
+(setq c-beats 4)
+(geom-mean-likelihood-of-subset<-
+ subset subset-palette first-subset-ontime
+ last-subset-ontime dataset-palette ontimes-list
+ c-beats)
+--> 0.052631576
+\end{verbatim}
+
+\noindent This function is similar to the function
+geom-mean-likelihood-of-subset, the difference being
+we look forward to form the empirical distribution,
+rather than backward. The first argument to
+this function, called subset, is a point set. Both in
+the scenario of likelihood calculation for an original
+excerpt and for a generated passage, the point set is
+a segment of the music. The argument subset-palette
+consists of a (listed) list of MIDI note numbers from
+the subset. Note: first-subset-ontime is not
+necessarily the ontime of the first datapoint, as they
+will have been sorted by MIDI note number. The
+variable dataset-palette is analogous, ontimes-list is
+a list of ontimes from the dataset. The threshold
+c-beats determines how far forward we look to form the
+empirical distribution. The output of this function is
+the geometric mean of the likelihood of the subset
+(that is, a product of the individual empirical
+probabilities of the constituent MIDI note numbers.
+
+
+%%%%%
+\subsection*{translate-datapoints-to-last-offtime}\label{fun:translate-datapoints-to-last-offtime}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 12/10/2010, 12/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-backwards} \\
+Calls & \nameref{fun:constant-vector}, \nameref{fun:translation} \\
+Called by & \\
+Comments/see also & Deprecated.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translate-datapoints-to-last-offtime
+ 30
+ '((0 44 51 1 1) (0 48 53 1 1) (0 56 58 1 0)
+   (2 44 51 1 1) (3 48 53 5 1) (6 56 58 1 0)))
+--> ((22 44 51 1 1) (22 48 53 1 1) (22 56 58 1 0)
+     (24 44 51 1 1) (25 48 53 5 1) (28 56 58 1 0))
+\end{verbatim}
+
+\noindent This function takes two arguments: a time
+$t$ and a list of datapoints. It calculates the
+maximum offtime of the datapoints, and translates the
+datapoints, such that the maximum offtime is now
+$t$.
+
+
+%%%%%
+\subsection*{translate-datapoints-to-last-ontime}\label{fun:translate-datapoints-to-last-ontime}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 12/10/2010, 12/10/2010 \\
+Location & \nameref{sec:generating-beat-MNN-spacing-backwards} \\
+Calls & \nameref{fun:constant-vector}, \nameref{fun:my-last}, \nameref{fun:translation} \\
+Called by & \nameref{fun:generate-beat-MNN-spacing->},\newline \nameref{fun:generate-beat-spacing-forcing->} \\
+Comments/see also & \nameref{fun:translate-datapoints-to-first-ontime}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translate-datapoints-to-last-ontime
+ 34 0
+ '((0 44 51 1 1) (0 48 53 1 1) (0 56 58 1 0)
+   (2 44 51 1 1) (3 48 53 1 1) (6 56 58 1 0)))
+--> ((28 44 51 1 1) (28 48 53 1 1) (28 56 58 1 0)
+     (30 44 51 1 1) (31 48 53 1 1) (34 56 58 1 0)).
+\end{verbatim}
+
+This function takes three arguments: an ontime, an
+ontime index and a list of datapoints (assumed to
+be sorted in lexicographical order). It translates
+these datapoints such that the ontime of the last
+datapoint equals the first argument.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

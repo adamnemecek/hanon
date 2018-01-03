@@ -1,0 +1,251 @@
+\subsection{Superdiagonals}\label{sec:superdiagonals}
+
+These functions implement a structural
+induction algorithm using merge sort, and with
+calculation of difference vectors restricted to the
+first $r$ superdiagonals of the dataset's similarity
+matrix.
+
+
+%%%%%
+\subsection*{difference-list-sorted-asc}\label{fun:difference-list-sorted-asc}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:superdiagonals} \\
+Calls & \nameref{fun:subtract-two-lists}, \nameref{fun:vector<vector-t-or-nil} \\
+Called by & \nameref{fun:merge-sort-diff-sets-of-datapoints} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(difference-list-sorted-asc
+ '((71 1/2) (143/2 1/2) (72 1/2) (145/2 1/2)))
+--> ((1/2 0) (1/2 0) (1/2 0) (1 0) (1 0) (3/2 0))
+\end{verbatim}
+
+\noindent For a dataset $D = \{\mathbf{d}_1,\ldots,
+\mathbf{d}_n\}$, this function calculates
+$(\mathbf{d}_j - \mathbf{d}_i)_{i < j}$ and sorts
+the output by lexicographic order.
+
+
+%%%%%
+\subsection*{merge-sort-by}\label{fun:merge-sort-by}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:superdiagonals} \\
+Calls & \nameref{fun:vector<vector-car-cdr} \\
+Called by & \nameref{fun:structure-induction-algorithm-r} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(merge-sort-by
+ '(((1 -1) 0 60) ((2 5) 1 59) ((1 -3) 3 64)
+   ((3 4) 4 61) ((3 4) 0 60) ((3 2) 1 59)
+   ((4 1) 3 64)))
+--> (((1 -3) 3 64) ((1 -1) 0 60) ((2 5) 1 59)
+     ((3 2) 1 59) ((3 4) 0 60) ((3 4) 4 61)
+     ((4 1) 3 64))
+\end{verbatim}
+
+\noindent As a default, this function applies the
+predicate vector$<$vector-car-cdr to merge-sort the
+list provided as an argument.
+
+
+%%%%%
+\subsection*{merge-sort-diff-sets-of-datapoints}\label{fun:merge-sort-diff-sets-of-datapoints}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:superdiagonals} \\
+Calls & \nameref{fun:difference-list-sorted-asc},\newline \nameref{fun:remove-duplicates-sorted-asc},\newline \nameref{fun:vector<vector-t-or-nil} \\
+Called by & \nameref{fun:structure-induction-algorithm-r} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(merge-sort-diff-sets-of-datapoints
+ '(((1 0) (0 60) (0 64) (4 59)) ((4 7) (0 60) (0 64))
+   ((0 16) (0 60) (0 62) (0 64))))
+--> ((0 2) (0 4) (0 4) (0 4) (4 -5) (4 -1))
+\end{verbatim}
+
+\noindent The argument to this function is a list of
+vector-datapoints pairs. The elements of the upper
+triangle of the similarity matrix of each set of
+datapoints are merge sorted. Duplicates are removed
+within similarity matrices but may still occur
+between similarity matrices.
+
+
+%%%%%
+\subsection*{remove-duplicates-sorted-asc}\label{fun:remove-duplicates-sorted-asc}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:superdiagonals} \\
+Calls & \\
+Called by & \nameref{fun:merge-sort-diff-sets-of-datapoints} \\
+Comments/see also & Should test against built-in Lisp functions.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(remove-duplicates-sorted-asc '(0 0 6 7 8 8 8))
+--> (0 6 7 8)
+\end{verbatim}
+
+\noindent Consequent elements of a list are checked
+for equality to remove duplicates from an already-
+sorted list.
+
+
+%%%%%
+\subsection*{structure-induction-algorithm-r}\label{fun:structure-induction-algorithm-r}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:superdiagonals} \\
+Calls & \nameref{fun:collect-by-cars}, \nameref{fun:frequency-count},\newline \nameref{fun:maximal-translatable-pattern},\newline \nameref{fun:merge-sort-by},\newline \nameref{fun:merge-sort-diff-sets-of-datapoints},\newline \nameref{fun:sort-dataset-asc},\newline \nameref{fun:subtractnretain-at-fixed-distances} \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ dataset
+ '((0 60) (1 61) (2 62) (3 60) (5 60) (5 61) (6 59)
+   (6 62) (7 60) (7 63) (8 61)))
+(structure-induction-algorithm-r
+ dataset 1
+ (merge-pathnames
+  (make-pathname
+   :name "SIA_r example"
+   :type "txt")
+  *MCStylistic-Aug2013-example-files-results-path*))
+--> Writes file to the specified location.
+\end{verbatim}
+
+\noindent The first $r$ superdiagonals of the similarity
+matrix for the dataset are treated in a SIA-like
+fashion to form patterns. For each pattern
+$P_i = \{\mathbf{p}_{i,1},\ldots,
+\mathbf{p}_{i,l_i}\}$, we calculate the
+vector $\mathbf{v} =
+\mathbf{p}_{i,j} - \mathbf{p}_{i,1}, 2 \leq j
+\leq l_i$. If this vector is not in a growing list,
+then its MTP is computed and appended to the
+output.
+
+
+%%%%%
+\subsection*{subtract\&retain-at-fixed-distance}\label{fun:subtractnretain-at-fixed-distance}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:superdiagonals} \\
+Calls & \nameref{fun:subtract-two-lists} \\
+Called by & \nameref{fun:subtractnretain-at-fixed-distances} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(subtract&retain-at-fixed-distance
+ '((0 60) (0 67) (0 72) (1 62) (2 66) (3 59) (3 62)
+   (3 67) (4 69) (11/2 71) (6 60) (6 67) (6 72)) 1)
+--> (((0 7) 0 60) ((0 5) 0 67) ((1 -10) 0 72)
+     ((1 4) 1 62) ((1 -7) 2 66) ((0 3) 3 59)
+     ((0 5) 3 62) ((1 2) 3 67) ((3/2 2) 4 69)
+     ((1/2 -11) 11/2 71) ((0 7) 6 60) ((0 5) 6 67))
+\end{verbatim}
+
+\noindent A list $(\mathbf{e}_1, \mathbf{e}_2,
+\ldots, \mathbf{e}_n)$ is the argument to this
+function, and an optional fixed distance $k$. The
+pairs $(\mathbf{e}_{k+i} - \mathbf{e}_i,
+\mathbf{e}_i)$ are output for $i = 1, 2,\ldots,
+n-k$.
+
+
+%%%%%
+\subsection*{subtract\&retain-at-fixed-distances}\label{fun:subtractnretain-at-fixed-distances}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:superdiagonals} \\
+Calls & \nameref{fun:subtractnretain-at-fixed-distance} \\
+Called by & \nameref{fun:structure-induction-algorithm-r} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(subtract&retain-at-fixed-distances
+ '((0 60) (0 67) (0 72) (1 62)) 2)
+--> (((0 7) 0 60) ((0 5) 0 67) ((1 -10) 0 72)
+     ((0 12) 0 60) ((1 -5) 0 67))
+\end{verbatim}
+
+\noindent The function subtract\&retain-at-fixed-
+distance is applied for $i = 1, 2,\ldots, k$, where
+$k$ is the second argument. The output of each
+application is appended.
+
+
+%%%%%
+\subsection*{vector$<$vector-car-cdr}\label{fun:vector<vector-car-cdr}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 6/9/2010, 6/9/2010 \\
+Location & \nameref{sec:superdiagonals} \\
+Calls & \nameref{fun:vector<vector}, \nameref{fun:vector<vector-t-or-nil} \\
+Called by & \nameref{fun:merge-sort-by} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(vector<vector-car-cdr
+ '((2 2) . (1 4)) '((2 2) . (1 3)))
+--> NIL
+\end{verbatim}
+
+\noindent Applies the function vector$<$vector to the
+car of each list (the two arguments), and if equal,
+applies the function vector$<$vector-t-or-nil to the
+cdr of each list.
+
+
+
+
+
+
+
+
+
+

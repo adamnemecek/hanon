@@ -1,0 +1,503 @@
+\subsection{Hash tables}\label{sec:hash-tables}
+
+The functions below are for saving, reading,
+displaying and querying hash-tables. It can be
+convenient to work with lists, each of whose elements
+is a hash table.
+
+
+%%%%%
+\subsection*{copy-hash-table}\label{fun:copy-hash-table}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \\
+Called by & \nameref{fun:disp-ht-el}, \nameref{fun:disp-ht-key} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq A (make-hash-table :test #'equal))
+(setf (gethash '"hair colour" A) "brown")
+(setq B (copy-hash-table A))
+(list A B)
+--> (#<HASH-TABLE
+        :TEST EQUAL size 1/60 #x300041A694FD>
+     #<HASH-TABLE
+        :TEST EQUAL size 1/60 #x300041A683DD>)
+\end{verbatim}
+
+\noindent This function returns a copy of hash table,
+with the same keys and values. The copy has the same
+properties as the original, unless overridden by the
+keyword arguments.
+
+Before each of the original values is set into the new
+hash-table, key is invoked on the value. As key
+defaults to cl:identity, a shallow copy is returned by
+default. Adapted from \href{http://common-lisp.net/project/alexandria/darcs/alexandria/hash-tables.lisp}{http://common-lisp.net/project/alexandria/darcs\newline/alexandria/hash-tables.lisp}.
+
+
+%%%%%
+\subsection*{disp-ht-el}\label{fun:disp-ht-el}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \\
+Called by & \nameref{fun:write-to-file-balanced-hash-table} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq A (make-list-of-hash-tables 2))
+(setf (gethash '"hair colour" (first A)) "brown")
+(setf (gethash '"eye colour" (first A)) "brown")
+(setf (gethash '"hair colour" (second A)) "blond")
+(setf (gethash '"gender" (second A)) "male")
+(disp-ht-el (first A))
+--> (("hair colour" . "brown")
+     ("eye colour" . "brown"))
+\end{verbatim}
+
+\noindent This function displays the contents of a
+hash table.
+
+
+%%%%%
+\subsection*{disp-ht-key}\label{fun:disp-ht-key}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \\
+Called by & \nameref{fun:write-to-file-balanced-hash-table} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq A (make-hash-table :test #'equalp))
+(setf (gethash '"hair colour" A) "brown")
+(setf (gethash '"eye colour" A) "brown")
+(setf (gethash '"gender" A) "male")
+(disp-ht-key A)
+--> ("hair colour" "eye colour" "gender")
+\end{verbatim}
+
+\noindent This function displays the keys of a hash
+table.
+
+
+%%%%%
+\subsection*{hash-tables-with-key-value-pairs}\label{fun:hash-tables-with-key-value-pairs}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \nameref{fun:constant-vector} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq A (make-list-of-hash-tables 2))
+(setf (gethash '"hair colour" (first A)) "brown")
+(setf (gethash '"eye colour" (first A)) "brown")
+(setf (gethash '"name" (first A)) "Chris")
+(setf (gethash '"hair colour" (second A)) "blond")
+(setf (gethash '"gender" (second A)) "male")
+(setf (gethash '"name" (second A)) "Chris")
+(setq
+ B
+ (hash-tables-with-key-value-pairs
+  A '(("name" . "Chris") ("hair colour" . "brown"))))
+--> (#<HASH-TABLE
+     :TEST EQUAL size 3/60 #x3000417DF6FD>)
+\end{verbatim}
+
+\noindent This function returns those hash tables in
+a list that have key-value pairs equalp to those
+specified in the second argument. The example returns
+a list of one hash table because only the first hash
+table contains information for somebody called Chris
+with brown hair.
+
+
+%%%%%
+\subsection*{index-target-translation-in-hash-tables}\label{fun:index-target-translation-in-hash-tables}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \nameref{fun:test-translation} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ A
+ (read-from-file-balanced-hash-table
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/patterns-hash.txt")))
+(disp-ht-el (fourth A))
+(index-target-translation-in-hash-tables
+ '((4 38 47) (9/2 38 47) (5 38 47)) A "pattern")
+--> 3
+\end{verbatim}
+
+\noindent The hash tables each contain a value
+specified by the third argument (a key). We think of
+these as patterns, and want to know if any of the
+patterns are translations of the first argument, the
+target. The index of the first extant translation is
+returned, and nil otherwise.
+
+
+%%%%%
+\subsection*{index-target-translation-mod-in-hash-tables}\label{fun:index-target-translation-mod-in-hash-tables}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \nameref{fun:test-translation-mod-2nd-n} \\
+Called by & \nameref{fun:number-of-targets-trans-mod-in-hash-tables} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ A
+ (read-from-file-balanced-hash-table
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/patterns-hash.txt")))
+(disp-ht-el (fourth A))
+(index-target-translation-mod-in-hash-tables
+ '((0 36 46) (1/2 48 46) (1 36 46)) A 12 "pattern")
+--> 3
+\end{verbatim}
+
+\noindent This function is very similar to the
+function index-target-translation-in-hash-tables,
+except that in the second dimension translations are
+carried out modulo the third argument.
+
+
+%%%%%
+\subsection*{make-list-of-hash-tables}\label{fun:make-list-of-hash-tables}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \\
+Called by & \nameref{fun:read-from-file-balanced-hash-table} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(make-list-of-hash-tables 3)
+--> (#<HASH-TABLE
+        :TEST EQUAL size 0/60 #x300041BB8A5D>
+     #<HASH-TABLE
+        :TEST EQUAL size 0/60 #x300041BB84AD>
+     #<HASH-TABLE
+        :TEST EQUAL size 0/60 #x300041BB7EFD>)
+\end{verbatim}
+
+\noindent This function returns a list, each of whose
+elements is an empty hash table of type `equal'.
+
+
+%%%%%
+\subsection*{number-of-targets-trans-mod-in-hash-tables}\label{fun:number-of-targets-trans-mod-in-hash-tables}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \nameref{fun:index-target-translation-mod-in-hash-tables} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ A
+ (read-from-file-balanced-hash-table
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/patterns-hash.txt")))
+(number-of-targets-trans-mod-in-hash-tables
+ '(((0 36 46) (1/2 60 46) (1 36 46))
+   ((0 60 46) (0 48 53) (0 55 57) (0 60 60) (0 64 62)
+    (1/2 36 46) (1/2 48 53) (1/2 55 57) (1/2 62 61)
+    (1/2 65 63) (1 36 46) (1 48 53) (1 55 57)
+    (1 64 62) (1 67 64) (2 48 53) (2 65 63) (2 69 65)
+    (3 36 46) (3 48 53) (3 55 57) (3 64 62) (3 67 64)
+    (7/2 36 46) (7/2 48 53) (7/2 55 57) (7/2 60 60)
+    (7/2 64 62) (4 36 46) (4 48 53) (4 55 57)))
+ A 12 "pattern")
+--> 2
+\end{verbatim}
+
+\noindent This function is very similar to the
+function number-of-targets-translation-in-hash-tables,
+except that in the second dimension translation is
+performed modulo the third argument.
+
+
+%%%%%
+\subsection*{number-of-targets-translation-in-hash-tables}\label{fun:number-of-targets-translation-in-hash-tables}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \nameref{fun:test-target-translation-in-hash-tables} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ A
+ (read-from-file-balanced-hash-table
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/patterns-hash.txt")))
+(number-of-targets-translation-in-hash-tables
+ '(((6 48 53) (13/2 48 53) (7 48 53))
+   ((24 29 42) (24 41 49) (24 48 53) (24 53 56)
+    (24 57 58) (49/2 29 42) (49/2 41 49) (49/2 48 53)
+    (49/2 55 57) (49/2 58 59) (25 29 42) (25 41 49)
+    (25 48 53) (25 57 58) (25 60 60) (26 41 49)
+    (26 58 59) (26 62 61) (27 29 42) (27 41 49)
+    (27 48 53) (27 57 58) (27 60 60) (55/2 29 42)
+    (55/2 41 49) (55/2 48 53) (55/2 53 56)
+    (55/2 57 58) (28 29 42) (28 41 49) (28 48 53)))
+ A "pattern")
+--> 2
+\end{verbatim}
+
+\noindent The function test-target-translation-in-
+hash-tables is applied recursively to each member of
+the first argument of this function. This argument is
+a list of targets. Each time a translation of a target
+is detected, the output (initially set to zero) is
+incremented by one.
+
+
+%%%%%
+\subsection*{re-index-list-of-hash-tables}\label{fun:re-index-list-of-hash-tables}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ A
+ (read-from-file-balanced-hash-table
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/small-hash-table.txt")))
+(setq A (re-index-list-of-hash-tables A 780))
+(gethash '"index" (first A))
+--> 780
+    T
+\end{verbatim}
+
+\noindent This function re-indexes a list of hash
+tables beginning from an optional second argument.
+
+
+%%%%%
+\subsection*{read-from-file-balanced-hash-table}\label{fun:read-from-file-balanced-hash-table}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \nameref{fun:make-list-of-hash-tables}, \nameref{fun:read-from-file} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ A
+ (read-from-file-balanced-hash-table
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/small-hash-table.txt")))
+(disp-ht-el (second A))
+--> (("height" . "6ft") ("name" . "Justin")
+     ("index" . 77))
+\end{verbatim}
+
+\noindent This function reads a balanced list of hash
+tables that have been written to a file, by the
+function write-to-file-balanced-hash-table. It is
+assumed that the hash tables are homogeneous or
+balanced in the sense that they contain exactly the
+same keys.
+
+
+%%%%%
+\subsection*{set-each-hash-table-element}\label{fun:set-each-hash-table-element}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq A (make-list-of-hash-tables 2))
+(setf (gethash '"hair colour" (first A)) "brown")
+(setf (gethash '"eye colour" (first A)) "brown")
+(setf (gethash '"hair colour" (second A)) "blond")
+(setf (gethash '"gender" (second A)) "male")
+(set-each-hash-table-element A "height" "tall")
+(list
+ (gethash '"height" (first A))
+ (gethash '"height" (second A)))
+--> ("tall" "tall")
+\end{verbatim}
+
+\noindent This function is useful if you have a list
+of hash tables and you want to set each hash table to
+have an identical key-value pair.
+
+
+%%%%%
+\subsection*{test-target-translation-in-hash-tables}\label{fun:test-target-translation-in-hash-tables}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \nameref{fun:test-translation} \\
+Called by & \nameref{fun:number-of-targets-translation-in-hash-tables} \\
+Comments/see also & Implementation could call \nameref{fun:index-target-translation-in-hash-tables} instead.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ A
+ (read-from-file-balanced-hash-table
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/patterns-hash.txt")))
+(disp-ht-el (fourth A))
+(test-target-translation-in-hash-tables
+ '((6 48 53) (13/2 48 53) (7 48 53)) A "pattern")
+--> T
+\end{verbatim}
+
+\noindent The hash tables each contain a value
+specified by the third argument (a key). We think of
+these as patterns, and want to know if any of the
+patterns are translations of the first argument, the
+target. T is returned if a translation does exist
+among the hash tables, and nil otherwise.
+
+
+%%%%%
+\subsection*{write-to-file-balanced-hash-table}\label{fun:write-to-file-balanced-hash-table}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/1/2010, 25/1/2010 \\
+Location & \nameref{sec:hash-tables} \\
+Calls & \nameref{fun:disp-ht-el}, \nameref{fun:write-to-file} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq A (make-list-of-hash-tables 2))
+(setf (gethash '"hair colour" (first A)) "brown")
+(setf (gethash '"eye colour" (first A)) "brown")
+(setf (gethash '"height" (first A)) 187)
+(setf (gethash '"hair colour" (second A)) "blond")
+(setf (gethash '"gender" (second A)) "male")
+(write-to-file-balanced-hash-table
+ A
+ (concatenate
+  'string
+  *MCStylistic-Oct2010-example-files-path*
+  "/small-hash-table 2.txt"))
+--> T
+\end{verbatim}
+
+\noindent This function takes as its first argument a
+list, each of whose elements is a hash table. It
+applies the function disp-ht-el to each element,
+collects the output and writes it to a text file. At
+the top of the file are two integers $n$ and $m$,
+referring to the length of the list and the number of
+elements in a hash table respectively. It is assumed
+that the hash tables are homogeneous or balanced in
+the sense that they contain exactly the same keys, but
+as the example demostrates, this does not have to be
+the case. (Balanced hash tables are easier to read
+back in.)
+
+
+
+
+

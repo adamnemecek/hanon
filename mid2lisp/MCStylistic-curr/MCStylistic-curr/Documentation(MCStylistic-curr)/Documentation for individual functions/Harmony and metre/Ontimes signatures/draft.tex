@@ -1,0 +1,216 @@
+\subsection{Ontimes signatures}\label{sec:ontimes-signatures}
+
+These lisp functions help with converting between
+ontimes and bar/beat numbers, when time signatures
+change according to the variable time-sigs-with-
+ontimes, which is a list of time signatures in a
+piece. In this list of lists: the first item of a
+list is a bar number; the second item is the upper
+number of the time signature in that bar (specifying
+number of beats per bar); the third item is the
+lower number of the time signature (specifying the
+division used to count time, with 4 for crotchet,
+etc.); the fourth item is the corresponding
+ontime.
+
+
+%%%%%
+\subsection*{append-ontimes-to-time-signatures}\label{fun:append-ontimes-to-time-signatures}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/3/2010, 15/3/2010 \\
+Location & \nameref{sec:ontimes-signatures} \\
+Calls & \nameref{fun:my-last} \\
+Called by & \\
+Comments/see also & \nameref{fun:kern-file2ontimes-signatures}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(append-ontimes-to-time-signatures
+ '((1 2 4) (2 3 8) (4 3 4) (7 5 8)))
+--> ((1 2 4 0) (2 3 8 2) (4 3 4 5) (7 5 8 14))
+\end{verbatim}
+
+\noindent This function appends ontimes to rows of
+the time-signature table.
+
+
+%%%%%
+\subsection*{bar\&beat-number-of-ontime}\label{fun:bar-n-beat-number-of-ontime}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/3/2010, 10/6/2015 \\
+Location & \nameref{sec:ontimes-signatures} \\
+Calls & \nameref{fun:row-of-max-ontime<=ontime-arg} \\
+Called by & \nameref{fun:bar-beat-ontimes} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(bar&beat-number-of-ontime
+ 10 '((1 2 4 0) (2 3 8 2) (4 3 4 5) (7 5 8 14)))
+--> (5 3 10)
+\end{verbatim}
+
+\noindent Given an ontime and a time-signature table
+(with ontimes appended), this function returns the
+bar number and beat number of that ontime. Beat
+numbers are expressed in crotchets counting from one
+(see the second and third examples above).
+
+
+%%%%%
+\subsection*{bar-beat-ontimes}\label{fun:bar-beat-ontimes}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/3/2010, 15/3/2010 \\
+Location & \nameref{sec:ontimes-signatures} \\
+Calls & \nameref{fun:bar-n-beat-number-of-ontime} \\
+Called by & \nameref{fun:bar-beat-ontimes} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(bar-beat-ontimes
+ 0 1 '((1 2 4 0) (2 3 8 2) (4 3 4 5) (7 5 8 14)))
+--> ((1 1 0) (1 2 1) (2 1 2) (2 2 3) (3 3/2 4)
+     (4 1 5) (4 2 6) (4 3 7) (5 1 8) (5 2 9)
+     (5 3 10) (6 1 11) (6 2 12) (6 3 13) (7 1 14)
+     (7 2 15))
+\end{verbatim}
+
+\noindent Given an ontime start, a subdivision of
+the crotchet beat and a time-signature table (with
+ontimes appended, this function returns the bar and
+beat numbers that will be displayed at the foot of
+the MIDI table, and the corresponding ontimes.
+
+
+%%%%%
+\subsection*{increment-by-x-n-times}\label{fun:increment-by-x-n-times}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/3/2010, 15/3/2010 \\
+Location & \nameref{sec:ontimes-signatures} \\
+Calls & \nameref{fun:my-last} \\
+Called by & \nameref{fun:bar-beat-ontimes} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(increment-by-x-n-times 1/2 3 7.5)
+--> (7.5 8.0 8.5 9.0)
+\end{verbatim}
+
+\noindent Adds the first argument to the third
+(default zero), and continues to do so until the
+second argument is exceeded.
+
+
+%%%%%
+\subsection*{ontime-of-bar\&beat-number}\label{fun:ontime-of-bar-n-beat-number}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/3/2010, 15/3/2010 \\
+Location & \nameref{sec:ontimes-signatures} \\
+Calls & \nameref{fun:my-last} \\
+Called by & \nameref{fun:bar-beat-ontimes} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(ontime-of-bar&beat-number
+ 5 2 '((1 2 4 0) (2 3 8 2) (4 3 4 5) (8 5 8 17)))
+--> (5 2 9)
+\end{verbatim}
+
+\noindent Given a bar and beat number, and a
+time-signature table (with ontimes appended, this
+function returns the ontime of that bar and beat
+number.
+
+
+%%%%%
+\subsection*{row-of-max-bar$<$=ontime-bar}\label{fun:row-of-max-bar<=ontime-bar}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/3/2010, 15/3/2010 \\
+Location & \nameref{sec:ontimes-signatures} \\
+Calls & \\
+Called by & \nameref{fun:ontime-of-bar-n-beat-number} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(row-of-max-bar<=ontime-bar
+ 4 '((1 2 4 0) (2 3 8 2) (4 3 4 5) (8 5 8 17)))
+--> (4 3 4 5)
+\end{verbatim}
+
+\noindent Returns the row (in a list of time
+signatures) of the maximal bar number less than the
+bar number argument.
+
+
+%%%%%
+\subsection*{row-of-max-ontime$<$=ontime-arg}\label{fun:row-of-max-ontime<=ontime-arg}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/3/2010, 2/1/2015 \\
+Location & \nameref{sec:ontimes-signatures} \\
+Calls & \\
+Called by & \nameref{fun:bar-n-beat-number-of-ontime} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(row-of-max-ontime<=ontime-arg
+ 7 '((1 2 4 0) (2 3 8 2) (4 3 4 5) (5 5 8 8)))
+--> (4 3 4 5)
+\end{verbatim}
+
+\noindent Returns the row (in a list of time
+signatures) of the maximal ontime less than the
+ontime argument.
+
+2/1/2015. Added handling of negative ontimes
+(e.g., representing an anacrusis).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

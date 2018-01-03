@@ -1,0 +1,5 @@
+("composition 1" . "compose")
+("analysis 1" . "analyse")
+("folder 1" (("composition 2" . "compose") ("composition 3" . "compose") ("fun 1" . "ARCA") ("folder 2" (("analysis 2" . "analyse"))) ("chopin op 41 nr 2" . "compose") ("beethoven op 18 nr 6 adagio" . "compose") ("beethoven op 59 nr 3 allegro" . "compose") ("every breath you take" . "compose")))
+("fun 2" . "ARCA")
+("schubert d960" . "compose")

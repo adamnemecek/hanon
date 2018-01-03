@@ -1,0 +1,322 @@
+\subsection{Generating with patterns}\label{sec:generating-with-patterns}
+
+The main function here is
+\nameref{fun:generate-beat-spacing<->pattern-inheritance}, at the heart of the model named Racchmaninof-Oct2010
+(standing for RAndom Constrained CHain of Markovian
+Nodes with INheritance Of Form).
+
+
+%%%%%
+\subsection*{generate-beat-spacing$<$-$>$pattern-inheritance}\label{fun:generate-beat-spacing<->pattern-inheritance}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/10/2010, 25/10/2010 \\
+Location & \nameref{sec:generating-with-patterns} \\
+Calls & \nameref{fun:generate-beat-spacing-for-intervals}, \nameref{fun:generate-intervals},\newline \nameref{fun:indices-of-max-subset-score},\newline \nameref{fun:merge-sort-by-vector<vector-car},\newline \nameref{fun:my-last}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:translate-to-other-occurrences}, \nameref{fun:translation} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: see Stylistic composition with
+Racchmaninof-Oct2010
+(Sec.~\ref{sec:ex:Racchmaninof-Oct2010}).
+\vspace{0.5cm}
+
+\noindent This function is at the heart of the model
+named Racchmaninof-Oct2010 (standing for RAndom
+Constrained CHain of Markovian Nodes with INheritance
+Of Form). It takes nine mandatory arguments and
+twenty-two optional arguments. The mandatory arguments
+are initial-state and state-transition lists, and also
+information pertaining to a so-called \emph{template
+with patterns}. The optional arguments are mainly for
+controlling various criteria like: not too many
+consecutive states from the same source, the range
+must be comparable with that of the template, and the
+likelihood of the states must be comparable with that
+of the template.
+
+
+%%%%%
+\subsection*{generate-beat-spacing-for-interval}\label{fun:generate-beat-spacing-for-interval}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/10/2010, 25/10/2010 \\
+Location & \nameref{sec:generating-with-patterns} \\
+Calls & \nameref{fun:beat-spacing-states}, \nameref{fun:beat-spacing-states<-},\newline \nameref{fun:generate-beat-spacing-forced<->},\newline \nameref{fun:most-plausible-join}, \nameref{fun:my-last}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:remove-datapoints-with-nth-item<},\newline \nameref{fun:remove-datapoints-with-nth-item>} \\
+Called by & \nameref{fun:generate-beat-spacing-for-intervals} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   external-initial-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/initial-states.txt")))
+  (setq
+   internal-initial-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/internal-initial-states.txt")))
+  (setq
+   stm->
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/transition-matrix.txt")))
+  (setq
+   external-final-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/final-states.txt")))
+  (setq
+   internal-final-states
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/internal-final-states.txt")))
+  (setq
+   stm<-
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/Racchmaninof-Oct2010 example"
+     "/transition-matrix<-.txt")))
+  (setq
+   dataset-all
+   (read-from-file
+    (concatenate
+     'string
+     *MCStylistic-Oct2010-data-path*
+     "/Dataset/C-56-1-ed.txt")))
+  (setq
+   dataset-template
+   (subseq dataset-all 0 132))
+  "Data imported.")
+(progn
+  (setq generation-interval '(12 24))
+  (setq
+   whole-piece-interval
+   (list
+    (floor (first (first dataset-all)))
+    (ceiling (first (my-last dataset-all)))))
+  (setq A (make-hash-table :test #'equal))
+  (setf
+   (gethash
+    '"united-candidates,1,1,superimpose" A)
+   '((9 70 66 3 0) (9 79 71 1/2 0) (19/2 74 68 3/2 0)
+     (10 55 57 1 1) (10 62 61 1 1) (11 55 57 1 1)
+     (11 62 61 1 1) (12 38 47 1 1) (12 69 65 1/2 0)))
+  (setq B (make-hash-table :test #'equal))
+  (setf
+   (gethash
+    '"united-candidates,2,3,forwards-dominant" B)
+   '((24 38 47 1 1) (49/2 66 63 1/2 0) (25 50 54 1 1)
+     (25 57 58 1 1) (25 60 60 1 1) (25 62 61 1 0)
+     (26 50 54 1 1) (26 57 58 1 1) (26 60 60 1 1)
+     (26 62 61 1 1) (26 66 63 1 0) (26 70 66 3/4 0)
+     (107/4 69 65 1/4 0) (27 43 50 1 1)
+     (27 67 64 2 0)))
+  (setq
+   interval-output-pairs
+   (list
+    (list
+     (list 9 12)
+     (list
+      "united-candidates,1,1,superimpose"
+      (list nil nil A)))
+    (list
+     (list 24 27)
+     (list
+      "united-candidates,2,3,forwards-dominant"
+      (list nil nil B)))))
+  (setq
+   pattern-region
+   '((12 60 60) (12 64 62) (25/2 57 58) (51/4 64 62)
+     (13 52 55) (13 64 62) (14 54 56) (29/2 62 61)
+     (15 55 57) (15 59 59) (63/4 64 62) (16 43 50)
+     (16 50 54) (16 66 63) (17 67 64) (18 57 58)
+     (18 60 60) (18 64 62) (75/4 66 63) (19 43 50)
+     (19 50 54) (19 67 64) (20 66 63) (20 69 65)
+     (21 59 59) (21 67 64) (21 71 66) (87/4 74 68)
+     (22 43 50) (22 50 54) (22 74 68) (23 62 61)
+     (24 60 60) (24 64 62)))
+  "Argument instances defined.")
+(progn
+  (setq
+   checklist
+   (list "originalp" "mean&rangep" "likelihoodp"))
+  (setq beats-in-bar 3) (setq c-failures 10)
+  (setq c-sources 4) (setq c-bar 48) (setq c-min 38)
+  (setq c-max 38) (setq c-beats 38) (setq c-prob 1)
+  (setq c-forwards 3) (setq c-backwards 3)
+  (setq
+   *rs* #.(CCL::INITIALIZE-RANDOM-STATE 56302 14832))
+  "Parameters set.")
+(progn
+  (setq
+   interval-output-pair
+   (generate-beat-spacing-for-interval
+    generation-interval whole-piece-interval
+    interval-output-pairs external-initial-states
+    internal-initial-states stm->
+    external-final-states internal-final-states stm<-
+    dataset-template pattern-region checklist
+    beats-in-bar c-failures c-sources c-bar c-min
+    c-max c-beats c-prob c-forwards c-backwards))
+--> ((12 24)
+     ("united,2,1,backwards-dominant"
+      (#<HASH-TABLE
+       :TEST EQUAL size 3/60 #x30004340CE3D>
+       #<HASH-TABLE
+       :TEST EQUAL size 3/60 #x30004340C82D>
+       #<HASH-TABLE
+       :TEST EQUAL size 27/60 #x30004340C21D>)))
+\end{verbatim}
+
+\noindent This function generates material for a specified time
+interval, by calling the function
+generate-beat-spacing-forced$<$-$>$.
+
+
+%%%%%
+\subsection*{generate-beat-spacing-for-intervals}\label{fun:generate-beat-spacing-for-intervals}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/10/2010, 25/10/2010 \\
+Location & \nameref{sec:generating-with-patterns} \\
+Calls & \nameref{fun:generate-beat-spacing-for-interval} \\
+Called by & \nameref{fun:generate-beat-spacing<->pattern-inheritance} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: see example for
+\nameref{fun:generate-beat-spacing-for-interval}.
+\vspace{0.5cm}
+
+\noindent This function applies the function
+generate-beat-spacing-for-interval to each member of
+a list called \texttt{interval-output-pairs}.
+
+
+%%%%%
+\subsection*{interval-output-pairs2dataset}\label{fun:interval-output-pairs2dataset}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/10/2010, 15/5/2015 \\
+Location & \nameref{sec:generating-with-patterns} \\
+Calls & \nameref{fun:unite-datapoints} \\
+Called by & \nameref{fun:generate-beat-spacing<->pattern-inheritance} \\
+Comments/see also & Updated with an optional argument to allow specification of the location of a point set within the output part of an interval-output list. 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: see example for
+\nameref{fun:unite-datapoints}.
+\vspace{0.5cm}
+
+\noindent This function applies the function
+unite-datapoints, to convert the output for various
+intervals into a dataset.
+
+
+%%%%%
+\subsection*{translate-to-other-occurrence}\label{fun:translate-to-other-occurrence}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/10/2010, 25/10/2010 \\
+Location & \nameref{sec:generating-with-patterns} \\
+Calls & \nameref{fun:translation} \\
+Called by & \nameref{fun:translate-to-other-occurrences} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(translate-to-other-occurrence
+ nil '(36 12 7) '((12 24))
+ (make-hash-table :test #'equal)
+ (translation
+  '((12 38 47 1/2 1) (49/4 64 62 1/4 0)
+    (25/2 50 54 1 1) (25/2 55 57 1 1) (25/2 58 59 1 1)
+    (25/2 62 61 1 0)) '(36 12 7 0 0)))
+--> (((48 60)
+      ("translated material"
+       (NIL NIL
+        #<HASH-TABLE :TEST EQUAL
+        size 1/60 #x3000436FF23D>))))
+\end{verbatim}
+
+\noindent This function takes a list of interval-
+output pairs as its argument (from one iteration of
+generate-beat-spacing<->pattern-inheritance) Its
+second argument is a translation vector, by which
+each of the output datasets must be translated.
+
+
+%%%%%
+\subsection*{translate-to-other-occurrences}\label{fun:translate-to-other-occurrences}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 25/10/2010, 25/10/2010 \\
+Location & \nameref{sec:generating-with-patterns} \\
+Calls & \nameref{fun:my-last}, \nameref{fun:nth-list-of-lists}, \nameref{fun:remove-nth},\newline \nameref{fun:subtract-list-from-each-list},\newline \nameref{fun:translate-to-other-occurrence} \\
+Called by & \nameref{fun:generate-beat-spacing<->pattern-inheritance} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example: see example for
+\nameref{fun:translate-to-other-occurrence}.
+\vspace{0.5cm}
+
+\noindent This function applies the function
+translate-to-other-occurrence to each member of
+a list called \texttt{translators}. It first
+determines whether the location to which material will
+be translated has been addressed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

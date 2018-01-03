@@ -1,0 +1,898 @@
+\subsection{Kern}\label{sec:kern}
+
+The functions below will parse a kern file
+(\href{http://kern.ccarh.org}{http://kern.ccarh.org}) and convert it to a dataset.
+The main function is \nameref{fun:kern-file2dataset}. Occasionally
+there are conflicts between kern's relative encoding
+and the timewise parsing function. These have been
+resolved by the function \nameref{fun:kern-file2dataset-by-col}.
+
+
+%%%%%
+\subsection*{accidental-char-p}\label{fun:accidental-char-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:kern-pitch-chars2pitch-and-octave} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(accidental-char-p #\a)
+--> nil
+\end{verbatim}
+
+\noindent This function returns true if the input
+character is associated with kern's representation of
+accidentals.
+
+
+%%%%%
+\subsection*{always-nil}\label{fun:always-nil}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:kern-file2points-artic-dynam-lyrics} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(always-nil #\e)
+--> nil
+\end{verbatim}
+
+\noindent This function always returns nil. It is
+useful for passing as a compiled function to the
+function \nameref{fun:kern-rows2col}.
+
+
+%%%%%
+\subsection*{concat-strings}\label{fun:concat-strings}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:followed-by-splitter} \\
+Comments/see also & \nameref{fun:space-bar-separated-string2list}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(concat-strings '("put " 7 "us " "together"))
+--> "put us together"
+\end{verbatim}
+
+\noindent This function by \href{http://stackoverflow.com/questions/5457346/lisp-function-to-concatenate-a-list-of-strings
+}{Svante} concatenates a list of strings, ignoring
+elements of the list that are not strings.
+
+
+%%%%%
+\subsection*{index-of-backward-tie}\label{fun:index-of-backward-tie}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:resolve-ties-kern} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(index-of-backward-tie
+ '((4 62 61 1 0 "[") (5 63 61 1 0 "[")
+   (21/4 64 62 1/8 0 "[") (43/8 63 61 1/8 0 "]")
+   (45/8 64 62 1/8 0 "][") (23/4 62 61 1/8 0 "]")
+   (47/8 64 62 1/8 0 "]") (6 63 61 1/4 0 "]")) 2)
+--> 5
+\end{verbatim}
+
+\noindent This function returns the index of the
+element that has the same MIDI-morphetic pairs as the
+element indicated by the second argument, so long as
+this element is tied backward.
+
+
+%%%%%
+\subsection*{kern-dur-pitch2pitch\&octave-dur}\label{fun:kern-dur-pitch2pitch-and-octave-dur}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 13/7/2013 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:kern-pitch-chars2pitch-and-octave} \\
+Called by & \nameref{fun:kern-tie-dur-pitch2list} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(kern-dur-pitch2pitch&octave-dur "8e#")
+--> ("E#4" 1/2)
+\end{verbatim}
+
+\noindent This function converts a kern note into
+pitch-and-octave-number and a duration. It is assumed
+that any irrelevant symbols have already been removed
+via the function remove-if in combination with the
+test function not-tie-dur-pitch-char-p as applied to
+\texttt{*kern-note*}. Non-notes should then result
+in nil being returned.
+
+
+%%%%%
+\subsection*{kern-file2dataset}\label{fun:kern-file2dataset}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:parse-kern-row}, \nameref{fun:read-from-file-arbitrary},\newline \nameref{fun:resolve-ties-kern}, \nameref{fun:staves-info2staves-variable} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(firstn
+ 10
+ (kern-file2dataset
+  (concatenate
+   'string
+   *MCStylistic-Oct2010-example-files-path*
+   "/vivaldi-op6-no3-2.txt")))
+--> ((0 49 53 1 3) (0 49 53 1 5) (0 69 65 1 2)
+     (0 76 69 1 1) (0 79 71 1 0) (1 49 53 1 3)
+     (1 49 53 1 5) (1 69 65 1 2) (1 76 69 1 1)
+     (1 79 71 1 0))
+\end{verbatim}
+
+\noindent This function converts a text file in the
+kern format into a dataset, where each datapoint
+consists of an ontime, MIDI note number, morphetic
+pitch number, duration, and staff number.
+
+
+%%%%%
+\subsection*{kern-pitch-chars2pitch\&octave}\label{fun:kern-pitch-chars2pitch-and-octave}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:accidental-char-p}, \nameref{fun:upcase-p} \\
+Called by & \nameref{fun:kern-dur-pitch2pitch-and-octave-dur} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(kern-pitch-chars2pitch&octave "e#")
+--> "E#4"
+\end{verbatim}
+
+\noindent This function converts kern pitch characters
+into the pitch-and-octave-number representation. It
+can accept junk input, but may produce junk output.
+For example, try `.' or `$\ast$' as input.
+
+
+%%%%%
+\subsection*{kern-tie-dur-pitch2list}\label{fun:kern-tie-dur-pitch2list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 18/7/2013 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:kern-dur-pitch2pitch-and-octave-dur},\newline \nameref{fun:number-chars-p}, \nameref{fun:upcase-p} \\
+Called by & \nameref{fun:parse-kern-spaced-notes} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(kern-tie-dur-pitch2list "[8e#]")
+--> ("E#4" 1/2 "][")
+\end{verbatim}
+
+\noindent This function converts a kern note into a
+list consisting of pitch-and-octave, duration, and tie
+type. It is assumed that any irrelevant symbols have
+already been removed via the function remove-if in
+combination with the test function
+not-tie-dur-pitch-char-p as applied to
+\texttt{*kern-note*}. Non-notes should then result in
+nil being returned.
+
+
+%%%%%
+\subsection*{not-articulation-char-p}\label{fun:not-articulation-char-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:kern-file2points-artic-dynam-lyrics} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(not-articulation-char-p #\e)
+--> T
+\end{verbatim}
+
+\noindent This function returns true if the input
+character is not associated with kern's representation
+of articulation.
+
+
+%%%%%
+\subsection*{not-dynamics-char-p}\label{fun:not-dynamics-char-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2014, 16/6/2014 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:kern-file2points-artic-dynam-lyrics} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(not-articulation-char-p #\e)
+--> T
+\end{verbatim}
+
+\noindent This function returns true if the input
+character is not associated with kern's representation
+of dynamics.
+
+
+%%%%%
+\subsection*{not-tie-dur-pitch-char-p}\label{fun:not-tie-dur-pitch-char-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 18/7/2013 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:parse-kern-row} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(not-tie-dur-pitch-char-p #\h)
+--> T
+\end{verbatim}
+
+\noindent This function returns true if the input
+character is not associated with kern's representation
+of pitch.
+
+
+%%%%%
+\subsection*{number-chars-p}\label{fun:number-chars-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:kern-tie-dur-pitch2list} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(number-chars-p #\2)
+--> nil
+\end{verbatim}
+
+\noindent This function returns true if the input
+character is 0-9.
+
+
+%%%%%
+\subsection*{parse-kern-row}\label{fun:parse-kern-row}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 18/7/2013 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:not-tie-dur-pitch-char-p},\newline \nameref{fun:parse-kern-row-as-notes},\newline \nameref{fun:space-bar-separated-string2list},\newline \nameref{fun:tab-separated-string2list},\newline \nameref{fun:update-staves-variable} \\
+Called by & \nameref{fun:kern-file2dataset} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{Verbatim}[showtabs=true]
+(parse-kern-row
+ "2d#/ 2f#/	4A\	12cc#\L]	."
+ '((1 2) (0 1) (1/2 1)) 15)
+--> (((1 2) (0 1) (1/2 1))
+     46/3
+     ((15 63 61 2 1) (15 66 63 2 1) (15 57 58 1 1))
+     ((15 73 67 1/3 0 "]")))
+(parse-kern-row
+ "*	*v	*v	*"
+ '((1 1) (0 2) (1/2 1)) 15)
+--> (((1 1) (0 1) (1/2 1)) 15)
+(parse-kern-row
+ ".	.	16r	."
+ '((1 2) (0 1) (1/2 1)) 15)
+--> (((1 2) (0 1) (1/2 1)) 61/4)
+\end{Verbatim}
+
+\noindent This function parses a kern row, consisting
+of notes/rests, changes to the staves variable, or
+irrelevant information for our purposes. The ouptut is
+the staves variable, the new ontime, new datapoints,
+and new tied datapoints.
+
+
+%%%%%
+\subsection*{parse-kern-row-as-notes}\label{fun:parse-kern-row-as-notes}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:parse-kern-spaced-notes} \\
+Called by & \nameref{fun:parse-kern-row} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(parse-kern-row-as-notes
+ '(("2d#" "2f#") ("4A") ("12cc#]") (""))
+ '((1 2) (0 1) (1/2 1)) 15)
+--> (1/3
+     ((15 63 61 2 1) (15 66 63 2 1) (15 57 58 1 1)
+      (15 73 67 1/3 0 "]")))
+\end{verbatim}
+
+\noindent This function converts a kern row consisting
+of tabbed notes into a list of datapoints, and also
+returns the minimum duration of those notes. It
+recurses over the staves-variable to ensure that each
+note is labelled correctly according to staff. It is
+assumed that any irrelevant symbols have already been
+removed via the the function remove-if in combination
+with the test function not-tie-dur-pitch-char-p as
+applied to \texttt{*kern-note*}. Non-notes/rests
+should then result in '(0 NIL) being returned. A lone
+crotchet rest should result in '(1 NIL) being
+returned, etc.
+
+
+%%%%%
+\subsection*{parse-kern-spaced-notes}\label{fun:parse-kern-spaced-notes}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:kern-tie-dur-pitch2list},\newline \nameref{fun:pitch-and-octave2MIDI-morphetic-pair} \\
+Called by & \nameref{fun:parse-kern-row-as-notes} \\
+Comments/see also & \nameref{fun:parse-kern-spaced-rests}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(parse-kern-spaced-notes
+ '("[4C#" "4E#" "4B" "8g#") 0 3 0)
+--> (1/2
+     ((3 49 53 1 0 "[") (3 53 55 1 0) (3 59 59 1 0)
+      (3 68 64 1/2 0)))
+\end{verbatim}
+
+\noindent This function converts a kern row
+consisting of spaced notes into a list of datapoints,
+and also returns the minimum duration of those notes.
+It is assumed that any irrelevant symbols have already
+been removed via the the function remove-if in
+combination with the test function
+not-tie-dur-pitch-char-p as applied to
+\texttt{*kern-note*}. Non-notes/rests should then
+result in '(0 NIL) being returned. A lone crotchet
+rest should result in '(1 NIL) being returned, etc.
+
+
+%%%%%
+\subsection*{recognised-spine-commandp}\label{fun:recognised-spine-commandp}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 15/7/2013, 15/7/2013 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:kern-rows2col} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(recognised-spine-commandp "*>2nd ending	*")
+--> NIL
+(recognised-spine-commandp "*	*")
+--> NIL
+(recognised-spine-commandp "*^	*")
+--> T
+\end{verbatim}
+
+\noindent Some kern files that used spine commands
+(beginning $\ast$) to encode information other than
+splitting ($\ast\wedge$) or collapsing ($\ast\vee$).
+This function checks whether the input kern row
+contains any recognised spine commands, outputting T
+if this is the case, and NIL otherwise.
+
+
+%%%%%
+\subsection*{resolve-ties-kern}\label{fun:resolve-ties-kern}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:index-of-backward-tie} \\
+Called by & \nameref{fun:kern-file2dataset} \\
+Comments/see also & \nameref{fun:resolve-ties}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(resolve-ties-kern
+ '((4 62 61 1 0 "[") (5 63 61 1 0 "[")
+   (21/4 64 62 1/8 0 "[") (43/8 63 61 1/8 0 "]")
+   (45/8 64 62 1/8 0 "][") (23/4 62 61 1/8 0 "]")
+   (47/8 64 62 1/8 0 "]") (6 63 61 1/4 0 "]"))
+ '((0 60 60 1 0)))
+--> ((0 60 60 1 0) (4 62 61 15/8 0) (5 63 61 1/2 0)
+     (21/4 64 62 3/4 0))
+\end{verbatim}
+
+\noindent This function resolves tied datapoints by
+applying the function index-of-backward-tie
+recursively. It is quite similar to the function
+resolve-ties, which was defined for reading director-
+musices files.
+
+
+%%%%%
+\subsection*{return-lists-of-length-n}\label{fun:return-lists-of-length-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:parse-kern-row} \\
+Comments/see also & Consider changing location.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(return-lists-of-length-n
+ '((1 0) (0) (2 -1) nil (1 2 3) (7 -2)) 2)
+--> ((1 0) (2 -1) (7 -2))
+\end{verbatim}
+
+\noindent Returns all lists in a list of lists that
+are of length n.
+
+
+%%%%%
+\subsection*{space-bar-positions}\label{fun:space-bar-positions}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:space-bar-separated-string2list} \\
+Comments/see also & \nameref{fun:comma-positions}, \nameref{fun:tab-positions}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{Verbatim}[showtabs=true]
+(space-bar-positions
+ "4C#\ 4G#\ 4B\	8e#/L	<")
+--> (3 7)
+\end{Verbatim}
+
+\noindent This function returns the positions at which
+space-bar symbols occur in a string.
+
+
+%%%%%
+\subsection*{space-bar-separated-string2list}\label{fun:space-bar-separated-string2list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:space-bar-positions} \\
+Called by & \nameref{fun:parse-kern-row} \\
+Comments/see also & \nameref{fun:comma-separated-string2list},\newline \nameref{fun:tab-separated-string2list}, \nameref{fun:concat-strings}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{Verbatim}[showtabs=true]
+(space-bar-separated-string2list
+ "4C#\ 4G#\ 4B\	8e#/L	<")
+--> ("4C#" "4G#" "4B	8e#/L	<")
+\end{Verbatim}
+
+\noindent This function turns a space-bar-separated
+string into a list, where formerly each item was
+preceded or proceeded by a space.
+
+
+%%%%%
+\subsection*{split-or-collapse-index}\label{fun:split-or-collapse-index}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:update-staves-variable} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(split-or-collapse-index 6 '(2 3 5 7 8))
+--> 3
+(split-or-collapse-index nil '(2 3 5 7 8))
+--> nil
+(split-or-collapse-index 8 '(2 3 5 7 8))
+--> nil
+\end{verbatim}
+
+\noindent Returns the index of the second argument at
+which the first argument is exceeded. Deals with
+degenerate cases as indicated.
+
+
+%%%%%
+\subsection*{staff-char-p}\label{fun:staff-char-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:staves-info2staves-variable} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(staff-char-p #\2)
+--> nil
+\end{verbatim}
+
+\noindent This function returns true if the input
+character is `$\ast$', `s', `t', `a', or `f'.
+
+
+%%%%%
+\subsection*{staves-info2staves-variable}\label{fun:staves-info2staves-variable}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:staff-char-p}, \nameref{fun:tab-separated-string2list} \\
+Called by & \nameref{fun:kern-file2dataset} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{Verbatim}[showtabs=true]
+(staves-info2staves-variable
+ '("!!!COM: Chopin, Frederic"
+   "!!!CDT: 1810///-1849///"
+   "!!!OTL: Mazurka in F-sharp Minor, Op. 6, No. 1"
+   "!!!OPS: Op. 6" "!!!ONM: No. 1"
+   "!!!ODT: 1830///-1832///"
+   "!!!PDT: 1832///-1833///"
+   "!!!PPP: Leipzig (1832); Paris (1833) and London"
+   "!!!ODE: Pauline Plater"
+   "**kern	**kern	**dynam"
+   "*thru	*thru	*thru"
+   "*staff2	*staff1	*staff1/2"
+   "*Ipiano	*Ipiano	*Ipiano"
+   "*>A	*>A	*>A"))
+--> ((1 1) (0 1) (-1/2 1))
+\end{Verbatim}
+
+\noindent This function looks through the first few
+rows of a parsed kern file and determines how many
+staves there are, leading to the definition of the
+staves variable.
+
+
+%%%%%
+\subsection*{staves-info2staves-variable-robust}\label{fun:staves-info2staves-variable-robust}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:staves-info2staves-variable},\newline \nameref{fun:staves-variable-index},\newline \nameref{fun:tab-separated-string2list} \\
+Called by & \nameref{fun:kern-file2dataset-by-col} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(staves-info2staves-variable-robust
+ '("!!!COM: Chopin, Frederic"
+   "**kern	**kern	**dynam"
+   "*thru	*thru	*thru"
+   "*>A	*>A	*>A"))
+--> (((1 1) (0 1) (-1/2 1)) 1)
+
+(staves-info2staves-variable-robust
+ '("!!!COM: Beethoven, Ludwig van"
+   "!!!CDT: 1770///-1827///"
+   "**kern	**dynam" "*Ipiano	*Ipiano"
+   "*clefG2	*clefG2" "*k[b-]	*k[b-]"
+   "*F:	*F:" "*M3/4	*M3/4" "*MM40	*MM40"
+   "8.c/L	." "16c/Jk	." "=1	=1" "*	*"
+   "(4aS/	p" "ccq/	." "8b-/L	."
+   "8a/	." "8g/	." "8f/J)	." "=2	=2"
+   "(4f/	." "8e/)	." "(8c/L	."
+   "8d/	." "8e/J	." "*	*" "=3	=3" "*	*"
+   "(8f/L	." "16cc/Jk)	." "16r	."
+   "(8cc/L	." "16b-/Jk)	." "16r	."
+   "(8b-/L	." "16a/Jk)	." "16r	." "*	*"
+   "=4	=4" "4a/	." "16g/	."))
+--> (((0 1) (-1/2 1)) 2).
+\end{verbatim}
+
+\noindent This function looks through the first few
+rows of a parsed kern file and determines how many
+staves there are, leading to the definition of the
+staves variable. The index of the row of the staves
+variable is also returned.
+
+The function is more robust than a similar function
+called staves-info2staves-variable, because it can
+determine the number of staves without the presence of
+a line containing "*staff" strings.
+
+
+%%%%%
+\subsection*{staves-variable-index}\label{fun:staves-variable-index}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:add-to-list}, \nameref{fun:first-n-naturals} \\
+Called by & \nameref{fun:staves-info2staves-variable-robust} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(staves-variable-index
+ '("**kern" "**dynam" "**kern" "**dynam") 2)
+--> ((1 1) (1/2 1) (0 1) (-1/2 1))
+\end{verbatim}
+
+\noindent This function converts a string containing
+staff information into a list of staff numbers.
+Columns for dynamics are given fractional values.
+
+
+%%%%%
+\subsection*{tab-positions}\label{fun:tab-positions}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:tab-separated-string2list} \\
+Comments/see also & \nameref{fun:comma-positions}, \nameref{fun:space-bar-positions}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{Verbatim}[showtabs=true]
+(tab-positions "4C#\ 4G#\ 4B\	8e#/L	<")
+--> (10 16)
+\end{Verbatim}
+
+\noindent This function returns the positions at which
+tabs occur in a string.
+
+
+%%%%%
+\subsection*{tab-separated-string2list}\label{fun:tab-separated-string2list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:tab-positions} \\
+Called by & \nameref{fun:parse-kern-row}, \nameref{fun:staves-info2staves-variable},\newline \nameref{fun:update-staves-variable} \\
+Comments/see also & \nameref{fun:comma-separated-string2list},\newline \nameref{fun:space-bar-separated-string2list}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{Verbatim}[showtabs=true]
+(tab-separated-string2list
+ "4C#\ 4G#\ 4B\	8e#/L	<")
+--> ("4C#\ 4G#\ 4B\" "8e#/L" "<")
+\end{Verbatim}
+
+\noindent This function turns a tab-separated string
+into a list, where formerly each item was preceded or
+proceeded by a tab.
+
+
+%%%%%
+\subsection*{tied-kern-note-p}\label{fun:tied-kern-note-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 18/7/2013 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(tied-kern-note-p "12f#/L]")
+--> T
+\end{verbatim}
+
+\noindent This function returns true if the input kern
+note is tied over, from or both.
+
+
+%%%%%
+\subsection*{upcase-p}\label{fun:upcase-p}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \\
+Called by & \nameref{fun:kern-pitch-chars2pitch-and-octave} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(upcase-p #\a)
+--> nil
+\end{verbatim}
+
+\noindent This function returns true if the input
+character is upper case, and nil otherwise.
+
+
+%%%%%
+\subsection*{update-staves-variable}\label{fun:update-staves-variable}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 30/6/2010, 30/6/2010 \\
+Location & \nameref{sec:kern} \\
+Calls & \nameref{fun:fibonacci-list}, \nameref{fun:index-item-1st-occurs},\newline \nameref{fun:split-or-collapse-index},\newline \nameref{fun:tab-separated-string2list} \\
+Called by & \nameref{fun:parse-kern-row} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{Verbatim}[showtabs=true]
+(update-staves-variable
+ '((1 1) (0 1) (1/2 1)) "*	*^	*")
+--> ((1 1) (0 2) (1/2 1))
+(update-staves-variable
+ '((1 1) (0 2) (1/2 1)) "*	*v	*v	*")
+--> ((1 1) (0 1) (1/2 1))
+(update-staves-variable
+ '((1 2) (0 1) (1/2 1)) "*	*	*^	*")
+--> ((1 2) (0 2) (1/2 1))
+\end{Verbatim}
+
+\noindent The staves-variable is a list of pairs. The
+first of each pair gives the staff to which a note
+belongs. The second of each pair indicates whether
+that stave is split into multiple voices. The symbol
+`$\ast$' means leave this staff as it is, the symbol
+`\^' means this staff is splitting into an extra
+voice, and the symbol `v' means this staff is
+collapsing into one less voice.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

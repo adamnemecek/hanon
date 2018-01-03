@@ -1,0 +1,169 @@
+\chapter{Importing and exporting files}\label{chap:import-export}
+
+The examples in this chapter assume that the Lisp package MCStylistic has been loaded (cf.~Sec.~\ref{sec:loading-MCStylistic}).
+
+\section{Lists stored as text}\label{sec:text-lists}
+
+The function \nameref{fun:read-from-file} can be used to import lists that are stored as text files (.txt) into the Lisp environment. For instance, the folder called \emph{Example files} that comes with MCStylistic contains a subfolder called \emph{Example data}, which contains a text file called \emph{short-list.txt}, and this can be imported into the Lisp environment using the following code.
+\begin{Verbatim}[frame=single,numbers=left]
+(read-from-file
+ (merge-pathnames
+  (make-pathname
+   :name "short-list" :type "txt")
+  *MCStylistic-Aug2013-example-files-data-path*))
+--> ((9 23 1 19) (14 9 14 5 20 25) (16 5 18 3 5 14 20)
+     ("sure" 9 4) (13 9 19 8 5 1 18 4) (8 5 18))
+\end{Verbatim}
+Not setting the path in line 4 correctly (cf.~Sec.~\ref{sec:loading-MCStylistic}) may result in an error message.
+
+To be able to make use of the above list, it is necessary to give it a name as it is imported. For instance the following code names an imported list, and then accesses its second element.
+\begin{Verbatim}[frame=single,numbers=left]
+(setq
+ *little-list*
+ (read-from-file
+  (merge-pathnames
+   (make-pathname
+    :name "short-list" :type "txt")
+   *MCStylistic-Aug2013-example-files-data-path*)))
+--> ((9 23 1 19) (14 9 14 5 20 25) (16 5 18 3 5 14 20)
+     ("sure" 9 4) (13 9 19 8 5 1 18 4) (8 5 18))
+(nth 1 *little-list*)
+--> (14 9 14 5 20 25)
+\end{Verbatim}
+
+Sometimes we want to import and name a list (or other data types for that matter), but do not want to see the entire list output (which is what happened in both of the above examples), perhaps because the list is very long. One way of suppressing output is as follows.
+\begin{Verbatim}[frame=single,numbers=left]
+(progn
+  (setq
+   *little-list*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :name "short-list" :type "txt")
+     *MCStylistic-Aug2013-example-files-data-path*)))
+   "*little-list* imported")
+--> "*little-list* imported"
+\end{Verbatim}
+
+The function \nameref{fun:write-to-file} enables lists that are defined within the Lisp environment to be stored as text files. For instance, at present the \emph{Example results} folder in \emph{Example files} does not contain any file called \emph{another-list.txt}, but we are going to create one. The following code assumes that the variable \texttt{*little-list*} has been defined as per lines 1-10 above. Elements of this list are combined with other variables and values to form a new list, which is stored as a text file using the function \nameref{fun:write-to-file}.
+\begin{Verbatim}[frame=single,numbers=left]
+(setq *A* (list 0 60 60 1 0))
+--> (0 60 60 1 0)
+(setq *B* "middle C")
+--> "middle C"
+(setq
+ *new-list*
+ (list
+  (nth 3 *little-list*) *A* (nth 4 *little-list*) *B*
+  4 2))
+--> (("sure" 9 4) (0 60 60 1 0) (13 9 19 8 5 1 18 4)
+     "middle C" 4 2)
+(write-to-file
+ *new-list*
+  (merge-pathnames
+    (make-pathname
+     :name "another-list" :type "txt")
+    *MCStylistic-Aug2013-example-files-results-path*))
+--> T
+\end{Verbatim}
+The \emph{Example results} folder should now contain a file called \emph{another-list.txt}. If you open up this text file in a text editor, it should contain elements of the list shown in lines 10-11 above.\footnote{The function \nameref{fun:write-to-file} and other export functions exemplified in this chapter \emph{overwrite} existing files, as opposed to using \emph{supersede} or \emph{append} \citep*[for details, see][]{seibel2005}.} If you are using a different version of Lisp to CCL, it is worth checking two things. First, importing a file and then exporting it with a new name results in two text files with exactly the same format. This should be the case as \texttt{*print-length*} and \texttt{*print-pretty*} are both set to \texttt{nil} (cf.~Sec.~\ref{sec:loading-MCStylistic}). Second, if the location specified in the call to \nameref{fun:write-to-file} does not already exist, Lisp creates the location and writes the file.
+
+\section[Musical Instrument Digital Interface (MIDI)]{Musical Instrument Digital Interface\\ (MIDI)}\label{sec:MIDI}
+
+The function \nameref{fun:load-midi-file} can be used to import a Standard MIDI File into the Lisp environment. Musical instrument digital interface (MIDI) is a means by which an electronic instrument (such as a synthesiser, electronic piano, drum kit, even a customised guitar, etc.) can connect to a computer and hence communicate with music software \citep*{roads1996}. When a MIDI file is imported into the Lisp environment using the function \nameref{fun:load-midi-file}, a list of five-element lists is defined, where the first element is the \emph{ontime} of a MIDI event, the second element is the \emph{MIDI note number} (MNN, with `middle C' = C4 = 60, C$\sharp$4 = 61, etc.), the third element is the \emph{duration} (arbitrary timescale), the fourth element is the \emph{channel} (between 1 and 16), and the fifth element is the \emph{velocity} (between 0 for silence and 127 for maximal loudness). These five-element lists are shown in lines 12-15 of the following code, which imports a MIDI representation of the second movement of the Concerto in G minor op.6 no.3 by Antonio Vivaldi (1678-1741).
+\begin{Verbatim}[frame=single,numbers=left]
+(progn
+  (setq
+   *vivaldi-movement*
+   (load-midi-file
+    (merge-pathnames
+     (make-pathname
+      :name "vivaldi-op6-no3-2" :type "mid")
+     *MCStylistic-Aug2013-example-files-data-path*)))
+  "*vivaldi-movement* imported")
+--> "*vivaldi-movement* imported"
+(firstn 10 *vivaldi-movement*)
+--> ((0 79 1 6 64) (0 69 1 4 64) (0 49 1 1 64)
+     (0 49 1 3 64) (0 76 1 5 64) (1 79 1 6 64)
+     (1 69 1 4 64) (1 76 1 5 64) (1 49 1 1 64)
+     (1 49 1 3 64))
+\end{Verbatim}
+
+The function \nameref{fun:saveit} can be used to export an appropriate list defined in the Lisp environment to a Standard MIDI File. The term \emph{appropriate} means that each element of the list is a five-element list (as in lines 12-15 above), with permissible values for ontime (positive float), MNN (integer between 0 and 127), duration (positive float), channel (integer between 1 and 16), and velocity (integer between 0 and 127). Trying to export an inappropriate list as a MIDI file may result in an error message. As an example, the folder called \emph{Example results} that comes with MCStylistic does not contain any file called \emph{two-arpeggios.mid}, but we can create one using the following code.
+\begin{Verbatim}[frame=single,numbers=left]
+(progn
+  (setq
+   *arpeggios*
+   '((0 49 8000 1 64) (1000 69 7000 1 69)
+     (2000 76 6000 1 74) (3000 79 5000 7 79)
+     (8000 50 8000 1 84) (9000 69 7000 1 89)
+     (10000 74 6000 1 94) (11000 77 5000 7 99)))
+  (saveit
+   (merge-pathnames
+     (make-pathname
+      :name "two-arpeggios" :type "mid")
+     *MCStylistic-Aug2013-example-files-results-path*)
+   *arpeggios*))
+--> Returns pathname of the file created.
+\end{Verbatim}
+MIDI files can be opened and played using programs such as QuickTime Player, RealPlayer, and Windows Media Player. They can also be embedded in web pages. Playing the file created above, you may notice that ontimes and durations are specified in milliseconds. If you have used MCStylistic to discover some repeated patterns (cf.~Sec.~\ref{sec:disc&rate-musical-patterns}) or to generate a dataset representation of music (cf.~Sec.~\ref{sec:ex:Racchman-Oct2010}), then the function \nameref{fun:saveit} is a convenient way to audition (hear) the results.
+
+\section{Kern}\label{sec:kern-import}
+
+At \href{http://kern.ccarh.org/}{http://kern.ccarh.org/} there are a large number of symbolic music encodings in so-called kern format. A short kern file can be found in the 
+folder \emph{Example data} that comes with MCStylistic, called \emph{C-6-1-small.txt}, and this can be imported into the Lisp environment using the following code.
+\begin{Verbatim}[frame=single,numbers=left]
+(setq
+ *C-6-1-small*
+ (kern-file2dataset-by-col
+  (merge-pathnames
+   (make-pathname
+    :name "C-6-1-small" :type "krn")
+   *MCStylistic-Jun2014-example-files-data-path*)))
+--> ((-1 66 63 5/3 0) (0 37 46 1 1) (2/3 66 63 1/3 0)
+     (1 49 53 1 1) (1 56 57 1 1) (1 59 59 1 1)
+     (1 65 62 1/2 0) (3/2 66 63 1/2 0) (2 49 53 1 1)
+     (2 53 55 1 1) (2 59 59 1 1) (2 68 64 7/8 0)
+     (23/8 62 61 1/8 0) (3 42 49 1 1) (3 61 60 1/2 0)
+     (15/4 66 63 1/4 0) (4 54 56 1 1) (4 61 60 1 1)
+     (4 69 65 1 0) (5 54 56 1 1) (5 61 60 1 1))
+\end{Verbatim}
+In the above, the first element of each list is the ontime of a note counting in crotchet beats from 0 for bar 1 beat 1, the second element is its MIDI note number, the third element is its morphetic pitch number (see the function \nameref{fun:pitch-and-octave2MIDI-morphetic-pair} for more details), the fourth element is its duration in crotchet beats, and the fifth element is its staff number (counting from 0 for the top staff). The structure of an input kern file will not be explained in more detail here, as there is an explanation given in \citet[][Appendix B.2.3]{collins2011b}. Suffice it to say that this piece has an anacrusis of one crotchet beat, and the function \nameref{fun:kern-file2dataset-by-col} has recognised this, and set the ontime of the first note to $-1$, so that bar 1 beat 1 has ontime 0. The functions \nameref{fun:bar-n-beat-number-of-ontime} and \nameref{fun:ontime-of-bar-n-beat-number} are useful for converting between ontime/bar and beat number representations. If you want to load lyric, articulation, rest, or tie information, then please see the functions \nameref{fun:kern-file2points-artic-dynam-lyrics}, \nameref{fun:kern-file2rest-set-by-col}, and \nameref{fun:kern-file2tie-set-by-col} for more details.
+
+% There is one known issue with the function \nameref{fun:kern-file2dataset-by-col} to do with multiple ties. Some kern files encode a multiply-tied note (i.e., incoming and outgoing tie) with \texttt{x\_}, where \texttt{x} is the note duration and length, and others encode it as \texttt{[x]}. At present the function \nameref{fun:kern-file2dataset-by-col} only recognises the latter, but it is easy enough to find-replace instances of the former.
+
+\section{MusicXML}\label{sec:musicxml}
+
+MusicXML is a widely used (if verbose) format for digital staff notation. While MCStylistic does not import from MusicXML, it does include a \href{http://extras.humdrum.org/}{Humdrum extras} function that will convert a piece from MusicXML to kern, and kern files can be parsed by MCStylistic (see Sec.~\ref{sec:kern-import}). The function can be found in
+
+\vspace{.25cm}
+\noindent MCStylistic/Functions/Third party/humdrum-extras
+\vspace{.25cm}
+
+Mac users should use \emph{xml2hum-mac}, Linux users \emph{xml2hum-linux}, and Windows users \emph{xml2hum-win.exe}. Use of this function is demonstrated now, and occurs external to the Lisp environment.
+
+\begin{enumerate}
+\item Open up Terminal (Mac or Linux users) or cmd (Windows users).
+\item Change directory to the \emph{humdrum-extras} folder mentioned above. In Terminal this can be achieved by issuing the \href{http://en.wikipedia.org/wiki/Cd_\%28command\%29}{cd} (change directory) command.
+\item Construct a valid path to an existing MusicXML file, and, after a $>$ symbol, define the path for an output kern file. For example, executing
+\begin{verbatim}
+./xml2hum-mac
+ ../../../Example\ files/Example\ data/tallis-love.xml
+ > ../../../Example\ files/Example\ data/tallis-love.krn
+\end{verbatim}
+will create a kern version of Thomas Tallis' `If ye love me' in the specified location. This command can (and probably should) be all on one line: I have broken it on to several lines for ease of reading. If using Linux or Windows, then be sure to replace xml2hum-mac above with the operating-system-appropriate function name.
+\end{enumerate}
+
+Please refer to Sec.~\ref{sec:kern-import} for further instructions on how to import a kern file into the Lisp environment. 
+
+If you are having trouble with converting an MusicXML file to a kern file, here are some things to try: make sure the xml2hum function is executable on your
+machine. Its permissions can be changed with the command
+\begin{verbatim}
+chmod 0755 xml2hum
+\end{verbatim}
+\noindent Text added above or below a system can sometimes cause errors. A quick fix for this is to open the MusicXML file in a score editor (e.g., \href{http://musescore.org/}{MuseScore}), delete any such text, resave the file with the appropriate XML extension, and try again. Systems containing braces (e.g., piano right hand braced with piano left hand) sometimes cause issues too. A somewhat tedious fix for this is to open the MusicXML file in a score editor, create a new piece with the same meta information, instruments, etc., copy-paste the old piece one staff at a time, resave the file with the appropriate XML extension, and try again.
+
+\section{See also}\label{sec:porting-other-file-types}
+
+Section~\ref{sec:text-lists} contained some information for importing/exporting text files. The functions \nameref{fun:csv2dataset} and \nameref{fun:dataset2csv} perform analogous tasks (analogous to \nameref{fun:read-from-file} and \nameref{fun:write-to-file}) for comma-separated variable (csv) files. The function \nameref{fun:read-from-file-arbitrary} is useful for parsing less structued text data.
+

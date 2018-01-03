@@ -1,0 +1,1107 @@
+\chapter{Example code}\label{chap:example-code}
+
+% An intro here perhaps.
+
+\section[Music-theoretic analysis with Stravinsqi]{Music-theoretic analysis with Stravinsqi}\label{sec:stravinsqi}
+
+This code demonstrates the use of an algorithm called
+Stravinsqi-Jun2014 \citep{collins2014}, which stands
+for STaff Representation Analysed VIa Natural language
+Query Input. The algorithm parses a symbolic
+representation of a piece of music as well as a query
+string consisting of a natural language expression,
+and identifies where event(s) specified by the query
+occur in the music.
+
+\textbf{Step 1.} Specify a piece. In the last
+chapter we saw several methods for importing a piece
+of music into the Lisp environment. On this occasion,
+we do not need to import the piece explicitly, but
+merely provide the Stravinsqi algorithm with its path,
+and it will do the rest. The piece will need to be in
+kern format though. Let us suppose we have a MusicXML
+excerpt of `If ye love me' by Thomas Tallis (as shown
+in Fig.~\ref{fig:tallis}). So before we can call
+Stravinsqi, the MusicXML file needs converting to a
+kern file.
+
+\begin{figure}[htbp!]
+\begin{center}
+\includegraphics[width=0.8\columnwidth]{"Example code/figs/tallis-if-ye-love-me"}
+\end{center}
+\caption[Bars 1-13 from `If ye love me' by Thomas Tallis.]{Bars 1-13 from `If ye love me' by Thomas Tallis.}
+\label{fig:tallis}
+\end{figure}
+
+To do this, open up Terminal (separate from Lisp)
+and navigate using \href{http://en.wikipedia.org/wiki/Cd_\%28command\%29}{cd}
+(change directory) to
+
+\vspace{.25cm}
+\noindent MCStylistic/Functions/Third party/humdrum-extras
+\vspace{.25cm}
+
+\noindent Then execute
+\begin{verbatim}
+./xml2hum-mac
+ ../../../Example\ files/Example\ data/tallis-love.xml
+ > ../../../Example\ files/Example\ data/tallis-love.krn
+\end{verbatim}
+
+\noindent This should create a kern file in the same
+location as the original MusicXML file. This command
+can (and probably should) be all on one line: I have
+broken it on to several lines for ease of reading. If
+using Linux or Windows, then be sure to replace
+xml2hum-mac above with the
+operating-system-appropriate function name.
+
+Now, back in Lisp, we can specify the kern file's
+location:
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=61]
+(setq
+ notation-path
+ *MCStylistic-MonthYear-example-files-data-path*)
+(setq notation-name "tallis-love")
+(setq
+ notation-path&name
+ (merge-pathnames
+  (make-pathname
+   :name notation-name :type "krn") notation-path))
+\end{Verbatim}
+
+\textbf{Step 2.} Ask some questions. In the same
+location as the kern file there is an (ordinary) XML
+file called \emph{natural-language-queries.xml}. The
+first query it contains is `perfect cadence'. That is,
+we want to know the bar and beat numbers of the
+perfect cadence(s) in the music of
+Figure~\ref{fig:tallis}. We can pass this query to
+Stravinsqi by specifying the path of
+\emph{natural-language-queries.xml}, and the question
+number `001'. Stravinsqi will parse the query,
+identify any events that correspond to the query, and
+write the corresponding bar and beat numbers to a text
+file. By default, it creates a text file called
+\emph{dmun01.txt} in the same location as the query
+file. Try executing the following code in the Lisp
+Listener:
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=87]
+(setq
+ question-path&name
+ (merge-pathnames
+  (make-pathname
+   :name "natural-language-queries" :type "xml")
+  *MCStylistic-MonthYear-example-files-data-path*))
+(setq question-number "001")
+(Stravinsqi-Jun2014
+ question-number question-path&name notation-path
+ notation-name)
+\end{Verbatim}
+
+\noindent Checking the text file \emph{dmun01.txt},
+it can be confirmed that Stravinsqi's answers to
+question 1 are:
+\begin{itemize}
+\item bar 2 beat 1 to bar 3 beat 2;
+\item bar 12 beat 3 to bar 13 beat 4.
+\end{itemize}
+
+Question 2 shows that one can use British or American
+terminology interchangeably (`authentic cadence').
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=108]
+(setq question-number "002")
+(Stravinsqi-Jun2014
+ question-number question-path&name notation-path
+ notation-name)
+\end{Verbatim}
+
+\noindent Stravinsqi's answers are the same.
+
+Question 3 asks Stravinsqi to identify a
+homophonic texture. Its answer is:
+\begin{itemize}
+\item bar 1 beat 1 to bar 5 beat 4.
+\end{itemize}
+
+%\vspace{.25cm}
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=120]
+(setq question-number "003")
+(Stravinsqi-Jun2014
+ question-number question-path&name notation-path
+ notation-name)
+\end{Verbatim}
+ 
+Question 4 shows that Stravinsqi can also answer
+more straightforward questions, such as `dotted
+crotchet G'. Its answers are:
+\begin{itemize}
+\item bar 8 quaver beats 5 to 7;
+\item bar 12 quaver beats 5 to 7.
+\end{itemize}
+
+%\vspace{.25cm}
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=132]
+(setq question-number "004")
+(Stravinsqi-Jun2014
+ question-number question-path&name notation-path
+ notation-name)
+ \end{Verbatim}
+
+Question 5 demonstrates that Stravinsqi can answer
+compound questions, such as `two melodic unisons then
+a melodic rising third'. This musical event occurs
+set to `and I will pray', in the soprano and alto
+voices. Accordingly, Stravinsqi's answers are:
+\begin{itemize}
+\item bar 5 beat 2 to bar 6 beat 2;
+\item bar 7 beat 2 to bar 8 beat 2.
+\end{itemize}
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=146]
+(setq question-number "005")
+(Stravinsqi-Jun2014
+ question-number question-path&name notation-path
+ notation-name)
+\end{Verbatim}
+
+Question 6 indicates that Stravinsqi can answer
+queries about text, articulation marks, ties, and
+rests. For example, for the query `word love',
+Stravinsqi's answer is:
+\begin{itemize}
+\item bar 2 beats 1 to 2.
+\end{itemize}
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=158]
+(setq question-number "006")
+(Stravinsqi-Jun2014
+ question-number question-path&name notation-path
+ notation-name)
+\end{Verbatim}
+
+Users are encouraged to open up the file
+\emph{natural-language-queries.xml}, and use
+copy-paste to add a few questions of their own. The
+divisions value specifies granularity for Stravinsqi:
+that is, if you want time windows up to crotchet-beat
+granularity, then set divisions to 1; for quaver-beat
+granularity, set divisions to 2, etc. If Stravinsqi
+cannot answer what seems an entirely reasonable query,
+or gets the answer wrong, you are welcome to get in
+touch to request an improvement.
+
+
+\section[Functional-harmonic analysis with HarmAn-$>$roman]{Functional-harmonic analysis\\ with HarmAn-$>$roman}\label{sec:func-harm-anal}
+
+This code demonstrates the use of an algorithm called
+HarmAn-$>$roman for segmenting and labelling chords
+in some input piece of music. The algorithm is based
+on an implementation of HarmAn by \cite{pardo2002}.
+HarmAn compares input triples of ontimes, MIDI note
+numbers, and durations to predefined chord templates,
+and performs segmentation and segment labelling on
+this basis. The labels are absolute, for instance
+(15 2 1 1 8) means that a chord begins on ontime 15,
+has root 2 modulo 12 (i.e., D), is of type 1 (dom7
+chord), lasts 1 beat, and was assigned to this chord
+template with strength 8.
+
+While useful, this output does not provide a
+functional-harmonic analysis. I programmed some
+extra steps to estimate the overall key of the input
+piece, using the Krumhansl-Schmuckler key-finding
+algorithm \citep{krumhansl1990}, and then to
+caluclate relative (or functional) harmonic labels
+by combining the estimate of overall key with the
+absolute labels output by HarmAn-$>$. For instance,
+if the overall key is G major, and HarmAn-$>$ output
+the label D dom7, then my code would convert this to
+V7. I have taken care to make sure the labelling of
+diminished 7th chords is correct. The overall
+program is referred to as HarmAn-$>$roman. It does
+not handle secondary keys, but might be adapted to
+do so using a slice through a keyscape
+\citep{sapp2005}.
+
+The input piece should be in kern or point-set
+format. If your piece is in MusicXML format instead,
+then it can be converted according to the description
+in Sec.~\ref{sec:musicxml}. Before proceeding, please
+note: it is assumed that the package MCStylistic has
+been loaded, and that the variable
+*MCStylistic-MonthYear-data-path* has been defined
+appropriately. Files are imported from the location
+specified by this variable.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=70]
+#| Step 1 - Load a piece by Chopin. |#
+(setq *piece-name* "C-6-1-ed")
+(setq
+ *path&name*
+ (merge-pathnames
+  (make-pathname
+   :directory
+   '(:relative "Dataset")
+   :name *piece-name* :type "txt")
+  *MCStylistic-MonthYear-data-path*))
+(progn
+  (setq
+   point-set
+   (restrict-dataset-in-nth-to-tests
+    (read-from-file *path&name*) 0 (list #'<)
+    (list 47)))
+  "Piece loaded.")
+
+#| Step 2 - Run HarmAn->roman. To see these results
+and compare with a ground truth, please see 
+Fig. 3.2. |#
+(HarmAn->roman
+ point-set *chord-templates-p&b&min7ths*)
+--> (("Ic" (-1 1/3)) ("V" (1/3 2/3)) ("Ic" (2/3 1))
+     ("V7" (1 3)) ("i7" (3 7)) ("VII7" (7 39/4))
+     ("III" (39/4 12)) ("#vih7c" (12 13))
+     ("II7" (13 14)) ("V7c" (14 15))
+     ("vh7c" (15 16)) ("I7" (16 17))
+     ("#vio7b" (17 18)) ("ivh7c" (18 19))
+     ("VII7" (19 20)) ("vo7b" (20 21))
+     ("iiih7c" (21 22)) ("VI7" (22 23))
+     ("iih7c" (23 24)) ("Ic" (24 73/3))
+     ("V" (73/3 74/3)) ("Ic" (74/3 25))
+     ("V7" (25 27)) ("i7" (27 31))
+     ("VII7" (31 135/4)) ("III" (135/4 36))
+     ("ivh7b" (36 38)) ("III" (38 39))
+     ("ivh7b" (39 41)) ("i7b" (41 85/2))
+     ("VI" (85/2 43)) ("iih7c" (43 44))
+     ("V" (44 45)) ("ivc" (45 136/3))
+     ("i" (136/3 137/3)) ("iih7d" (137/3 46))
+     ("VIb" (46 47)))
+\end{Verbatim}
+
+\begin{figure}[htbp!]
+\begin{center}
+\includegraphics[width=0.9\columnwidth]{"Example code/figs/mazurka06-1"}
+\end{center}
+\caption[Bars 1-16 from Mazurka in F$\sharp$ minor op.6 no.1 by Fr\'ed\'eric Chopin, annotated with the output of HarmAn-$>$roman (AO) and a ground truth labelling (GT).]{Bars 1-16 from Mazurka in F$\sharp$ minor op.6 no.1 by Fr\'ed\'eric Chopin, annotated with the output of HarmAn-$>$roman (AO) and a ground truth labelling (GT).}
+\label{fig:tallis}
+\end{figure}
+
+\section{Discovering and rating musical patterns}\label{sec:disc&rate-musical-patterns}
+
+The folder called \emph{Example files} that comes with MCStylistic contains a Lisp file called \emph{Discovering and rating musical patterns.lisp}. This section will reproduce and discuss chunks of code from this file. The idea is to discover and rate some repeated patterns occurring in bars 1-19 of the Sonata in C minor \textsc{l}10 by Domenico Scarlatti (1685-1757). There is a MIDI file of this excerpt in the subfolder of \emph{Example files} called \emph{Example data}. The algorithm is the Structure Induction Algorithm with Compactness Trawling (SIACT), as defined by \citet*{collins2010b}. It combines the Strucutre Induction Algorithm (SIA) with the concept of compactness \citep*{meredith2002,meredith2003}. The formula for rating discovered patterns in terms of musical importance was developed by \citet*{collins2011a}.
+
+Figure \ref{scarlatti-L10-ann-all} shows the Scarlatti excerpt annotated with four patterns $A$-$D$ discovered by a music analyst, Dr Jeremy Thurlow.\footnote{The analyst's complete annotations and a parallel commentary can be found at \href{http://www.tomcollinsresearch.net}{http://www.tomcollinsresearch.net}} As an example, we will determine which of the four patterns are discovered by SIACT. It is assumed that the package
+MCStylistic has been loaded, and that the variable
+\texttt{*MCStylistic-Aug2013-example-files-path*} has been defined appropriately. Files are imported from the
+\emph{Example data} folder mentioned, and several new
+files exported to the \emph{Example results} folder in the same location.
+
+\begin{figure}[htbp!]
+\begin{center}
+\includegraphics[width=0.8\columnwidth]{"Example code/figs/scarlatti-L10-ann-all"}
+\end{center}
+\caption[Bars 1-19 from the Sonata in C minor \textsc{l}10 by D.\hspace{0.1cm}Scarlatti, with annotations]{Bars 1-19 from the Sonata in C minor \textsc{l}10 by D.\hspace{0.1cm}Scarlatti. Bounding lines indicate some of the analyst's annotations for this excerpt.}
+\label{scarlatti-L10-ann-all}
+\end{figure}
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=57]
+#| Step 1 - Set the parameters. |#
+(setq *compact-thresh* 2/3)
+(setq *cardina-thresh* 3)
+(setq *region-type* "lexicographic")
+\end{Verbatim}
+The Structure Induction Algorithm with Compactness Trawling (SIACT) has two parameters; a compactness threshold and a points (or cardinality) threshold \citep{collins2010b}. The default version of \emph{compactness} uses a lexicographic region type.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=62]
+#| Step 2 - Load dataset and create projections. |#
+(progn
+  (setq
+   *dataset*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :name "scarlatti-L10-bars1-19" :type "txt")
+     *MCStylistic-Aug2013-example-files-data-path*)))
+  (setq
+   *dataset-1-1-0-1-0*
+   (orthogonal-projection-unique-equalp
+    *dataset* '(1 1 0 1 0)))
+  (setq
+   *dataset-1-0-1-0-0*
+   (orthogonal-projection-unique-equalp
+    *dataset* '(1 0 1 0 0)))
+  "Dataset loaded and projections created")
+\end{Verbatim}
+The full dataset representation of the excerpt by D.\hspace{0.1cm}Scarlatti contains dimensions for ontime, MIDI note number (MNN), morphetic pitch number \citep*[MPN, for details see Sec.~2.25 of][]{collins2011b}, duration, and staff. In general, we will want to look at lots of different projections for this dataset, but for this example we consider just two: first, the projection on to ontime, MNN, and duration; second, the projection on to ontime and MPN. These projections are defined using the function \nameref{fun:orthogonal-projection-unique-equalp}.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=81]
+#| Step 3 - Run SIA on projection (1 1 0 1 0). |#
+(time
+ (SIA-reflected-merge-sort
+  *dataset-1-1-0-1-0*
+  (merge-pathnames
+   (make-pathname
+    :name "L 10 (1 1 0 1 0) SIA" :type "txt")
+   *MCStylistic-Aug2013-example-files-results-path*)))
+; 0.585303 seconds.
+\end{Verbatim}
+This code runs an implementation of the Structure Induction Algorithm (SIA) on the dataset projection for ontime, MNN, and duration, and exports the output to a text file called \emph{L 10 (1 1 0 1 0) SIA.txt} in the \emph{Example results} folder. On a 2.33 GHz machine with 3 GB RAM, this code takes just over half a second to run (line 89).
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=91]
+#| Step 4 - Run SIACT on projection (1 1 0 1 0). |#
+(progn
+  (setq
+   *SIA-1-1-0-1-0*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :name "L 10 (1 1 0 1 0) SIA" :type "txt")
+     *MCStylistic-Aug2013-example-files-results-path*)
+     ))
+  (time
+   (compactness-trawler
+    *SIA-1-1-0-1-0* *dataset-1-1-0-1-0*
+    (merge-pathnames
+     (make-pathname
+      :name "L 10 (1 1 0 1 0) SIACT" :type "txt")
+     *MCStylistic-Aug2013-example-files-results-path*)
+    *compact-thresh* *cardina-thresh* *region-type*)))
+; 0.559605 seconds.
+\end{Verbatim}
+Lines 93-100 of the above code import the output of SIA from the file \emph{L 10 (1 1 0 1 0) SIA.txt} just created in the \emph{Example results} folder. Then, in lines 102-108, the compactness trawler (CT) is run, using the parameter values defined earlier. The output of the function \nameref{fun:compactness-trawler} is exported to a text file called \emph{L 10 (1 1 0 1 0) SIACT.txt} in the \emph{Example results} folder. Taking steps 3 (SIA) and 4 (CT) together, SIACT has been applied to the excerpt by D.\hspace{0.1cm}Scarlatti.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=111]
+#| Step 5 - Rate discovered patterns for projection
+(1 1 0 1 0). |#
+(progn
+  (setq
+   *SIACT-1-1-0-1-0*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :name "L 10 (1 1 0 1 0) SIACT" :type "txt")
+     *MCStylistic-Aug2013-example-files-results-path*)
+     ))
+  (time
+   (setq
+    *hash-1-1-0-1-0*
+    (evaluate-variables-of-patterns2hash
+     *SIACT-1-1-0-1-0* *dataset-1-1-0-1-0*)))
+  (write-to-file-balanced-hash-table
+   *hash-1-1-0-1-0*
+   (merge-pathnames
+    (make-pathname
+     :name "L 10 (1 1 0 1 0) hash" :type "txt")
+    *MCStylistic-Aug2013-example-files-results-path*))
+  (concatenate
+   'string
+   "Discovered patterns have been rated and placed in"
+   " in the hash table *hash-1-1-0-1-0*. They have"
+   " also been written to a text file for future"
+   " reference."))
+; 2.633121 seconds.
+\end{Verbatim}
+Lines 114-121 of the above code import the output of SIACT from the file  just created in the \emph{Example results} folder, \emph{L 10 (1 1 0 1 0) SIACT.txt}. Each discovered pattern is given a rating for musical importance in lines 123-126, using the function \nameref{fun:evaluate-variables-of-patterns2hash}. The hash table (cf.~Sec.~\ref{sec:porting-other-file-types}) created by this function is exported to a text file called \emph{L 10 (1 1 0 1 0) hash.txt} in the \emph{Example results} folder.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=141]
+#| Here are the details for pattern A, as annotated in
+the Documentation, Fig. 3.1. |#
+(disp-ht-el (nth 13 *hash-1-1-0-1-0*))
+--> (("name" . "pattern 24") ("compactness" . 1)
+     ("expected occurrences" . 35.375904)
+     ("rating" . 7.539052)
+     ("pattern"
+      (1/2 60 1/2) (1 63 1/2) (3/2 67 1/2) (2 72 1/2)
+      (5/2 75 1/2) (3 79 1/2) (7/2 84 1/2) (4 79 1/2)
+      (9/2 75 1/2) (5 72 1/2) (11/2 67 1/2) (6 60 1))
+     ("translators" (0 0 0) (6 -12 0)) ("index" . 24)
+     ("cardinality" . 12) ("MTP vectors" (6 -12 0))
+     ("compression ratio" . 24/13)
+     ("region"
+      (1/2 60 1/2) (1 63 1/2) (3/2 67 1/2) (2 72 1/2)
+      (5/2 75 1/2) (3 79 1/2) (7/2 84 1/2) (4 79 1/2)
+      (9/2 75 1/2) (5 72 1/2) (11/2 67 1/2) (6 60 1))
+     ("occurrences" . 2))
+\end{Verbatim}
+Above we see details for pattern $A$, as annotated in Fig.~\ref{scarlatti-L10-ann-all}. It has been rated as approximately 7.5 out of 10, using a weighted combination of \emph{compactness}, \emph{expected occurrences}, and \emph{compression ratio}.
+
+Lines 160-218 of the Lisp file \emph{Discovering and rating musical patterns.lisp} will not be reproduced here. Steps 6, 7, and 8 are analogous to steps 3, 4, and 5, applying SIACT and the rating formula to the projection for ontime and MPN. Among the output, we pick out the following result.
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=220]
+#| Here are the details for pattern B, as annotated in
+the Documentation, Fig. 3.1. |#
+(disp-ht-el (nth 2 *hash-1-0-1-0-0*))
+--> (("name" . "pattern 40") ("compactness" . 13/15)
+     ("expected occurrences" . 44.16958)
+     ("rating" . 8.927441)
+     ("pattern"
+      (73/4 71) (37/2 72) (75/4 73) (19 69) (19 74)
+      (39/2 68) (39/2 73) (20 69) (20 74) (41/2 68)
+      (41/2 73) (21 69) (21 74))
+     ("translators"
+      (-6 0) (-3 -7) (0 0) (3 -7) (15 -10) (18 -17)
+      (24 -11) (30 -12))
+     ("index" . 40) ("cardinality" . 13)
+     ("MTP vectors"
+      (36 -12) (30 -11) (30 -12) (24 -11) (24 -17)
+      (18 -17) (15 -2) (12 -3) (9 -1) (9 -7) (3 -7)
+      (3 -7))
+     ("compression ratio" . 26/5)
+     ("region"
+      (73/4 71) (37/2 72) (75/4 73) (19 64) (19 69)
+      (19 74) (39/2 68) (39/2 73) (20 64) (20 69)
+      (20 74) (41/2 68) (41/2 73) (21 69) (21 74))
+     ("occurrences" . 8))
+\end{Verbatim}
+Above we see details for pattern $B$, as annotated in Fig.~\ref{scarlatti-L10-ann-all}. It has been rated as approximately 8.9 out of 10. Pattern $C$, as annotated in the Fig.~\ref{scarlatti-L10-ann-all}, is not discovered by SIACT. Close inspection of the music reveals that $C$ is not a translational pattern for either of the projections considered above. Pattern $D$ is not discovered by SIACT either, but a pattern that contains $D$ is discovered. The containing pattern begins where $D$ does, in bar 14, and continues into bar 16. We are prompted to consider why the first occurrence of $D$ is annotated as finishing earlier, in bar 15. It may be that the rests in bar 15 suggest a boundary to the analyst; an appropriate point for demarcating the first occurrence of pattern $D$. When the sonata is played at full pace, however, these rests can be difficult to perceive.
+
+More information about functions for pattern discovery and rating can be found in Secs.~\ref{sec:pattern-discovery} and \ref{sec:pattern-rating}.
+
+
+\section[Stylistic composition with Racchman-Oct2010]{Stylistic composition with\\ Racchman-Oct2010}\label{sec:ex:Racchman-Oct2010}
+
+The folder called \emph{Example files} that comes with MCStylistic contains a Lisp file called \emph{Stylistic composition with Racchman-Oct2010.lisp}. This section will reproduce and discuss chunks of code from this file. The idea is to demonstrate Racchman-Oct2010 (standing for RAndom Constrained CHain of MArkovian Nodes), which is a model for automated stylistic composition. A date stamp is added to Racchman in case it is superseded by future work. Chapters 8 and 9 of \citet{collins2011b} provide a full explanation of the model. It is similar in spirit to the databases and programs referred to collectively as
+Experiments in Musical Intelligence (EMI), as outlined
+by \citet*{cope1996,cope2001,cope2005}.
+
+Here I will exemplify the building of initial states lists and transition lists, and the use of these lists by Racchman-Oct2010 to generate an opening passage of a
+mazurka in the style of Fr\'ed\'eric Chopin (1810-1849). % This very passage was used in an evaluation of the model (excerpt 19 in Chapter 10 of \citeauthor{collins2011b}, \citeyear{collins2011b});
+The user may wish to experiment with different random seeds, resulting in different generated passages. The building of the initial states lists and transition lists takes about two hours on a 2.33 GHz machine
+with 3 GB RAM, so for users not wishing to
+wait that long, the resulting files have been placed
+in the \emph{Example files} $\rightarrow$ \emph{Example results} $\rightarrow$ \emph{Racchman-Oct2010 example}. The generation of a new passage takes about 7 minutes in total.
+
+Step 1 of the code involves creating one list called \texttt{*variable-names*}, creating another list called \texttt{*catalogue*}, and then importing dataset representations for thirty-nine mazurkas into the Lisp environment. The code is not reproduced here; it is verbose but relatively straightforward to understand.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=351]
+#| Step 2 - Create lists of initial/final state-
+context pairs, and transition lists. |#
+(progn
+  (setq
+   *initial-states*
+   (construct-initial-states
+    *variable-names* *catalogue* "beat-spacing-states"
+    10 3 3 1))
+  (write-to-file
+   *initial-states*
+   (merge-pathnames
+    (make-pathname
+     :directory
+     '(:relative
+       "Racchman-Oct2010 example")
+     :name "initial-states" :type "txt")
+    *MCStylistic-MonthYear-example-files-results-path*))
+  (setq
+   *final-states*
+   (construct-final-states
+    *variable-names* *catalogue* "beat-spacing-states"
+    10 3 3 1))
+  (write-to-file
+   *final-states*
+   (merge-pathnames
+    (make-pathname
+     :directory
+     '(:relative
+       "Racchman-Oct2010 example")
+     :name "final-states" :type "txt")
+    *MCStylistic-MonthYear-example-files-results-path*))
+  "Initial/final state-context pairs exported.")
+  
+(progn
+  (setq *transition-matrix* nil)
+  (construct-stm
+   *variable-names* *catalogue* "beat-spacing-states"
+   3 3 1)
+  (write-to-file
+   *transition-matrix*
+   (merge-pathnames
+    (make-pathname
+     :directory
+     '(:relative
+       "Racchman-Oct2010 example")
+     :name "transition-matrix" :type "txt")
+    *MCStylistic-MonthYear-example-files-results-path*))
+  (setq *transition-matrix* nil)
+  (construct-stm<-
+   *variable-names* *catalogue* "beat-spacing-states"
+   3 3 1)
+  (write-to-file
+   *transition-matrix*
+   (merge-pathnames
+    (make-pathname
+     :directory
+     '(:relative
+       "Racchman-Oct2010 example")
+     :name "transition-matrix<-" :type "txt")
+    *MCStylistic-MonthYear-example-files-results-path*))
+  "Transition lists exported.")
+\end{Verbatim}
+The function \nameref{fun:construct-initial-states} is called in line 356 to construct a list of initial state-context pairs, which are then exported to a text file (lines 359-366). In lines 367-407 there are analogous calls to (and file exports for) the functions \nameref{fun:construct-final-states}, \nameref{fun:construct-stm}, and \nameref{fun:construct-stm<-}. As mentioned, users not wishing to create these lists themselves will find them in the folder called \emph{Racchman-Oct2010 example}.\footnote{It should be noted that the internal initial states and internal final states are defined by hand (but completely algorithmically). The list of internal initial states, for instance, contains three beat-spacing states (where these exist) from each of the thirty-nine mazurkas, taken from the time points at which the first three phrases are marked as ending in the score, according to \citeauthor*{paderewski1953}'s (\citeyear{paderewski1953}) edition.} 
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=409]
+#| Step 3 - Define parameter values for
+Racchman-Oct2010. |#
+(progn
+  (setq *beats-in-bar* 3) (setq *c-absrb* 10)
+  (setq *c-src* 4) (setq *c-bar* 19) (setq *c-min* 19)
+  (setq *c-max* 19) (setq *c-beat* 12)
+  (setq *c-prob* 0.2) (setq *c-for* 3)
+  (setq *c-back* 3)
+  (setq
+   *checklist*
+   (list "originalp" "mean&rangep" "likelihoodp"))
+  "Racchman-Oct2010 parameters defined.")
+\end{Verbatim}
+The above parameter values for Racchman-Oct2010 are explained fully in Chapters 8 and 9 of \citet{collins2011b}. In brief, they control the number of absorptions permitted at each stage of the generating process ($c_\text{absrb} = 10$), the number of consecutive states heralding from the same source ($c_\text{src} = 4$), the range ($c_{\min} = c_{\max} = \overline{c} = 19$), low-likelihood chords ($c_\text{prob} = .2$ and $c_\text{beat} = 12$), and a sense of departure/arrival ($c_\text{for} = c_\text{back} = 3$).
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=422]
+#| Step 4 - Import lists of initial/final state-
+context pairs, and transition lists. It should be
+noted that some variables, such as
+*internal-initial-states*, are not required for this
+example, so their import code is commented out. |#
+(progn
+  (setq
+   *initial-states*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative
+       "Racchman-Oct2010 example")
+      :name "initial-states" :type "txt")
+     *MCStylistic-MonthYear-example-files-results-path*)
+    ))
+  #|
+  (setq
+   *internal-initial-states*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative "Racchman-Oct2010 example")
+      :name "internal-initial-states" :type "txt")
+     *MCStylistic-MonthYear-example-files-path*)
+    ))
+  |#
+  (setq
+   *internal-final-states*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative
+       "Racchman-Oct2010 example")
+      :name "internal-final-states" :type "txt")
+     *MCStylistic-MonthYear-example-files-results-path*)
+    ))
+  #|
+  (setq
+   *final-states*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative "Racchman-Oct2010 example")
+      :name "final-states" :type "txt")
+     *MCStylistic-MonthYear-example-files-path*)
+    ))
+  |#
+  (setq
+   *stm->*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative
+       "Racchman-Oct2010 example")
+      :name "transition-matrix" :type "txt")
+     *MCStylistic-MonthYear-example-files-results-path*)
+    ))
+  (setq
+   *stm<-*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative
+       "Racchman-Oct2010 example")
+      :name "transition-matrix<-" :type "txt")
+     *MCStylistic-MonthYear-example-files-results-path*)
+    ))
+  (concatenate
+   'string
+   "Initial state/context pairs and transition lists"
+   " imported."))
+\end{Verbatim}
+The above code imports initial states lists and transition lists, some of which were created in step 1. As the idea is to generate the opening passage of a mazurka, it is not necessary to import the external final states list, nor the internal initial states list, which is why lines 439-448 and 461-470 are commented out.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=497]
+#| Step 5 - Import the dataset of an existing Chopin
+mazurka to be used as a template (op.56 no.2). A
+template (cf. Def. 9.1 in Collins, 2011) consists of
+basic information, such as tempo and the pitch of the
+lowest-sounding note of the first chord, which is
+transferred to the generated passage. |#
+(progn
+  (setq
+   *dataset-all*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :name "C-56-2-ed" :type "txt")
+     *chopin-mazurka-datasets*)))
+  (setq
+   *dataset-template*
+   (subseq *dataset-all* 0 135))
+  "Template imported.")
+\end{Verbatim}
+The above code imports an existing Chopin mazurka to be used as a template. The opening section of this mazurka is defined as the \texttt{*dataset-template*}, as the idea is to generate an opening passage.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=516]
+#| Step 6 - Generate candidate passages using
+Racchman-Oct2010 and select one. |#
+(progn
+  (setq
+   *rs*
+   #.(CCL::INITIALIZE-MRG31K3P-STATE 1912893808
+      1292746109 1626081729 1084533696 825207402
+      71914375))
+  (setq time-a (get-internal-real-time))
+  (setq
+   *output*
+   (generate-beat-MNN-spacing<->
+    *initial-states* *stm->* *internal-final-states*
+    *stm<-* *dataset-template* *checklist*
+    *beats-in-bar* *c-absrb* *c-src* *c-min* *c-max*
+    *c-bar* *c-beat* *c-prob* *c-for* *c-back*))
+  (setq time-b (get-internal-real-time))
+  (float
+   (/
+    (- time-b time-a)
+    internal-time-units-per-second)))
+; 196.77089 seconds.
+(most-plausible-join
+ (third *output*) 23 *dataset-template* *stm->* 3 3 1
+ *c-beat*)
+; "united,1,1,superimpose"
+\end{Verbatim}
+The above code is at the heart of the Racchman-Oct2010 model, as it is responsible for generating a passage. In lines 519-523 a random seed is defined called \texttt{*rs*}. If users wish to experiment with different random seeds, they can alter the numbers in lines 522-523 manually, or use the built-in function make-random-state. Lines 525-531 of the code generate several candidate passages, which takes about 7 minutes. It is worth pointing out that different random seeds will result in different passage generation times. Of all the generated candidates, the output of Racchman-Oct2010 is the passage whose states are all members of the transition list and whose
+likelihood profile is, on average, closest to that of
+the template piece. This is determined in lines 538-540.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=543]
+#| Step 7 - Export the generated passage to MIDI and
+text files. |#
+(progn
+  (setq
+   *output-datapoints*
+   (gethash
+    '"united,1,1,superimpose"
+    (third *output*)))
+  (saveit
+   (merge-pathnames
+    (make-pathname
+     :name "generated-passage1" :type "mid")
+    *MCStylistic-MonthYear-example-files-results-path*)
+   (modify-to-check-dataset
+    (translation
+     *output-datapoints*
+     (list
+      (- 0 (first (first *output-datapoints*)))
+      0 0 0 0)) 950))
+  (write-to-file
+   *output-datapoints*
+   (merge-pathnames
+    (make-pathname
+     :name "generated-passage1" :type "txt")
+    *MCStylistic-MonthYear-example-files-results-path*))
+  (concatenate
+   'string
+   "Generated passage exported to MIDI and text"
+   " files."))
+\end{Verbatim}
+The generated passage is exported to a MIDI file, as well as to a text file. When this code is executed, the files \emph{generated-passage1.mid} and \emph{generated-passage1.txt} should appear in \emph{Example files} $\rightarrow$ \emph{Example results}.
+
+The above code and functions invoked (cf.~Sec.~\ref{sec:markov-models} for additional documentation) represent something of an achievement: this code accompanies the first full description (in Chapters 8 and 9 of \citeauthor{collins2011b}, \citeyear{collins2011b}) of a model for generating passages in the style of Chopin mazurkas. There is still much to be achieved, however. Models for automated stylistic composition ought to be evaluated thoroughly in order to gauge stylistic success and identify weaknesses. Evalutation of the passages generated by Racchman-Oct2010 suggests that there are stylistically successful aspects, with room for future improvements (see Chapter 11 of \citeauthor{collins2011b}, \citeyear{collins2011b} for more details).
+
+
+\section[Stylistic composition with Racchmaninof-Oct2010]{Stylistic composition with\\ Racchmaninof-Oct2010}\label{sec:ex:Racchmaninof-Oct2010}
+
+The folder called \emph{Example files} that comes with MCStylistic contains a Lisp file called \emph{Stylistic composition with Racchmaninof-Oct2010.lisp}. This section will reproduce and discuss chunks of code from this file. The code is very similar to that discussed in Sec.~\ref{sec:ex:Racchman-Oct2010}, so in the following we will focus on the parts that differ. The idea is to demonstrate Racchmaninof-Oct2010 (standing for RAndom Constrained CHain of MArkovian Nodes with INheritance Of Form), which is a model for automated stylistic composition. A date stamp is added to Racchmaninof in case it is superseded by future work. Chapters 8 and 9 of \citet{collins2011b} provide a full explanation of the model. The main
+difference between Racchman-Oct2010 and
+Racchmaninof-Oct2010 is that the latter includes
+pattern inheritance. This means the temporal and
+registral positions of discovered repeated patterns
+from an existing piece are used as a template to 
+guide the generation of a new passage of music. Both
+models are similar in spirit to the databases and programs referred to collectively as Experiments in Musical Intelligence (EMI), as outlined by \citet*{cope1996,cope2001,cope2005}.
+
+Here I will exemplify the building of initial states lists and transition lists, and the use of these lists by Racchmaninof-Oct2010 to generate an opening passage of a
+mazurka in the style of Chopin. % This very passage was used in an evaluation of the model (excerpt 28 in Chapter 10 of \citeauthor{collins2011b}, \citeyear{collins2011b});
+The user may wish to experiment with different random seeds, resulting in different generated passages. The building of the initial states lists and transition lists takes about two hours on a 2.9 GHz machine
+with 8 GB RAM, so for users not wishing to
+wait that long, the resulting files have been placed
+in the \emph{Example files} folder, in a folder called
+\emph{Racchman-Oct2010 example}. The passage generation takes about 5 seconds. Steps 1-4 of the code will not reproduced; it is analogous to the code in Sec.~\ref{sec:ex:Racchman-Oct2010}.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=500]
+#| Step 5 - Import the dataset of an existing Chopin
+mazurka (op.68 no.1) to be used as a template with
+patterns. A template with patterns (cf. Def. 9.3 in
+Collins, 2011) consists of basic information, such as
+tempo and the pitch of the lowest-sounding note of the
+first chord, but also information to do with
+discovered patterns, such as the ontimes of first and
+last datapoints, translators, and subset scores. The
+second chunk of code here runs SIACT, rates the
+discovered patterns, and performs some filtering as
+described in Sec. 7.3.1 of Collins (2011). |#
+(progn
+  (setq
+   *dataset-all*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :name "C-68-1-ed" :type "txt")
+     *chopin-mazurka-datasets*)))
+  (setq
+   *dataset-template*
+   (subseq *dataset-all* 0 231))
+  (setq
+   *dataset-projected*
+   (orthogonal-projection-unique-equalp
+    *dataset-template* '(1 1 1 0 0)))
+  "Template imported and projected.")
+
+(progn
+  (setq time-a (get-internal-real-time))
+  (setq *compact-thresh* 4/5)
+  (setq *cardina-thresh* 3)
+  (setq *region-type* "lexicographic")
+  (setq *duration-thresh* 3)
+  (SIA-reflected-merge-sort
+   *dataset-projected*
+   (merge-pathnames
+    (make-pathname
+     :directory
+     '(:relative
+       "Racchmaninof-Oct2010 example")
+     :name "C-68-1 (1 1 1 0 0) SIA" :type "txt")
+    *MCStylistic-MonthYear-example-files-results-path*))
+  (setq
+   *SIA-output*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative
+        "Racchmaninof-Oct2010 example")
+      :name "C-68-1 (1 1 1 0 0) SIA" :type "txt")
+     *MCStylistic-MonthYear-example-files-results-path*)
+    ))
+  (compactness-trawler
+   *SIA-output* *dataset-projected*
+   (merge-pathnames
+    (make-pathname
+     :directory
+     '(:relative
+       "Racchmaninof-Oct2010 example")
+     :name "C-68-1 (1 1 1 0 0) CT" :type "txt")
+    *MCStylistic-MonthYear-example-files-results-path*)
+   *compact-thresh* *cardina-thresh*
+   *region-type*)
+  (setq
+   *SIACT-output*
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative
+        "Racchmaninof-Oct2010 example")
+      :name "C-68-1 (1 1 1 0 0) CT" :type "txt")
+     *MCStylistic-MonthYear-example-files-results-path*)
+    ))
+  (setq
+   *patterns-hash*
+   (prepare-for-pattern-inheritance
+    *SIACT-output* *dataset-projected*
+    *duration-thresh*))
+  (write-to-file-balanced-hash-table
+   *patterns-hash*
+   (merge-pathnames
+    (make-pathname
+     :directory
+     '(:relative
+       "Racchmaninof-Oct2010 example")
+     :name "C-68-1 (1 1 1 0 0) PH" :type "txt")
+    *MCStylistic-MonthYear-example-files-results-path*))
+  (setq time-b (get-internal-real-time))
+  (float
+   (/
+    (- time-b time-a)
+    internal-time-units-per-second)))
+; 0.979296 sec. Patterns discovered, rated, filtered.
+\end{Verbatim}
+In lines 512-518 a dataset representation of Chopin's Mazurka in C major op.68 no.1 is imported, and attention restricted to the first 231 datatpoints (line 521). A projection on to the dimensions of ontime, MNN, and MPN is defined in lines 522-525. The second chunk of code (lines 528-589) runs SIACT (an example run of the pattern discovery algorithm SIACT was discussed in Sec.~\ref{sec:disc&rate-musical-patterns}). Parameters are set in lines 530-533. The parameters \texttt{*compact-thresh*}, \texttt{*cardina-thresh*}, and \texttt{*region-type*} were met before (cf.~Sec.~\ref{sec:disc&rate-musical-patterns}). The parameter \texttt{*duration-thresh*} ensures that only discovered patterns of at least this duration (last ontime minus first ontime) are inherited. SIA is run and the results imported in lines 534-551. The compactness trawler (CT) is run and the results imported in lines 552-571. The patterns are rated, filtered, and exported in lines 572-584. The filters include the duration threshold mentioned above, as well as removal of overlapping occurrences of the same pattern, and removal of a pattern $Q$ and its occurrences when $Q$ is the lower-rated of two patterns $P$ and $Q$, they have the same translators, and $Q$ is a subset of $P$. For further discussion of these filters, see Sec.~7.3.1 in \citet{collins2011b}.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=562]
+#| Step 6 - Generate candidate passages using
+Racchmaninof-Oct2010 and select one. |#
+(progn
+  (setq
+   *rs*
+   #.(CCL::INITIALIZE-MRG31K3P-STATE
+      1480006552 490947557 697061576 1760965485
+      2015184206 904512324))
+  (setq
+   *whole-piece-interval*
+   (list
+    (floor (first (first *dataset-all*)))
+    (ceiling (first (my-last *dataset-all*)))))
+  (setq time-a (get-internal-real-time))
+  (setq
+   *interval-output-pairs*
+   (generate-beat-spacing<->pattern-inheritance
+    *external-initial-states*
+    *internal-initial-states* *stm->*
+    *external-final-states* *internal-final-states*
+    *stm<-* *dataset-template* *patterns-hash*
+    *whole-piece-interval* *checklist* *beats-in-bar*
+    *c-absrb* *c-src* *c-bar* *c-min* *c-max* *c-beat*
+    *c-prob* *c-for* *c-back*))
+  (setq time-b (get-internal-real-time))
+  (float
+   (/
+    (- time-b time-a)
+    internal-time-units-per-second)))
+; 1.326446 seconds.
+\end{Verbatim}
+The above code is at the heart of the Racchmaninof-Oct2010 model, as it is responsible for generating a passage. In lines 595-599 a random seed is defined called \texttt{*rs*}. If users wish to experiment with different random seeds, they can alter the numbers in lines 598-599 manually, or use the built-in function make-random-state. The time interval for which a new passage will be generated is defined in lines 600-604 of the codet. The order in which different portions of this time interval are addressed depends on the subset scores and ratings of discovered patterns. Lines 606-615 generate and select from several candidate passages, which takes about 25 seconds. It is worth pointing out that different random seeds will result in different passage generation times. The way in which discovered patterns are inherited by the generated passage is exemplified in Sec.~9.6 of \citet{collins2011b}, but not discussed further here.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=590]
+#| Step 7 - Export the generated passage to MIDI and
+text files. |#
+(progn
+  (setq
+   *output-datapoints*
+   (interval-output-pairs2dataset
+    *interval-output-pairs*))
+  (saveit
+   (merge-pathnames
+    (make-pathname
+     :name "generated-passage2" :type "mid")
+    *MCStylistic-Aug2013-example-files-results-path*)
+   (modify-to-check-dataset
+    (translation
+     *output-datapoints*
+     (list
+      (- 0 (first (first *output-datapoints*)))
+      0 0 0 0)) 850))
+  (write-to-file
+   *output-datapoints*
+   (merge-pathnames
+    (make-pathname
+     :name "generated-passage2" :type "txt")
+    *MCStylistic-Aug2013-example-files-results-path*))
+  (concatenate
+   'string
+   "Generated passage exported to MIDI and text"
+   " files."))
+\end{Verbatim}
+The generated passage is exported to a MIDI file, as well as to a text file. When this code is executed, the files \emph{generated-passage2.mid} and \emph{generated-passage2.txt} should appear in \emph{Example files} $\rightarrow$ \emph{Example results}.
+
+As with Sec.~\ref{sec:ex:Racchman-Oct2010}, the above code and functions invoked (cf.~Sec.~\ref{sec:markov-models} for additional documentation) represent something of an achievement: this code accompanies the first full description (in Chapters 8 and 9 of \citeauthor{collins2011b}, \citeyear{collins2011b}) of a model for pattern inheritance. There is still much to be achieved, however. Models for automated stylistic composition ought to be evaluated thoroughly in order to gauge stylistic success and identify weaknesses. Evalutation of the passages generated by Racchmaninof-Oct2010 suggests that there are stylistically successful aspects, with room for future improvements (Chapter 11 of \citeauthor{collins2011b}, \citeyear{collins2011b}). In particular, the prize remains unclaimed for demonstrating experimentally that pattern inheritance alone can lead to improved ratings of stylistic success.
+
+
+\section[Evaluating pattern discovery algorithms for MIREX 2013]{Evaluating pattern discovery algorithms\\ for MIREX 2013}\label{sec:eval-mirex-patt-disc}
+
+The folder called \emph{Example files} that comes with MCStylistic contains a Lisp file called \emph{Evaluating pattern discovery algorithms for MIREX 2013.lisp}. This section will reproduce and discuss chunks of code from this file. The functions are intended to help participants in the 2013 MIREX
+Pattern Discovery Task to evaluate their algorithms.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=17]
+#| Step 1 - Set the paths for the locations of output
+patterns and ground truth patterns. |#
+(setq
+ *algorithms-output-root*
+ (merge-pathnames
+  (make-pathname
+   :directory
+   '(:relative "MIREX 2013 pattern discovery task"))
+  *MCStylistic-Aug2013-example-files-path*))
+\end{Verbatim}
+The code begins (lines 19-25) by setting the location of algorithm output. The folder called \emph{Example files} that comes with MCStylistic contains a subfolder called \emph{MIREX 2013 pattern discovery task}. Here you will see example output for four algorithms. In the folder \emph{algorithm1output}, for instance, there are two subfolders (\emph{beethovenOp2No1Mvt3} and \emph{gibbonsSilverSwan1612}) that contain algorithmically discovered patterns within each piece. In order for the evaluation functions to work, please adhere to the folder structure when saving the results of your own algorithm(s):
+\begin{quotation}
+\emph{algorithm$X$} $\rightarrow$ \emph{piece$Y$} $\rightarrow$ \emph{pattern$Z$} $\rightarrow$ \emph{occurrences} $\rightarrow$ \emph{csv}
+\end{quotation}
+Each occurrence of each discovered pattern should be saved as a separate csv file (\emph{occ1.csv}, \emph{occ2.csv},$\ldots$, \emph{occ$m$.csv}) with one ontime-pitch pair per row. You can either replace the example algorithm output with your own results, or point \texttt{*algorithms-output-root*} to the appropriate location. More than one algorithm can be evaluated simultaneously (see below).
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=26]
+(setq *task-version* "polyphonic")
+(setq
+ *annotations-poly*
+ (list
+  "bruhn" "barlowAndMorgensternRevised"
+  "sectionalRepetitions" "schoenberg" "tomcollins"))
+(setq
+ *annotations-mono*
+ (list
+  "bruhn" "barlowAndMorgenstern"
+  "barlowAndMorgensternRevised" "sectionalRepetitions"
+  "schoenberg" "tomcollins"))
+\end{Verbatim}
+If your algorithm works on the polyphonic version of each ground truth piece, then leave \texttt{*task-version*} in line 26 as `polyphonic'. Otherwise, please switch to `monophonic'. The variables \texttt{*annotations-poly*} and \texttt{*annotations-mono*} defined in lines 39-49 tell the evaluation functions which annotations should be included as ground truth. It is possible to alter these lists to begin investigating the strengths and weaknesses of a pattern discovery algorithm, but please note that some annotations are empty for some pieces (for example, there is no `bruhn' annotation for `gibbonsSilverSwan1612').
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=38]
+(setq
+ *ground-truth-paths*
+ (list
+  (merge-pathnames
+   (make-pathname
+    :directory
+    '(:relative "beethovenOp2No1Mvt3"))
+  *jkuPattsDevDB-Aug2013-gtr-path*)
+  (merge-pathnames
+   (make-pathname
+    :directory
+    '(:relative "gibbonsSilverSwan1612"))
+  *jkuPattsDevDB-Aug2013-gtr-path*)))
+#|
+(setq
+ *ground-truth-paths*
+ (cl-fad:list-directory
+  *jkuPattsDevDB-Aug2013-gtr-path*))
+|#
+(setq
+ *algorithm-output-paths*
+ (cl-fad:list-directory *algorithms-output-root*))
+; Save the calculated metrics to this csv file.
+(setq
+ *csv-save-path&name*
+ (merge-pathnames
+  (make-pathname
+   :name "calculated-metrics" :type "csv")
+  *MCStylistic-Aug2013-example-files-path*))
+\end{Verbatim}
+Lines 38-50 define the locations of two ground truth annotations (`beethoven\\Op2No1Mvt3' and `gibbonsSilverSwan1612'). The code makes use of the variable \texttt{*jkuPattsDevDB-Aug2013-gtr-path*}, which is defined in \emph{setup.lisp} (see Sec.~\ref{sec:loading-MCStylistic}). Commented-out in lines 51-56 (by `\#$|$' and `$|$\#') is an alternative definition of \texttt{*ground-truth-paths*}, which uses the function cl-fad:list-directory to create a list of all available ground truth annotations. I offer the first alternative, in case in the beginning you want to restrict evaluation to a couple of pieces.
+
+Lines 57-59 constitute analogous code for creating a list of algorithm outputs. The function cl-fad:list-directory is used to create a list of all algorithm output located at \texttt{*algorithms-output-root*}. So if the output of more than one algorithm is located here, then all these algorithms will be evaluated simultaneously. If you want to restrict evaluation to a couple of algorithms located at \texttt{*algorithms-output-root*}, then the code in lines 38-50 could be copied, pasted, and adapted easily:
+\begin{itemize}
+\item replace \texttt{*ground-truth-paths*} with \texttt{*algorithm-output-paths*};
+\item replace `beethovenOp2No1Mvt3' with the folder name of the first algorithm's output; replace `gibbonsSilverSwan1612' with the folder name of the second algorithm's output, etc.;
+\item finally, each \texttt{*jkuPattsDevDB-Aug2013-gtr-path*} should be replaced with \texttt{*algorithms-output-root*}.
+\end{itemize}
+It should be noted that the evaluation functions will still work if an algorithm is missing output for one or more ground truth pieces (the line in the results file will be blank). Lines 61-66 specify the location to which the results file will be saved. A version of the results is given in Table \ref{tab:MIREX-eval-example}, and soon it will be discussed in more detail, after we have looked over code for specifying metrics and metric parameters.
+
+\begin{table}
+\caption{Evaluation metrics of some pattern discovery algorithms for pieces by Beethoven and Gibbons.}
+\begin{center}
+\begin{tabular}{lrrrrrr} 
+%\multicolumn{2}{c}{Bequeathed concertos} & \multicolumn{3}{c}{Library concertos} \\
+\multicolumn{7}{c}{algorithm1output} \\
+\hline
+Piece & $P$ & $R$ & $P_\text{est}$ & $R_\text{est}$ & $P_\text{occ}$ & $R_\text{occ}$ \\
+\hline
+beethovenOp2No1Mvt3 & 1 & 1 & 1 & 1 & 1 & 1 \\
+gibbonsSilverSwann1612 & 1 & 1 & 1 & 1 & 1 & 1 \\
+\hline\\[-.3cm]
+\multicolumn{7}{c}{algorithm2output} \\
+\hline
+Piece & $P$ & $R$ & $P_\text{est}$ & $R_\text{est}$ & $P_\text{occ}$ & $R_\text{occ}$ \\
+\hline
+beethovenOp2No1Mvt3 & 0 & 0 & .03 & .02 & 0 & 0 \\
+gibbonsSilverSwann1612 & 0 & 0 & .02 & .03 & 0 & 0 \\
+\hline
+\hline\\[-.3cm]
+\multicolumn{7}{c}{algorithm3output} \\
+\hline
+Piece & $P$ & $R$ & $P_\text{est}$ & $R_\text{est}$ & $P_\text{occ}$ & $R_\text{occ}$ \\
+\hline
+beethovenOp2No1Mvt3 & .36 & .57 & .73 & .97 & .95 & .97 \\
+gibbonsSilverSwann1612 & 0 & 0 & .98 & .27 & .98 & .98 \\
+\hline
+\hline\\[-.3cm]
+\multicolumn{7}{c}{algorithm4output} \\
+\hline
+Piece & $P$ & $R$ & $P_\text{est}$ & $R_\text{est}$ & $P_\text{occ}$ & $R_\text{occ}$ \\
+\hline
+beethovenOp2No1Mvt3 & 0 & 0 & .26 & .43 & .97 & .97 \\
+gibbonsSilverSwann1612 & .02 & .25 & .34 & .86 & .84 & .84 \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+\label{tab:MIREX-eval-example}
+\end{table}
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=68]
+#| Step 2 - List metrics to calculate and any
+parameters. |#
+(setq
+ *metrics-to-calculate*
+ (list
+  "precision" "recall" "precision-est-card"
+  "recall-est-card" "precision-occ-card"
+  "recall-occ-card"))
+#|
+(setq
+ *metrics-to-calculate*
+ (list
+  "precision-est-card" "recall-est-card"
+  "precision-occ-card" "recall-occ-card"))
+(setq
+ *metrics-to-calculate*
+ (list
+  "precision-est-card" "recall-est-card"
+  "precision-occ-card" "recall-occ-card"
+  "precision-est-match" "recall-est-match"))
+|#
+(setq
+ *metric-parameters*
+ (list
+  (list "score-thresh" .75) (list "tolp" t)
+  (list "translationp" nil) (list "card-limit" 150)))
+(setq *file-type* "csv")
+\end{Verbatim}
+Lines 70-75 set the metrics that will be calculated for each algorithm on each ground truth piece. We do not discuss the definitions of the metrics here, as they are given on the \href{http://www.music-ir.org/mirex/wiki/MIREX_HOME}{MIREX page} for the Pattern Discovery Task. Some alternative versions of metric lists are commented out in lines 76-88.\footnote{Use of the `match' metrics is not recommended in this Lisp implementation: the implementation is slow for verbose algorithm output, and unstable for sectional repetitions. An optimised version will be employed for the evaluation proper.}
+
+Metric parameters are set in lines 89-94. The `score-thresh' parameter (line 92) is used by the \emph{occurrence precision} and \emph{occurrence recall} metrics. A value of .75 indicates that an output pattern must score at least .75 in terms of symbolic music similarity to a ground truth pattern, in order for it to be considered \emph{discovered}. The `tolp' parameter (line 92) is set to \texttt{t} (true), and allows for equality up to a tolerance of $10^{-5}$. This can be useful for handling rounding errors in csv files. The `translationp' parameter (line 93) is set to \texttt{nil} (false). As such, time- or pitch-shifted discoveries of a ground truth pattern do not count as successes. If at least one occurrence of an output pattern is very similar to at least one occurrence of a ground truth pattern, however, then the \emph{establishment precision} ($P_\text{est}$) and \emph{establishment recall} ($R_\text{est}$) metrics will reward the discovery. The `card-limit' parameter (line 93) is an attempt to improve the stability of the `match' metrics, causing the function \nameref{fun:matching-score} to use an estimate if a pattern contains more than 150 ontime-pitch pairs. Finally, the variable \texttt{*file-type*} controls whether output and ground truth patterns are imported from csv or text files. I recommend the former, as many other programs have the ability to read/write csv files, and, as mentioned above, functionality has been included in MCStylistic to handle rounding errors.
+
+\begin{Verbatim}[frame=single,numbers=left,firstnumber=96]
+#| Step 3 - Calculate the metrics. |#
+(setq
+ *ans*
+ (pattern-discovery-metrics
+  *algorithm-output-paths* *ground-truth-paths*
+  *csv-save-path&name* *task-version*
+  *annotations-poly* *metrics-to-calculate*
+  *metric-parameters* *file-type*))
+\end{Verbatim}
+The function \nameref{fun:pattern-discovery-metrics} is called in lines 99-103. It calculates the specified metrics for the algorithm output and ground truth pieces, and writes the results to a csv file. Table \ref{tab:MIREX-eval-example} shows the results for the current example. Algorithms 1 and 2 are sanity checks. For algorithm 1, I defined the output to be the ground truth patterns. As expected, all metrics for algorithm 1 are at ceiling. Conversely for algorithm 2, I defined the output by swapping the ground truths for `beethovenOp2No1Mvt3' and `gibbonsSilverSwan1612'. As expected, the metrics for algorithm 2 are at or very near the floor of zero. Rows for algorithms 3 and 4 represent the evaluation of real output. Algorithm 4 is more verbose than algorithm 3, which is reflected partly in algorithm 4's lower values for precision. It can be seen that the \emph{establishment precision} ($P_\text{est}$) and \emph{establishment recall} ($R_\text{est}$) metrics are more robust to slight differences between output and ground truth patterns than are standard \emph{precision} ($P$) and \emph{recall} ($R$). Compare, say, $P = 0$ with $P_\text{est} = .98$ for algorithm 3 on `gibbonsSilverSwan1612'. The \emph{occurrence precision} ($P_\text{occ}$) and \emph{occurrence recall} ($R_\text{occ}$) metrics assess how well an algorithm discovers \emph{all occurrences} of a pattern, given that it has discovered at least one occurrence (controlled by the `score-thresh' parameter). For example, although algorithm 4 does not retrieve many of the ground truth patterns in `beethovenOp2No1Mvt3' ($R_\text{est}$ = .43), for those it does retrieve it does a good job of identifying all occurrences ($R_\text{occ}$ = .97).
+
+A more general introduction to the Pattern Discovery Task, including metric definitions, can be found on the corresponding \href{http://www.music-ir.org/mirex/wiki/MIREX_HOME}{MIREX page}.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

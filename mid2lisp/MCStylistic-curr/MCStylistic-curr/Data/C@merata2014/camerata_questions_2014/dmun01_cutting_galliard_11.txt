@@ -1,0 +1,467 @@
+  <question number="31" music_file="cutting_galliard_11.xml" divisions="4">
+    <text>B4</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="5"
+               end_bar="5" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="11"
+               end_bar="5" end_offset="12" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="13" start_offset="7"
+               end_bar="13" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="13" start_offset="11"
+               end_bar="13" end_offset="11" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="17" start_offset="1"
+               end_bar="17" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="21" start_offset="5"
+               end_bar="21" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="25" start_offset="1"
+               end_bar="25" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="29" start_offset="5"
+               end_bar="29" end_offset="8" />
+    </answer>
+  </question>
+
+  <question number="32" music_file="cutting_galliard_11.xml" divisions="4">
+    <text>E#</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="3" start_offset="9"
+               end_bar="3" end_offset="12" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="23" start_offset="9"
+               end_bar="23" end_offset="12" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="31" start_offset="7"
+               end_bar="31" end_offset="7" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="31" start_offset="9"
+               end_bar="31" end_offset="9" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="31" start_offset="12"
+               end_bar="31" end_offset="12" />
+    </answer>
+  </question>
+
+  <question number="33" music_file="cutting_galliard_11.xml" divisions="1">
+    <text>dotted minim</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="1"
+               end_bar="12" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="16" start_offset="1"
+               end_bar="16" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="34" music_file="cutting_galliard_11.xml" divisions="4">
+    <text>dotted quaver</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="1"
+               end_bar="5" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="30" start_offset="1"
+               end_bar="30" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="33" start_offset="5"
+               end_bar="33" end_offset="7" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="34" start_offset="1"
+               end_bar="34" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="35" start_offset="5"
+               end_bar="35" end_offset="7" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="36" start_offset="1"
+               end_bar="36" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="37" start_offset="5"
+               end_bar="37" end_offset="7" />
+    </answer>
+  </question>
+
+  <question number="35" music_file="cutting_galliard_11.xml" divisions="2">
+    <text>dotted crotchet A sharp</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="4" start_offset="1"
+               end_bar="4" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="24" start_offset="1"
+               end_bar="24" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="32" start_offset="1"
+               end_bar="32" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="36" music_file="cutting_galliard_11.xml" divisions="4">
+    <text>semiquaver D natural</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="10" start_offset="5"
+               end_bar="10" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="16" start_offset="3"
+               end_bar="16" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="37" start_offset="8"
+               end_bar="37" end_offset="8" />
+    </answer>
+  </question>
+
+  <question number="37" music_file="cutting_galliard_11.xml" divisions="4">
+    <text>dotted quaver E followed by semiquaver F sharp</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="34" start_offset="1"
+               end_bar="34" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="36" start_offset="1"
+               end_bar="36" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="1"
+               end_bar="5" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="30" start_offset="1"
+               end_bar="30" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="33" start_offset="5"
+               end_bar="33" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="34" start_offset="1"
+               end_bar="34" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="35" start_offset="5"
+               end_bar="35" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="36" start_offset="1"
+               end_bar="36" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="37" start_offset="5"
+               end_bar="37" end_offset="8" />
+    </answer>
+  </question>
+
+  <question number="38" music_file="cutting_galliard_11.xml" divisions="4">
+    <text>crotchet rest followed by crotchet</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="40" start_offset="1"
+               end_bar="40" end_offset="8" />
+    </answer>
+  </question>
+
+  <question number="39" music_file="cutting_galliard_11.xml" divisions="4">
+    <text>falling major third</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="1" start_offset="5"
+               end_bar="1" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="9" start_offset="7"
+               end_bar="9" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="13" start_offset="1"
+               end_bar="13" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="14" start_offset="7"
+               end_bar="14" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="15" start_offset="3"
+               end_bar="15" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="15" start_offset="12"
+               end_bar="16" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="23" start_offset="9"
+               end_bar="24" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="31" start_offset="12"
+               end_bar="32" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="34" start_offset="5"
+               end_bar="34" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="39" start_offset="9"
+               end_bar="40" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="18" start_offset="1"
+               end_bar="18" end_offset="10" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="19" start_offset="9"
+               end_bar="20" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="22" start_offset="9"
+               end_bar="23" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="27" start_offset="9"
+               end_bar="28" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="30" start_offset="9"
+               end_bar="31" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="33" start_offset="1"
+               end_bar="33" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="37" start_offset="5"
+               end_bar="38" end_offset="8" />
+    </answer>
+  </question>
+
+  <question number="40" music_file="cutting_galliard_11.xml" divisions="4">
+    <text>nineteenth</text>
+  </question>
+

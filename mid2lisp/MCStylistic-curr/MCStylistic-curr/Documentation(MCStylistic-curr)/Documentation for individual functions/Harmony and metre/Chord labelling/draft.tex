@@ -1,0 +1,865 @@
+\subsection{Chord labelling}\label{sec:chord-labelling}
+
+An implementation of the HarmAn algorithm
+as described by \cite{pardo2002}, as well as an
+extension of this algorithm to provide
+functional-harmonic analysis.
+
+
+%%%%%
+\subsection*{a-list-in-b-list}\label{fun:a-list-in-b-list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \\
+Called by & \nameref{fun:score-segment-against-template} \\
+Comments/see also & Could be improved with use of the function count.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(a-list-in-b-list '(0 48 3 5 2 3) '(5 3 48))
+--> 4
+\end{verbatim}
+
+\noindent This function takes two lists as arguments.
+It returns the number of elements in the first list
+that are contained in the second list.
+
+
+%%%%%
+\subsection*{cadence-time-intervals}\label{fun:cadence-time-intervals}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/5/2014, 16/5/2014 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:append-list},\newline \nameref{fun:append-ontimes-to-time-signatures}, \nameref{fun:bar-n-beat-number-of-ontime}, \nameref{fun:firstn-list},\newline \nameref{fun:HarmAn->roman}, \nameref{fun:nth-list},\newline \nameref{fun:nth-list-of-lists}, \nameref{fun:positions}, \nameref{fun:replace-all},\newline \nameref{fun:row-of-max-ontime<=ontime-arg} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ path&name
+ (merge-pathnames
+  (make-pathname
+   :directory '(:relative "C@merata2014" "misc")
+   :name "dowland_denmark_galliard" :type "krn")
+  *MCStylistic-MonthYear-data-path*))
+(setq question-string "perfect cadence")
+(setq
+ point-set (kern-file2dataset-by-col path&name))
+(setq
+ ontimes-signatures
+ (kern-file2ontimes-signatures path&name))
+(cadence-time-intervals
+ question-string point-set ontimes-signatures)
+--> ((8 12))
+\end{verbatim}
+
+\noindent This function uses the function
+\nameref{fun:HarmAn->roman} to create a Roman
+numeral labelling for an input point set. Bigrams in
+this labelling are used to identify certain types of
+cadence queries, which can be specified as the first
+argument. Time windows in which the cadences occur
+are returned.
+
+
+%%%%%
+\subsection*{chord-index2MNN-mod12\&class}\label{fun:chord-index2MNN-mod12nclass}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \\
+Called by & \nameref{fun:labelled-listed-segments2datapoints} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(chord-index2MNN-mod12&class 37)
+--> (1 3)
+\end{verbatim}
+
+\noindent This function takes an index in the variable
+*chord-templates-p\&b\&min7ths* as argument. It can be
+seen from this variable that there are six different
+classes of chord template (0, major triad; 1, dom7;
+2, minor triad; 3, fully diminished 7th; 4, half
+diminished 7th; 5, diminished triad; 6, minor 7th).
+All classes but one have unambiguous roots. For
+example, if the index is 4, we know that the 5th (5 =
+4 + 1) element of the list is (5 9 0), and that this
+is a major triad with root F. This function converts
+the index into a pair consisting of root (MIDI note
+number modulo 12) and class (as listed above). The
+ambiguity of a fully diminished 7th chord can be
+resloved by context, using another function.
+
+
+%%%%%
+\subsection*{chord-time-intervals}\label{fun:chord-time-intervals}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 16/6/2015, 25/6/2015 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \\
+Called by & \nameref{fun:time-intervals-for-question-elements-Jun2015} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ point-set
+ '((0 50 54 1/2 3) (1/2 57 58 1/2 3) (1 53 56 1/2 3)
+   (3/2 57 58 1/2 3) (2 50 54 1 3) (2 69 65 1 2)
+   (5/2 53 56 1/2 3) (3 55 57 1/2 3) (3 70 66 3/2 2)
+   (7/2 58 59 1/2 3) (4 52 55 1/2 3) (9/2 55 57 1/2 3)
+   (9/2 69 65 1/2 2) (5 49 53 1/2 3) (5 67 64 1/4 2)
+   (21/4 70 66 1/4 2) (11/2 52 55 1/2 1)
+   (11/2 69 65 1/2 1) (6 49 53 1/2 3) (6 67 64 1 2)))
+(setq question-string "chord of D minor")
+(chord-time-intervals question-string point-set)
+--> ((5/2 3))
+(setq question-string "chord C#3, G4")
+(chord-time-intervals question-string point-set)
+--> ((5 21/4) (6 13/2))
+(setq question-string "chord E, A")
+(chord-time-intervals question-string point-set)
+--> ((11/2 6))
+(setq question-string "quaver note chord")
+(chord-time-intervals question-string point-set)
+--> ((2 5/2) (9/2 5) (11/2 6))
+(setq
+ question-string "quaver note chord in the left hand")
+(chord-time-intervals question-string point-set)
+--> ((11/2 6))
+
+(setq
+ point-set
+ '((15 60 60 1/2 1) (15 64 62 1/2 1) (15 72 67 1/2 0)
+   (31/2 60 60 1/2 1) (31/2 64 62 1/2 1)
+   (31/2 76 69 1/4 0) (63/4 74 68 1/4 0)
+   (16 60 60 1/2 1) (16 64 62 1/2 1) (16 76 69 1/2 0)
+   (33/2 60 60 1/2 1) (33/2 64 62 1/2 1)
+   (33/2 79 71 1/4 0) (67/4 77 70 1/4 0)
+   (17 60 60 1/2 1) (17 64 62 1/2 1) (17 79 71 1/2 0)
+   (35/2 60 60 1/2 1) (35/2 64 62 1/2 1)
+   (35/2 82 73 1/4 0) (71/4 81 72 1/4 0)
+   (18 53 56 1/2 1) (18 60 60 1/2 1) (18 64 62 1/2 1)
+   (18 81 72 2 0) (37/2 53 56 1/2 1) (37/2 60 60 1/2 1)
+   (37/2 64 62 1/2 1) (19 53 56 1/2 1)))
+(setq
+ question-string "sixteenth note chord Bb, C, E")
+(chord-time-intervals question-string point-set)
+--> ((35/2 71/4))
+\end{verbatim}
+
+\noindent This function takes a natural language query
+as its first argument and a point-set representation of
+a music excerpt as its second argument. The third
+(optional) argument consists of staff and clef names.
+The function parses the query for mention of a chord
+(e.g., `C major chord', `chord of D minor',
+`sixteenth note chord Bb, C, E') and then extracts
+instances of this chord from the point set, returning
+the time intervals at which they occur. Chord names 
+(e.g., C minor) are mapped to chord templates (e.g., C,
+E$\flat$, G) using the variable
+*chord-name-template-assoc-p\&b\&min7ths*.
+
+The function can handle pitches and pitch classes, as
+well as restricting extracted chords to particular
+durations or searching on duration alone. If the
+excerpt contains pitches/pitch classes specified in the
+query as well as some extras, then such chords will
+still be returned. If a chord occurs over several
+segments (because other notes come and go), then
+several adjoining time windows will be returned.
+
+
+%%%%%
+\subsection*{HarmAn-$>$}\label{fun:HarmAn->}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:HarmAn->labelling},\newline \nameref{fun:labelled-listed-segments2datapoints},\newline \nameref{fun:resolve-dim7s}, \nameref{fun:segments-strict} \\
+Called by & \nameref{fun:labelled-listed-segments2datapoints} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(HarmAn->
+ '((15 54 56 1 3) (15 62 61 1/2 2) (15 69 65 1 1)
+   (15 74 68 1 0) (31/2 60 60 1/2 2) (16 55 57 1 3)
+   (16 59 59 1 2) (16 67 64 1 1) (16 74 68 1 0)
+   (17 57 58 1 3) (17 60 60 1 2) (17 66 63 1 1)
+   (17 74 68 1 0) (18 59 59 1 3) (18 62 61 1 2)
+   (18 67 64 1 1) (18 74 68 1 0) (19 52 55 1 3)
+   (19 64 62 1 2) (19 67 64 1 1) (19 71 66 1/2 0)
+   (39/2 72 67 1/2 0) (20 47 52 1 3) (20 62 61 1 2)
+   (20 67 64 1 1) (20 74 68 1 0) (21 48 53 1 3)
+   (21 64 62 1 2) (21 69 65 1/2 1) (21 72 67 1/2 0)
+   (43/2 67 64 1/2 1) (43/2 71 66 1/2 0)
+   (22 50 54 1 3) (22 57 58 1 2) (22 66 63 1 1)
+   (22 69 65 1 0)))
+--> ((15 2 1 1 8) (16 7 0 1 4) (17 2 1 1 4)
+     (18 7 0 1 4) (19 4 2 1/2 4) (39/2 0 0 1/2 4)
+     (20 7 0 1 4) (21 9 2 1/2 4) (43/2 0 0 1/2 2)
+     (22 2 0 1 4))
+\end{verbatim}
+
+\noindent This function is an implementation of the
+forwards-running HarmAn algorithm described by
+\cite{pardo2002}. The format of the output is a chord
+dataset, where the first dimension is ontime, the
+second dimension is the MIDI note number modulo 12 of
+the root of the chord, the third dimension is the
+class of the chord (0, major triad; 1, dom7; 2, minor
+triad; 3, fully diminished 7th; 4, half diminished
+7th; 5, diminished triad; 6, minor 7th), the fourth
+dimension is the duration of the chord, and the
+fifth dimension contains the score as assigned by the
+HarmAn algorithm (a large weight suggests that the
+chord was labelled unambiguously---a small weight
+suggests otherwise).
+
+
+%%%%%
+\subsection*{HarmAn-$>$labelling}\label{fun:HarmAn->labelling}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:max-argmax-of-segment-scores},\newline \nameref{fun:max-argmax-of-segments-score}, \nameref{fun:my-last},\newline \nameref{fun:nth-list-of-lists} \\
+Called by & \nameref{fun:HarmAn->}, \nameref{fun:HarmAn->roman} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(HarmAn->labelling
+ '((0 ((0 60 60 2) (0 64 62 2) (0 72 67 1)))
+   (1 ((0 60 60 2) (0 64 62 2) (1 74 68 1/2)))
+   (3/2 ((0 60 60 2) (0 64 62 2) (3/2 76 69 1/2)))
+   (2 ((2 59 59 1) (2 65 63 1) (2 79 71 1)))
+   (3 ((3 60 60 1) (3 64 62 1) (3 79 71 1)))))
+--> ((((0 ((0 60 60 2) (0 64 62 2) (0 72 67 1)))
+       (1 ((0 60 60 2) (0 64 62 2) (1 74 68 1/2)))
+       (3/2
+        ((0 60 60 2) (0 64 62 2) (3/2 76 69 1/2))))
+      (6 0))
+     (((2 ((2 59 59 1) (2 65 63 1) (2 79 71 1))))
+      (2 19))
+     (((3 ((3 60 60 1) (3 64 62 1) (3 79 71 1))))
+      (3 0)))
+\end{verbatim}
+
+\noindent This function is a partial implementation of
+the forwards-running HarmAn algorithm described by
+\cite{pardo2002}. It is partial in the sense that
+further functions are required to produce chord
+datapoints rather than labelled segments (see the
+function labelled-listed-segments2datapoints) and
+resolve the ambiguity of diminished 7ths (see the
+function resolve-dim-7s).
+
+
+%%%%%
+\subsection*{HarmAn-$>$roman}\label{fun:HarmAn->roman}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 7/5/2014, 7/5/2014 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:centre-dataset}, \nameref{fun:constant-vector},\newline \nameref{fun:fifth-steps-mode}, \nameref{fun:HarmAn->labelling},\newline \nameref{fun:min-argmin}, \nameref{fun:my-last}, \nameref{fun:nth-list-of-lists},\newline  \nameref{fun:orthogonal-projection-unique-equalp},\newline \nameref{fun:resolve-dim7s-roman},\newline \nameref{fun:restrict-point-set-to-MNN-mod12},\newline \nameref{fun:segments-strict} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(HarmAn->roman
+ '((0 51 55 1/2 3) (0 58 59 1 2) (0 63 62 1 1)
+   (0 67 64 1 0) (1/2 50 54 1/2 3) (1 48 53 1/2 3)
+   (1 60 60 1 2) (1 63 62 1 1) (1 68 65 1 0)
+   (3/2 51 55 1/2 3) (2 50 54 1/2 3) (2 53 56 1 2)
+   (2 65 63 1/2 1) (2 70 66 1 0) (5/2 48 53 1/2 3)
+   (5/2 63 62 1/2 1) (3 46 52 1/2 3) (3 55 57 1 2)
+   (3 62 61 1 1) (3 70 66 1 0) (7/2 50 54 1/2 3)
+   (4 48 53 1/2 3) (4 55 57 1 2) (4 63 62 1 0)
+   (4 63 62 1 1) (9/2 46 52 1/2 3) (5 44 51 1/2 3)
+   (5 60 60 1/2 2) (5 63 62 1/2 1) (5 65 63 1 0)
+   (11/2 46 52 1/2 3) (11/2 58 59 1/2 2)
+   (11/2 62 61 1/2 1) (6 39 48 2 3) (6 58 59 2 2)
+   (6 63 62 2 1) (6 67 64 2 0))
+ *chord-templates-p&b&min7ths*)
+--> (("I" (0 1)) ("IVb" (1 2)) ("Vb" (2 5/2))
+     ("II7c" (5/2 3)) ("iiib" (3 4)) ("vi7d" (4 5))
+     ("ii7b" (5 11/2)) ("V" (11/2 6)) ("I" (6 8))).
+\end{verbatim}
+
+\noindent This function segments and labels chords in
+some input piece of music. The algorithm is based on
+an implementation of HarmAn by \cite{pardo2002}.
+HarmAn compares input triples of ontimes, MIDI note
+numbers, and durations to predefined chord templates,
+and performs segmentation and segment labelling on
+this basis. The labels are absolute, for instance
+(15 2 1 1 8) means that a chord begins on ontime 15,
+has root 2 modulo 12 (i.e., D), is of type 1 (dom7
+chord), lasts 1 beat, and was assigned to this chord
+template with strength 8.
+
+While useful, this output does not provide a
+functional-harmonic analysis. I programmed some extra
+steps to estimate the overall key of the input piece,
+using the Krumhansl-Schmuckler key-finding algorithm
+\cite{krumhansl1990}, and then to caluclate relative
+(or functional) harmonic labels by combining the
+estimate of overall key with the absolute labels
+output by HarmAn-$>$. For instance, if the overall
+key is G major, and HarmAn-$>$ output the label D
+dom7, then my code would convert this to V7. I have
+taken care to make sure the labelling of diminished
+7th chords is correct. The overall program is
+referred to as HarmAn-$>$roman. It does not handle
+secondary keys, but might be adapted to do so using
+a slice through a keyscape \cite{sapp2005}.
+
+
+%%%%%
+\subsection*{labelled-listed-segments2datapoints}\label{fun:labelled-listed-segments2datapoints}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:HarmAn->labelling},\newline \nameref{fun:labelled-listed-segments2datapoints},\newline \nameref{fun:resolve-dim7s}, \nameref{fun:segments-strict} \\
+Called by & \nameref{fun:labelled-listed-segments2datapoints} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(labelled-listed-segments2datapoints
+ '((((22
+      ((22 50 54 1 3 23 97) (22 57 58 1 2 23 98)
+       (22 66 63 1 1 23 99) (22 69 65 1 0 23 100)))
+     (23
+      ((23 47 52 1 3 24 101) (23 59 59 1 2 24 102)
+       (23 66 63 1 1 24 103) (23 74 68 1 0 24 104))))
+    (8 74))
+   (((24
+      ((24 52 55 1/2 3 49/2 105)
+       (24 59 59 1/2 2 49/2 106)
+       (24 67 64 1/2 1 49/2 107)
+       (24 72 67 1 0 25 108))))
+    (2 0))
+   (((49/2
+      ((49/2 54 56 1/2 3 25 109)
+       (49/2 57 58 1/2 2 25 110)
+       (49/2 69 65 1 1 51/2 111)
+       (24 72 67 1 0 25 108))))
+    (4 57))
+   (((25
+      ((25 55 57 1 3 26 112) (25 59 59 1/2 2 51/2 113)
+       (49/2 69 65 1 1 51/2 111)
+       (25 71 66 1 0 26 114)))
+     (51/2
+      ((25 55 57 1 3 26 112) (51/2 60 60 1/2 2 26 115)
+       (51/2 67 64 1 1 53/2 116)
+       (25 71 66 1 0 26 114)))
+     (26
+      ((26 50 54 1 3 27 117) (26 62 61 1 2 27 118)
+       (51/2 67 64 1 1 53/2 116)
+       (26 69 65 1 0 27 119)))
+     (53/2
+      ((26 50 54 1 3 27 117) (26 62 61 1 2 27 118)
+       (53/2 64 62 1/2 1 27 120)
+       (26 69 65 1 0 27 119))))
+    (8 67))
+   (((27
+      ((27 51 54 1 3 28 121) (27 60 60 1 2 28 122)
+       (27 66 63 1 1 28 123) (27 69 65 1 0 28 124))))
+    (4 36))
+   (((28
+      ((28 52 55 1/2 3 57/2 125) (28 59 59 1 2 29 126)
+       (28 67 64 2 1 30 128)
+       (28 67 64 1/2 0 57/2 127))))
+    (4 28))
+   (((57/2
+      ((57/2 54 56 1/2 3 29 129) (28 59 59 1 2 29 126)
+       (28 67 64 2 1 30 128)
+       (57/2 69 65 1/2 0 29 130))))
+    (1 23))
+   (((29
+      ((29 55 57 1/2 3 59/2 131) (29 64 62 1 2 30 132)
+       (28 67 64 2 1 30 128)
+       (29 71 66 1/2 0 59/2 133))))
+    (4 28))
+   (((59/2
+      ((59/2 57 58 1/2 3 30 134) (29 64 62 1 2 30 132)
+       (28 67 64 2 1 30 128)
+       (59/2 72 67 1/2 0 30 135))))
+    (4 72))
+   (((30
+      ((30 59 59 1 3 31 136) (30 62 61 1 2 31 137)
+       (30 66 63 1 1 31 138) (30 74 68 1 0 31 139)))
+     (31 NIL))
+    (4 35))))
+--> ((22 11 6 2 8) (24 0 0 1/2 2) (49/2 6 5 1/2 4)
+     (25 4 6 2 8) (27 0 3 1 4) (28 4 2 1/2 4)
+     (57/2 11 1 1/2 1) (29 4 2 1/2 4) (59/2 9 6 1/2 4)
+     (30 11 2 1 4))
+\end{verbatim}
+
+\noindent This function takes labelled listed
+segments as an argument. It converts these to
+datapoints where the first dimension is ontime, the
+second dimension is the MIDI note number modulo 12 of
+the root of the chord, the third dimension is the
+class of the chord (0, major triad; 1, dom7; 2, minor
+triad; 3, fully diminished 7th; 4, half diminished
+7th; 5, diminished triad; 6, minor 7th), the fourth
+dimension is the duration of the chord, and the
+fifth dimension contains the score as assigned by the
+HarmAn algorithm (a large weight suggests that the
+chord was labelled unambiguously---a small weight
+suggests otherwise).
+
+
+%%%%%
+\subsection*{max-argmax-of-segment-scores}\label{fun:max-argmax-of-segment-scores}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:max-argmax},\newline \nameref{fun:score-segment-against-template} \\
+Called by & \nameref{fun:HarmAn->labelling},\newline \nameref{fun:minimal-segment-scores} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(max-argmax-of-segment-scores '(0 3 5 7 5))
+--> (2 17)
+\end{verbatim}
+
+\noindent This function takes a list of MIDI note
+numbers modulo 12 as its only argument. It scores this
+list using the function score-segment-against-
+template, for each chord template in the variable
+*chord-template*, and returns the index of the chord
+that produces the maximum score. If there is a tie,
+the index of the first such chord is returned.
+
+
+%%%%%
+\subsection*{max-argmax-of-segments-score}\label{fun:max-argmax-of-segments-score}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:max-argmax},\newline \nameref{fun:score-segment-against-template}, \nameref{fun:segments2MNNs-mod12} \\
+Called by & \nameref{fun:HarmAn->labelling} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(max-argmax-of-segments-score
+ '((0 ((0 60 60 2) (0 64 62 2) (0 72 67 1)))
+   (1 ((0 60 60 2) (0 64 62 2) (1 74 68 1/2)))
+   (3/2 ((0 60 60 2) (0 64 62 2) (3/2 76 69 1/2)))))
+--> (6 0)
+\end{verbatim}
+
+\noindent This function a list of segments its only
+argument. The segments are appended for scoring
+purposes. A score is given according to the function
+score-segment-against-template, for each chord
+template in the variable chord-templates, and the
+index of the chord that produces the maximum score is
+returned, as well as the maximum score. If there is a
+tie, the index of the first such chord is returned.
+
+
+%%%%%
+\subsection*{minimal-segment-scores}\label{fun:minimal-segment-scores}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:max-argmax-of-segment-scores},\newline \nameref{fun:nth-list-of-lists} \\
+Called by &  \\
+Comments/see also & Deprecated.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(minimal-segment-scores
+ '((0 ((0 60 60 2) (0 64 62 2) (0 72 67 1)))
+   (1 ((0 60 60 2) (0 64 62 2) (1 74 68 1/2)))
+   (3/2 ((0 60 60 2) (0 64 62 2) (3/2 76 69 1/2)))
+   (2 ((2 59 59 1) (2 65 63 1) (2 79 71 1)))
+   (3 ((3 60 60 1) (3 64 62 1) (3 79 71 1)))))
+--> ((0 ((0 60 60 2) (0 64 62 2) (0 72 67 1)) (2 0))
+     (1 ((0 60 60 2) (0 64 62 2) (1 74 68 1/2)) (0 0))
+     (3/2
+      ((0 60 60 2) (0 64 62 2) (3/2 76 69 1/2)) (2 0))
+     (2 ((2 59 59 1) (2 65 63 1) (2 79 71 1)) (2 19))
+     (3 ((3 60 60 1) (3 64 62 1) (3 79 71 1)) (3 0)))
+\end{verbatim}
+
+\noindent This function takes a list of MIDI note
+numbers modulo 12 as its only argument. It scores this
+list using the function
+score-segment-against-template, for each chord
+template in the variable *chord-template*, and returns
+the index of the chord that produces the maximum
+score. If there is a tie, the index of the first such
+chord is returned.
+
+
+%%%%%
+\subsection*{MNN-mod12\&class2chord-index}\label{fun:MNN-mod12nclass2chord-index}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(MNN-mod12&class2chord-index '(10 4))
+--> 49
+(MNN-mod12&class2chord-index '(11 6))
+--> 74
+\end{verbatim}
+
+\noindent This function takes a pair consisting of
+root (MIDI note number modulo 12) and chord class
+(listed above) as argument. It converts this pair into
+the index in the variable
+*chord-templates-p\&b\&min7ths*. The situation is
+complicated slightly by the fourth category (of
+fully-diminished 7th chords), which contains only 3
+chords.
+
+
+%%%%%
+\subsection*{resolve-dim7s}\label{fun:resolve-dim7s}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \\
+Called by & \nameref{fun:HarmAn->} \\
+Comments/see also & \nameref{fun:resolve-dim7s-roman}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(resolve-dim7s
+ '((25 4 6 2 8) (27 0 3 1 4) (28 4 2 1/2 4)))
+--> ((25 4 6 2 8) (27 3 3 1 4) (28 4 2 1/2 4))
+\end{verbatim}
+
+\noindent This function takes a chord dataset as an
+argument, where usually the first dimension is ontime,
+the second dimension is the MIDI note number modulo 12
+of the root of the chord, the third dimension is the
+class of the chord (0, major triad; 1, dom7; 2, minor
+triad; 3, fully diminished 7th; 4, half diminished
+7th; 5, diminished triad; 6, minor 7th), the fourth
+dimension is the duration of the chord, and the
+fifth dimension contains the score as assigned by the
+HarmAn algorithm (a large weight suggests that the
+chord was labelled unambiguously---a small weight
+suggests otherwise). The function searches for any
+chord datapoints of class 3 (fully diminished). If it
+finds such a chord datapoint, it looks at the MIDI
+note number modulo 12 of the subsequent chord, $y$. If
+$y - 1 \mod 12$ is a member of the previous chord,
+then $y - 1 \mod 12$ becomes its root. Otherwise the
+root is unchanged. Thus, this function resolves the
+spelling of ambiguous fully diminished 7th chords.
+
+
+%%%%%
+\subsection*{resolve-dim7s-roman}\label{fun:resolve-dim7s-roman}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 7/5/2014, 7/5/2014 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:max-argmax}, \nameref{fun:restrict-point-set-to-MNN-mod12} \\
+Called by & \nameref{fun:HarmAn->roman} \\
+Comments/see also & \nameref{fun:resolve-dim7s}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ point-set2
+ '((16 -3 -2 2) (17 3 2 1) (17 6 3 1) (17 12 7 4/3)))
+(setq template-MNNs-mod12 '(0 3 6 9))
+(setq MNN-mod12-of-lowest-note 9)
+(setq fifth-steps-mode '(6 5))
+(resolve-dim7s-roman
+ point-set2 template-MNNs-mod12
+ MNN-mod12-of-lowest-note fifth-steps-mode)
+--> "#vio7b".
+
+(setq
+ point-set2
+ '((19 -5 -3 2) (20 1 1 1) (20 4 2 1) (20 10 6 4/3)))
+(setq template-MNNs-mod12 '(1 4 7 10))
+(setq MNN-mod12-of-lowest-note 7)
+(setq fifth-steps-mode '(6 5))
+(resolve-dim7s-roman
+ point-set2 template-MNNs-mod12
+ MNN-mod12-of-lowest-note
+ fifth-steps-mode)
+--> "vo7b".
+\end{verbatim}
+
+\noindent This function returns a label for spelling
+a diminished 7th chord. The morphetic pitch numbers
+passed to the function (in the third column of each
+list in the input point set) are central to this
+spelling process. In the above examples they are
+expressed relative to a tonic that has MIDI note
+number 0 and morphetic pitch number 0.
+
+
+%%%%%
+\subsection*{restrict-point-set-to-MNN-mod12}\label{fun:restrict-point-set-to-MNN-mod12}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 7/5/2014, 7/5/2014 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \\
+Called by & \nameref{fun:HarmAn->roman} \\
+Comments/see also & \nameref{fun:restrict-dataset-in-nth-to-xs}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(restrict-point-set-to-MNN-mod12
+ '((1 -8 -5 1) (1 -1 -1 1) (1 2 1 1) (1 8 4 1/2)
+   (3/2 9 5 1/2) (2 -8 -5 1) (2 -4 -3 1) (2 2 1 1)
+   (2 11 6 3/4) (11/4 5 3 1/4)) '(4 8 11 2))
+--> ((1 -8 -5 1) (1 -1 -1 1) (1 2 1 1) (1 8 4 1/2)
+     (2 -8 -5 1) (2 -4 -3 1) (2 2 1 1) (2 11 6 3/4)).
+\end{verbatim}
+
+\noindent This function returns only the points from
+the input point set whose MIDI note numbers belong
+to the second argument (a list of MIDI note numbers
+modulo 12).
+
+
+%%%%%
+\subsection*{score-segment-against-template}\label{fun:score-segment-against-template}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:a-list-in-b-list} \\
+Called by & \nameref{fun:max-argmax-of-segment-scores} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(score-segment-against-template '(0 1 5 7 5) '(5 9 0))
+--> 0
+\end{verbatim}
+
+\noindent This function takes two lists as arguments.
+The first is a list of MIDI note numbers modulo 12,
+and the second is a chord template. Three quantities
+are calcuated: $P$, the number of MNNs that are
+members of the chord template; $N$, the number of MNNs
+that are not members of the chord template; $M$, the
+number of elements of the chord template that are not
+members of the list of MNNs. The value of
+$P - (M + N)$ is returned.
+
+
+%%%%%
+\subsection*{segments2MNNs-mod12}\label{fun:segments2MNNs-mod12}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:mod-list}, \nameref{fun:nth-list-of-lists} \\
+Called by & \nameref{fun:max-argmax-of-segment-scores} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(segments2MNNs-mod12
+ '((0 ((0 60 60 2) (0 64 62 2) (0 72 67 1)))
+   (1 ((0 60 60 2) (0 64 62 2) (1 74 68 1/2)))
+   (3/2 ((0 60 60 2) (0 64 62 2) (3/2 76 69 1/2)))))
+--> (0 4 0 0 4 2 0 4 4)
+\end{verbatim}
+
+\noindent This function takes a list of segments its
+only argument. The MIDI note numbers of each segment
+are mapped to modulo 12 and appended into one list.
+
+
+%%%%%
+\subsection*{triad-time-intervals}\label{fun:triad-time-intervals}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:HarmAn->roman} \\
+Called by & \nameref{fun:c@merata2014-question2answer} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ question-string
+ "subdominant triad in first inversion")
+(setq
+ point-set
+ '((0 51 55 1/2 3) (0 58 59 1 2) (0 63 62 1 1)
+   (0 67 64 1 0) (1/2 50 54 1/2 3) (1 48 53 1/2 3)
+   (1 60 60 1 2) (1 63 62 1 1) (1 68 65 1 0)
+   (3/2 51 55 1/2 3) (2 50 54 1/2 3) (2 53 56 1 2)
+   (2 65 63 1/2 1) (2 70 66 1 0) (5/2 48 53 1/2 3)
+   (5/2 63 62 1/2 1) (3 46 52 1/2 3) (3 55 57 1 2)
+   (3 62 61 1 1) (3 70 66 1 0) (7/2 50 54 1/2 3)
+   (4 48 53 1/2 3) (4 55 57 1 2) (4 63 62 1 0)
+   (4 63 62 1 1) (9/2 46 52 1/2 3) (5 44 51 1/2 3)
+   (5 60 60 1/2 2) (5 63 62 1/2 1) (5 65 63 1 0)
+   (11/2 46 52 1/2 3) (11/2 58 59 1/2 2)
+   (11/2 62 61 1/2 1) (6 39 48 2 3) (6 58 59 2 2)
+   (6 63 62 2 1) (6 67 64 2 0)))
+(triad-time-intervals question-string point-set)
+--> ((1 2))
+\end{verbatim}
+
+\noindent This function takes a string and a point
+set as its compulsory arguments, where the string
+may refer to a triad. It returns the time intervals in
+the point set where the triad occurs.
+
+
+%%%%%
+\subsection*{triad-inversion-time-intervals}\label{fun:triad-inversion-time-intervals}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 19/4/2011, 19/4/2011 \\
+Location & \nameref{sec:chord-labelling} \\
+Calls & \nameref{fun:HarmAn->roman} \\
+Called by & \nameref{fun:c@merata2014-question2answer} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ question-string
+ "triad in first inversion")
+(setq
+ point-set
+ '((0 51 55 1/2 3) (0 58 59 1 2) (0 63 62 1 1)
+   (0 67 64 1 0) (1/2 50 54 1/2 3) (1 48 53 1/2 3)
+   (1 60 60 1 2) (1 63 62 1 1) (1 68 65 1 0)
+   (3/2 51 55 1/2 3) (2 50 54 1/2 3) (2 53 56 1 2)
+   (2 65 63 1/2 1) (2 70 66 1 0) (5/2 48 53 1/2 3)
+   (5/2 63 62 1/2 1) (3 46 52 1/2 3) (3 55 57 1 2)
+   (3 62 61 1 1) (3 70 66 1 0) (7/2 50 54 1/2 3)
+   (4 48 53 1/2 3) (4 55 57 1 2) (4 63 62 1 0)
+   (4 63 62 1 1) (9/2 46 52 1/2 3) (5 44 51 1/2 3)
+   (5 60 60 1/2 2) (5 63 62 1/2 1) (5 65 63 1 0)
+   (11/2 46 52 1/2 3) (11/2 58 59 1/2 2)
+   (11/2 62 61 1/2 1) (6 39 48 2 3) (6 58 59 2 2)
+   (6 63 62 2 1) (6 67 64 2 0)))
+(triad-inversion-time-intervals
+ question-string point-set)
+--> ((1 2) (2 5/2) (3 4) (5 11/2))
+\end{verbatim}
+
+\noindent This function takes a string and a point
+set as its compulsory arguments, where the string
+may refer to a type of triad inversion. It returns
+the time intervals in the point set where the type of
+triad inversion occurs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,320 @@
+  <question number="01" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="2">
+    <text>G5</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="4" start_offset="1"
+               end_bar="4" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="12" start_offset="1"
+               end_bar="12" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="17" start_offset="3"
+               end_bar="17" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="17" start_offset="6"
+               end_bar="17" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="19" start_offset="1"
+               end_bar="19" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="19" start_offset="5"
+               end_bar="19" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="22" start_offset="1"
+               end_bar="22" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="02" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="1">
+    <text>quarter note rest</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="25" start_offset="1"
+               end_bar="25" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="26" start_offset="1"
+               end_bar="26" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="28" start_offset="3"
+               end_bar="28" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="29" start_offset="1"
+               end_bar="29" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="29" start_offset="2"
+               end_bar="29" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="03" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="1">
+    <text>half note C</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="26" start_offset="1"
+               end_bar="26" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="04" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="1">
+    <text>quarter note B5</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="17" start_offset="1"
+               end_bar="17" end_offset="1" />
+    </answer>
+  </question>
+
+  <question number="05" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="2">
+    <text>D4 in the right hand</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="29" start_offset="1"
+               end_bar="29" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="32" start_offset="1"
+               end_bar="32" end_offset="6" />
+    </answer>
+  </question>
+
+  <question number="06" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="2">
+    <text>D followed by G</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="2" start_offset="1"
+               end_bar="2" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="7" start_offset="1"
+               end_bar="7" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="9" start_offset="1"
+               end_bar="9" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="15" start_offset="3"
+               end_bar="15" end_offset="5" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="15" start_offset="5"
+               end_bar="16" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="18" start_offset="6"
+               end_bar="19" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="25" start_offset="1"
+               end_bar="25" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="31" start_offset="2"
+               end_bar="31" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="31" start_offset="5"
+               end_bar="32" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="32" start_offset="3"
+               end_bar="32" end_offset="6" />
+    </answer>
+  </question>
+
+  <question number="07" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="2">
+    <text>rising major sixth</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="2" start_offset="5"
+               end_bar="3" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="10" start_offset="5"
+               end_bar="11" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="25" start_offset="5"
+               end_bar="26" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="08" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="1">
+    <text>tonic triad</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="1"
+               end_bar="6" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="14" start_offset="1"
+               end_bar="14" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="15" start_offset="2"
+               end_bar="17" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="27" start_offset="3"
+               end_bar="28" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="32" start_offset="1"
+               end_bar="32" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="09" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="1">
+    <text>Ib triad</text>
+  </question>
+
+  <question number="10" music_file="bach_minuet_in_g_bwv_anh114.xml" divisions="1">
+    <text>melody with accompaniment</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="1"
+               end_bar="8" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="17" start_offset="1"
+               end_bar="17" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="3" start_beat_type="4"
+               end_beats="3" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="21" start_offset="1"
+               end_bar="21" end_offset="3" />
+    </answer>
+  </question>
+

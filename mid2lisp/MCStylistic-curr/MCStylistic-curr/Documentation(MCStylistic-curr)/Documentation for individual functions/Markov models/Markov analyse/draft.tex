@@ -1,0 +1,472 @@
+\subsection{Markov analyse}\label{sec:markov-analyse}
+
+The functions here are designed to analyse data
+according to a Markov-chain model. At present the code
+handles a first-order analysis. The aim is to build a
+state transition matrix for some variables (referenced
+by variable-names and catalogue). Hence, the variable
+variable-names points to some actual data (note the
+use of the function symbol-value) which is indexed by
+the variable catalogue. Using the function
+write-to-file, the information can be sent to a text
+file, to avoid having to display it.
+
+
+%%%%%
+\subsection*{accumulate-to-stm}\label{fun:accumulate-to-stm}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 24/8/2010 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \\
+Called by & \nameref{fun:present-to-stm} \\
+Comments/see also & \nameref{fun:accumulate-to-stm<-}, \nameref{fun:add-to-stm}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(accumulate-to-stm
+ '(((4) ("Piece A")) ((2) ("Piece A")))
+ '((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+ '(((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+   ((2) (((5) ("Piece A"))))
+   ((4) (((1) ("Piece B"))
+         ((2) ("Piece C"))))
+   ((5) (((4) ("Piece B"))))))
+--> '(((4) (((2) ("Piece A")) ((1) ("Piece B"))
+	    ((2) ("Piece C"))))
+      ((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+      ((2) (((5) ("Piece A"))))
+      ((5) (((4) ("Piece B")))))
+\end{verbatim}
+
+\noindent The first argument is a listed state; the
+second is the relevant row of the state transition
+matrix; the third is the state transition matrix
+itself. This function is called when the state of the
+first item of the listed state has appeared in the
+state transition matrix  before. The references of the
+event are included.
+
+
+%%%%%
+\subsection*{add-to-stm}\label{fun:add-to-stm}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 24/8/2010 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \\
+Called by & \nameref{fun:present-to-stm} \\
+Comments/see also & \nameref{fun:accumulate-to-stm}, \nameref{fun:add-to-stm<-}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(add-to-stm
+ '(((3) ("Piece A")) ((4) ("Piece A")))
+ '(((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+   ((2) (((5) ("Piece A"))))
+   ((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+   ((5) (((4) ("Piece B"))))))
+--> '(((3) (((4) ("Piece A"))))
+      ((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+      ((2) (((5) ("Piece A"))))
+      ((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+      ((5) (((4) ("Piece B")))))
+\end{verbatim}
+
+\noindent The first argument is a listed state; the
+second is the state transition matrix. This function
+is called when the state of the first item of the
+listed state has not appeared in the state transition
+matrix before. It is added.
+
+
+%%%%%
+\subsection*{construct-initial-states}\label{fun:construct-initial-states}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 24/8/2010 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \nameref{fun:beat-spacing-states}, \nameref{fun:firstn}, \nameref{fun:spacing-holding-states} \\
+Called by & \\
+Comments/see also & \nameref{fun:construct-final-states}, \nameref{fun:construct-stm}, \nameref{fun:construct-stm<-}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   variable-1
+   '((0 30 1 1 84) (0 33 1 1 84) (1 40 1 1 84)
+     (1 41 1 1 84)))
+  (setq
+   variable-2
+   '((0 60 1 1 84) (0 63 1 1 84) (1 62 1 1 84)
+     (1 63 1 1 84)))
+  (setq *variable-names* '(variable-1 variable-2))
+  (setq *catalogue* '("variable-1" "variable-2"))
+  (construct-initial-states
+   *variable-names* *catalogue*))
+--> '((((3) (0 0))
+       (NIL 1 "variable-1"
+	    ((0 30 1 1 84 1 0) (0 33 1 1 84 1 1))))
+      (((3) (0 0))
+       (NIL 1 "variable-2"
+	    ((0 60 1 1 84 1 0) (0 63 1 1 84 1 1)))))
+\end{verbatim}
+
+\noindent This recursion analyses one variable name at
+a time, taking a catalogue name from the variable
+catalogue, and outputs initial states accordingly.
+
+
+%%%%%
+\subsection*{construct-internal-states}\label{fun:construct-internal-states}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 7/1/2015, 28/5/2015 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \nameref{fun:kern-file2phrase-boundary-states} \\
+Called by & \\
+Comments/see also & \nameref{fun:construct-initial-states}, \nameref{fun:construct-final-states}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ *catalogue*
+ (list "bachChoraleBWV411R246" "bachChoraleBWV4p8R184"))
+(setq
+ *kern-path&names*
+ (loop for s in *catalogue* collect
+   (merge-pathnames
+    (make-pathname
+     :directory
+     (list :relative "bachChorales" s "kern")
+     :name s :type "krn")
+    *MCStylistic-MonthYear-data-path*)))
+(setq *too-close* 1)
+(setq
+ internal-initial-states
+ (construct-internal-states
+  *kern-path&names* *catalogue* "fermata ending"
+  *too-close* "beat-rel-MNN-states" 4))
+--> (((3 (-12 7 12 16))
+      ("bachChoraleBWV411R246"
+       ((6 43 50 2 3) (6 62 61 2 2) (6 67 64 2 1)
+        (6 71 66 2 0)) (55 57) (1 0)))
+     ((3 (-5 2 11 19))
+      ("bachChoraleBWV411R246"
+       ((14 50 54 2 3) (14 57 58 2 2) (14 66 63 2 1)
+        (14 74 68 2 0)) (55 57) (1 0)))
+     ...
+     ((3 (-7 0 9))
+      ("bachChoraleBWV4p8R184"
+       ((54 46 52 2 3) (54 53 56 2 2) (54 62 61 2 0)
+        (54 62 61 2 1)) (53 56) (2 5)))).
+\end{verbatim}
+
+\noindent This function identifies events in kern files
+where phrases begin/end or where there are fermata. It
+calculates the state representations for these events
+and outputs them in a list.
+
+
+%%%%%
+\subsection*{construct-stm}\label{fun:construct-stm}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 24/8/2010 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \nameref{fun:beat-spacing-states}, \nameref{fun:markov-analyse}, \nameref{fun:spacing-holding-states} \\
+Called by & \\
+Comments/see also & \nameref{fun:construct-final-states}, \nameref{fun:construct-initial-states}, \nameref{fun:construct-stm<-}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   variable-1
+   '((0 30 1 1 84) (0 33 1 1 84) (1 40 1 1 84)
+     (1 41 1 1 84)))
+  (setq
+   variable-2
+   '((0 60 1 1 84) (0 63 1 1 84) (1 62 1 1 84)
+     (1 63 1 1 84)))
+  (setq *variable-names* '(variable-1 variable-2))
+  (setq *catalogue* '("variable-1" "variable-2"))
+  (construct-stm
+   *variable-names* *catalogue* "beat-spacing-states"
+   2 4 1)
+--> "Finished"
+*transition-matrix*
+--> (((1 (3))
+      (((2 (1))
+        (2 0 "variable-2"
+         ((1 62 1 1 84 2 2) (1 63 1 1 84 2 3))))
+       ((2 (1))
+        (10 0 "variable-1"
+         ((1 40 1 1 84 2 2) (1 41 1 1 84 2 3)))))))
+\end{verbatim}
+
+\noindent This recursion analyses one variable name at
+a time, taking a catalogue name from the variable
+catalogue, and updates the transition matrix
+accordingly. The output "Finished" is preferable to
+the transition matrix, which is large enough that it
+can cause the Listener to crash.
+
+
+%%%%%
+\subsection*{firstn-list}\label{fun:firstn-list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 24/8/2010 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \nameref{fun:firstn} \\
+Called by & \nameref{fun:markov-analyse} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(firstn-list 3 '(1 2 3 4 5)
+--> '((1 2 3) (2 3 4) (3 4 5))
+\end{verbatim}
+
+\noindent This function applies the function firstn
+recursively to a list. It is like producing an n-
+gram, and is useful for building a first-order
+Markov model. I call the output `listed states'.
+
+
+%%%%%
+\subsection*{kern-file2phrase-boundary-states}\label{fun:kern-file2phrase-boundary-states}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 7/1/2015, 28/5/2015 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \nameref{fun:articulation-points}, \nameref{fun:beat-rel-MNN-states}, \nameref{fun:kern-file2points-artic-dynam-lyrics}, \nameref{fun:remove-duplicates-n-values-too-close}, \nameref{fun:segments-strict} \\
+Called by & \nameref{fun:construct-internal-states} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ kern-path&name
+ (merge-pathnames
+  (make-pathname
+   :name "C-6-1-small" :type "krn")
+  *MCStylistic-MonthYear-example-files-data-path*))
+(kern-file2phrase-boundary-states kern-path&name)
+--> (((4 (9))
+      ("C-6-1-small" ((-1 66 63 5/3 0)) (57 58) (6 5)))
+     ((19/4 (-15 9))
+      ("C-6-1-small" ((3 42 49 1 1) (15/4 66 63 1/4 0))
+       (57 58) (6 5)))).
+\end{verbatim}
+
+\noindent This function imports a kern file and searches
+for notes that have articulation associated with phrase
+beginnings or endings, with the aim of returning states
+that will be appropriate for using as initial or final
+internal states. The first optional argument phrase-str
+can be called with `phrase beginning', `phrase ending',
+`fermata beginning', or `fermata ending'. Phrase
+beginnings are indicated by \texttt{(} in a kern file,
+endings by \texttt{)}, and fermata by \texttt{;}.
+Fermata indicate the end of a phrase, and therefore the
+next state will be the beginning of the next phrase. So
+if this function is called with phrase-str equal to
+`fermata beginning', the next state(s) following fermata
+will be returned.
+
+Sometimes fermata signs appear in close succession (for
+instance imagine the tenor sings A3 held over from the
+fourth beat of the bar to the first beat of the next
+bar, resolving to G$\sharp$3 on beat two, whilst the
+bass, alto, and soprano sing E3, E4, B4 resepctively on
+beat one, and suppose further that fermata are written
+on these three notes and the resolving G$\sharp$3. Then
+there will be three fermata at ontime $x$ and one at
+ontime $x + 1$. The end of the phrase is not at ontime
+$x$ but at ontime $x + 1$. This function will remove
+fermata ontimes that are too close together---in our
+example removing the fermata ontime $x$. This
+functionality is controlled by the optional argument
+too-close.
+
+
+%%%%%
+\subsection*{markov-analyse}\label{fun:markov-analyse}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 24/8/2010 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \nameref{fun:update-stm} \\
+Called by & \nameref{fun:construct-stm} \\
+Comments/see also & \nameref{fun:markov-analyse<-}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(markov-analyse
+ '(((3) ("Piece A")) ((6) ("Piece A"))
+   ((4) ("Piece A")) ((4) ("Piece A"))
+   ((3) ("Piece A")) ((2) ("Piece A"))))
+--> "Finished"
+*transition-matrix*
+--> '(((3) (((2) ("Piece A")) ((6) ("Piece A"))))
+      ((4) (((3) ("Piece A")) ((4) ("Piece A"))))
+      ((6) (((4) ("Piece A")))))
+\end{verbatim}
+
+\noindent This function has one argument - some states
+which are to be analysed according to a first-order
+Markov model. Note the need to define a variable here,
+\texttt{*transition-matrix*}. The output "Finished" is
+preferable to the transition matrix, which is large
+enough that it can cause the Listener to crash.
+
+
+%%%%%
+\subsection*{present-to-stm}\label{fun:present-to-stm}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 24/8/2010 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \nameref{fun:add-to-stm}, \nameref{fun:accumulate-to-stm} \\
+Called by & \nameref{fun:update-stm} \\
+Comments/see also & \nameref{fun:present-to-stm<-}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(present-to-stm
+ '(((4) ("Piece A")) ((2) ("Piece A")))
+ '(((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+   ((2) (((5) ("Piece A"))))
+   ((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+   ((5) (((4) ("Piece B"))))))
+--> '(((4) (((2) ("Piece A")) ((1) ("Piece B"))
+	    ((2) ("Piece C"))))
+      ((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+      ((2) (((5) ("Piece A"))))
+      ((5) (((4) ("Piece B"))))).
+\end{verbatim}
+
+\noindent This function calls either the function
+accumulate-to-stm, or add-to-stm, depending on whether
+the first argument, a listed-state, has appeared in
+the second argument, a state-transition matrix,
+before. The example above results in accumulate-to-stm
+being called, as the state of (4) has occurred before.
+However, changing this state to (3) in the argument
+would result in add-to-stm being called.
+
+
+%%%%%
+\subsection*{remove-duplicates\&values-too-close}\label{fun:remove-duplicates-n-values-too-close}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 7/1/2015, 28/5/2015 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \\
+Called by & \nameref{fun:kern-file2points-artic-dynam-lyrics} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq times '(2 2 4 7 7.5 7.75 8))
+(remove-duplicates&values-too-close times)
+--> (2 4 8).
+\end{verbatim}
+
+\noindent This function takes a list of floats as
+input, assumed to be ordered ascending. It will remove
+any duplicates from that list, as well as removing
+any elements that are too close in value (controlled by
+the second optional argument), leaving the largest.
+
+
+%%%%%
+\subsection*{update-stm}\label{fun:update-stm}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 24/8/2010 \\
+Location & \nameref{sec:markov-analyse} \\
+Calls & \nameref{fun:present-to-stm} \\
+Called by & \nameref{fun:markov-analyse} \\
+Comments/see also & \nameref{fun:update-stm<-}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(update-stm
+ '((((3) ("Piece A")) ((6) ("Piece A")))
+   (((6) ("Piece A")) ((4) ("Piece A")))
+   (((4) ("Piece A")) ((4) ("Piece A")))
+   (((4) ("Piece A")) ((3) ("Piece A")))
+   (((3) ("Piece A")) ((2) ("Piece A")))))
+--> '(((3) (((2) ("Piece A")) ((6) ("Piece A"))))
+      ((4) (((3) ("Piece A")) ((4) ("Piece A"))))
+      ((6) (((4) ("Piece A")))))
+\end{verbatim}
+
+\noindent This function has as its argument listed
+states, and it applies the function present-to-stm
+recursively to these listed states. The variable
+\texttt{*transition\-matrix*} is updated as it
+proceeds.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

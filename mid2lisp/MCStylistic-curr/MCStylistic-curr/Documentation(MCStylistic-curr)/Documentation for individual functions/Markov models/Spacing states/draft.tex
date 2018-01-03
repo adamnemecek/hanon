@@ -1,0 +1,581 @@
+\subsection{Spacing states}\label{sec:spacing-states}
+
+The functions here use segmentations to build
+different types of states. One, output by the function
+spacing-holding-states, consists of chord spacing and
+holding types. Another, output by the function
+beat-spacing-states, consists of beat-of-bar and chord
+spacing.
+
+
+%%%%%
+\subsection*{bass-steps}\label{fun:bass-steps}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \\
+Called by & \nameref{fun:spacing-holding-states} \\
+Comments/see also & \nameref{fun:bass-steps-with-rests}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(bass-steps
+ '(((56 0 0) (60 1 1) (72 1 2))
+   ((58 1 3) (60 2 1) (72 3 2))
+   ((58 2 3) (65 1 4) (72 3 2))
+   ((56 0 5) (65 2 4) (72 2 2))
+   ((55 0 6) (64 0 7) (73 1 8)) ((NIL NIL NIL))
+   ((54 2 9) (70 2 10) (74 0 11))
+   ((59 0 12) (63 1 13) (75 1 14))))
+--> '(2 0 -2 -1 NIL NIL 5)
+\end{verbatim}
+
+\noindent This function takes a list of sorted holding
+types and returns the intervals between the bass notes
+of adjacent segments. It handles null entries, but
+these will have been removed if it is being called
+by the function spacing-holding-states.
+
+
+%%%%%
+\subsection*{bass-steps-with-rests}\label{fun:bass-steps-with-rests}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \\
+Called by & \nameref{fun:beat-spacing-states}, \nameref{fun:beat-spacing-states<-} \\
+Comments/see also & \nameref{fun:bass-steps}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(bass-steps-with-rests
+ '((3 ((3 48 53 3 1 6 0) (3 67 64 3/4 0 15/4 1)
+       (3 76 69 3/4 0 15/4 2)))
+   (15/4 ((3 48 53 3 1 6 0) (15/4 65 63 1/4 0 4 3)
+	  (15/4 74 68 1/4 0 4 4)))
+   (4 ((3 48 53 3 1 6 0) (4 64 62 2 0 6 5)
+       (4 72 67 2 0 6 6)))
+   (6 NIL)
+   (13/2 ((13/2 61 60 1/2 0 7 7)))
+   (7 ((7 62 61 1/2 0 15/2 8)))
+   (15/2 ((15/2 64 62 1/2 0 8 9)))
+   (8 ((8 50 54 1 1 9 10) (8 65 63 1 0 9 11)))
+   (9 NIL)))
+--> '(0 0 NIL 13 1 2 -14)
+\end{verbatim}
+
+\noindent This function is similar to the function
+bass-steps. Rather than waiting for the next two
+consecutive non-nil states to calculate step sizes, it
+calculates step sizes across a rest state.
+
+
+%%%%%
+\subsection*{beat-spacing-states}\label{fun:beat-spacing-states}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \nameref{fun:append-offtimes}, \nameref{fun:bass-steps-with-rests},\newline \nameref{fun:enumerate-append}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:segments-strict}, \nameref{fun:spacing} \\
+Called by & \\
+Comments/see also & \nameref{fun:beat-spacing-states<-},\newline \nameref{fun:spacing-holding-states}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(beat-spacing-states
+ '((3 48 53 3 1) (3 67 64 3/4 0) (3 76 69 3/4 0)
+   (15/4 65 63 1/4 0) (15/4 74 68 1/4 0) (4 64 62 2 0)
+   (4 72 67 2 0) (13/2 61 60 1/2 0) (7 62 61 1/2 0)
+   (15/2 64 62 1/2 0) (8 50 54 1 1) (8 65 63 1 0))
+ "C-68-3-mini" 3 1 3)
+--> (((1 (19 9))
+      (NIL NIL "C-68-3-mini"
+           ((3 48 53 3 1 6 0) (3 67 64 3/4 0 15/4 1)
+            (3 76 69 3/4 0 15/4 2))))
+     ((7/4 (17 9))
+      (0 0 "C-68-3-mini"
+         ((3 48 53 3 1 6 0) (15/4 65 63 1/4 0 4 3)
+          (15/4 74 68 1/4 0 4 4))))
+     ((2 (16 8))
+      (0 0 "C-68-3-mini"
+         ((3 48 53 3 1 6 0) (4 64 62 2 0 6 5)
+          (4 72 67 2 0 6 6))))
+     ((1 "rest")
+      (NIL NIL "C-68-3-mini" NIL))
+     ((3/2 NIL)
+      (13 7 "C-68-3-mini"
+          ((13/2 61 60 1/2 0 7 7))))
+     ((2 NIL)
+      (1 1 "C-68-3-mini"
+         ((7 62 61 1/2 0 15/2 8))))
+     ((5/2 NIL)
+      (2 1 "C-68-3-mini"
+         ((15/2 64 62 1/2 0 8 9))))
+     ((3 (15))
+      (-14 -8 "C-68-3-mini"
+           ((8 50 54 1 1 9 10) (8 65 63 1 0 9 11)))))
+\end{verbatim}
+
+\noindent Suppose you have three states $X_{n-1}, X_n,
+X_{n+1}$. The function beat-spacing-states looks at
+the beat and spacing of $X_n$, and also records the
+difference between the bass notes of $X_n$ and
+$X_{n-1}$.
+
+
+%%%%%
+\subsection*{beat-spacing-states$<$-}\label{fun:beat-spacing-states<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \nameref{fun:append-offtimes}, \nameref{fun:bass-steps-with-rests},\newline \nameref{fun:enumerate-append}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:segments-strict}, \nameref{fun:spacing} \\
+Called by & \\
+Comments/see also & \nameref{fun:beat-spacing-states}, \nameref{fun:spacing-holding-states}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(beat-spacing-states<-
+ '((3 48 53 3 1) (3 67 64 3/4 0) (3 76 69 3/4 0)
+   (15/4 65 63 1/4 0) (15/4 74 68 1/4 0) (4 64 62 2 0)
+   (4 72 67 2 0) (13/2 61 60 1/2 0) (7 62 61 1/2 0)
+   (15/2 64 62 1/2 0) (8 50 54 1 1) (8 65 63 1 0))
+ "C-68-3-mini" 3 1 3)
+--> (((1 (19 9))
+      (NIL NIL "C-68-3-mini"
+           ((3 48 53 3 1 6 0) (3 67 64 3/4 0 15/4 1)
+            (3 76 69 3/4 0 15/4 2))))
+     ((7/4 (17 9))
+      (0 0 "C-68-3-mini"
+         ((3 48 53 3 1 6 0) (15/4 65 63 1/4 0 4 3)
+          (15/4 74 68 1/4 0 4 4))))
+     ((2 (16 8))
+      (0 0 "C-68-3-mini"
+         ((3 48 53 3 1 6 0) (4 64 62 2 0 6 5)
+          (4 72 67 2 0 6 6))))
+     ((1 "rest")
+      (NIL NIL "C-68-3-mini" NIL))
+     ((3/2 NIL)
+      (13 7 "C-68-3-mini"
+          ((13/2 61 60 1/2 0 7 7))))
+     ((2 NIL)
+      (1 1 "C-68-3-mini"
+         ((7 62 61 1/2 0 15/2 8))))
+     ((5/2 NIL)
+      (2 1 "C-68-3-mini"
+         ((15/2 64 62 1/2 0 8 9))))
+     ((3 (15))
+      (-14 -8 "C-68-3-mini"
+           ((8 50 54 1 1 9 10) (8 65 63 1 0 9 11)))))
+\end{verbatim}
+
+\noindent This function is very similar to the
+function beat-spacing-states. Suppose you have three
+states $X_{n-1}, X_n, X_{n+1}$. The function
+beat-spacing-states looks at the beat and spacing of
+$X_n$, and also records the difference between the
+bass notes of $X_n$ and $X_{n-1}$. The function
+beat-spacing-states$<$- looks at the beat and spacing
+of $X_n$, and also records the difference between the
+bass notes of $X_{n+1}$ and $X_n$.
+
+
+%%%%%
+\subsection*{holding-type}\label{fun:holding-type}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \nameref{fun:holding-type-finish}, \nameref{fun:holding-type-normal},\newline \nameref{fun:holding-type-start} \\
+Called by & \nameref{fun:holding-types} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(holding-type
+ '(1/2
+   ((1/2 65 1/2 1 58 1 4) (1/3 58 1/3 1 69 2/3 3)
+    (0 72 1 1 71 1 2) (0 60 1/2 1 66 1/2 1)))
+ '(2/3
+   ((2/3 56 1/3 1 60 1 5) (1/2 65 1/2 1 58 1 4)
+    (1/3 58 1/3 1 69 2/3 3) (0 72 1 1 71 1 2)))
+ '(1
+   ((1 73 3/2 1 69 5/2 8) (1 64 1 1 69 2 7)
+    (1 55 1 1 66 2 6) (2/3 56 1/3 1 60 1 5)
+    (1/2 65 1/2 1 58 1 4) (0 72 1 1 71 1 2))))
+--> ((56 0 5) (65 2 4) (72 2 2))
+\end{verbatim}
+
+\noindent The function holding-type calls to one of
+holding-type-start, holding-type-normal or holding-
+type-finish, according to the emptiness of its
+arguments.
+
+
+%%%%%
+\subsection*{holding-type-finish}\label{fun:holding-type-finish}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \nameref{fun:index-item-1st-occurs}, \nameref{fun:nth-list-of-lists} \\
+Called by & \nameref{fun:holding-type} \\
+Comments/see also & \nameref{fun:holding-type-normal}, \nameref{fun:holding-type-start}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(holding-type-finish
+ '(11/2 ((4 67 2 1 55 6 20) (4 76 3/2 1 69 11/2 18)))
+ '(6 ((4 67 2 1 55 6 20))))
+--> (NIL NIL NIL)
+\end{verbatim}
+
+\noindent The function holding-type-finish is called
+by the function holding-type in the event that the
+variable next-segment is empty. This only happens at
+the end of a list of segments. I am yet to think of an
+example where something other than an empty list
+should be returned.
+
+
+%%%%%
+\subsection*{holding-type-normal}\label{fun:holding-type-normal}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \nameref{fun:index-item-1st-occurs}, \nameref{fun:my-last},\newline \nameref{fun:nth-list-of-lists} \\
+Called by & \nameref{fun:holding-type} \\
+Comments/see also & \nameref{fun:holding-type-finish}, \nameref{fun:holding-type-start}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(holding-type-normal
+ '(0 ((0 72 1 1 71 1 2) (0 60 1/2 1 66 1/2 1)
+      (0 56 1/3 1 47 1/3 0)))
+ '(1/3 ((1/3 58 1/3 1 69 2/3 3) (0 72 1 1 71 1 2)
+	(0 60 1/2 1 66 1/2 1) (0 56 1/3 1 47 1/3 0)))
+ '(1/2 ((1/2 65 1/2 1 58 1 4) (1/3 58 1/3 1 69 2/3 3)
+	(0 72 1 1 71 1 2) (0 60 1/2 1 66 1/2 1))))
+--> ((58 1 3) (72 3 2) (60 2 1))
+\end{verbatim}
+
+\noindent The function holding-type-normal is called
+by the function holding-type, in `non-boundary
+circumstances'. Holding types are assigned
+appropriately, and returned as the second item in a
+sublist of lists, along with MIDI note numbers and
+identifiers.
+
+
+%%%%%
+\subsection*{holding-type-start}\label{fun:holding-type-start}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \nameref{fun:index-item-1st-occurs}, \nameref{fun:my-last},\newline \nameref{fun:nth-list-of-lists} \\
+Called by & \nameref{fun:holding-type} \\
+Comments/see also & \nameref{fun:holding-type-finish}, \nameref{fun:holding-type-normal}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(holding-type-start
+ '(0 ((0 72 1 1 71 1 2) (0 60 1/2 1 66 1/2 1)
+      (0 56 1/3 1 47 1/3 0)))
+ '(1/3 ((1/3 58 1/3 1 69 2/3 3) (0 72 1 1 71 1 2)
+	(0 60 1/2 1 66 1/2 1) (0 56 1/3 1 47 1/3 0))))
+--> ((72 1) (60 1) (56 0))
+\end{verbatim}
+
+\noindent The function holding-type-start is called by
+the function holding-type in the datapoint that the
+variable previous-segment is empty. This only happens
+at the beginning of a list of segments. Holding types
+are assigned appropriately, and returned as the second
+item in a sublist of lists, along with MIDI note
+numbers and identifiers. It is possible to generate an
+error using this function, if there are ontimes less
+than the initial ontime present.
+
+
+%%%%%
+\subsection*{holding-types}\label{fun:holding-types}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \nameref{fun:holding-type} \\
+Called by & \nameref{fun:spacing-holding-states} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(holding-types
+ '((0 ((0 72 1 1 71 1 2) (0 60 1/2 1 66 1/2 1)
+       (0 56 1/3 1 47 1/3 0)))
+   (1/3 ((1/3 58 1/3 1 69 2/3 3) (0 72 1 1 71 1 2)
+	 (0 60 1/2 1 66 1/2 1) (0 56 1/3 1 47 1/3 0)))
+   (1/2 ((1/2 65 1/2 1 58 1 4) (1/3 58 1/3 1 69 2/3 3)
+	 (0 72 1 1 71 1 2) (0 60 1/2 1 66 1/2 1)))
+   (2/3 ((2/3 56 1/3 1 60 1 5) (1/2 65 1/2 1 58 1 4)
+	 (1/3 58 1/3 1 69 2/3 3) (0 72 1 1 71 1 2)))
+   (1 ((2/3 56 1/3 1 60 1 5) (1/2 65 1/2 1 58 1 4)
+       (0 72 1 1 71 1 2)))))
+--> (((72 1 2) (60 1 1) (56 0 0))
+     ((58 1 3) (72 3 2) (60 2 1))
+     ((65 1 4) (58 2 3) (72 3 2))
+     ((56 0 5) (65 2 4) (72 2 2))
+     ((NIL NIL NIL) (NIL NIL NIL) (NIL NIL NIL)))
+\end{verbatim}
+
+\noindent This function assigns holding-types to the
+datapoints at each segment: 0 for unheld; 1 for held-
+forward; 2 for held-backward; 3 for held-both. This
+information is returned, along with the MIDI note
+numbers and identifiers.
+
+
+%%%%%
+\subsection*{index-rests}\label{fun:index-rests}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \\
+Called by & \nameref{fun:spacing-holding-states} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(index-rests
+ '(((59 0 12) (63 0 13) (75 0 14)) NIL
+   ((60 1 15) (63 0 16)) ((60 2 15)) (NIL NIL NIL)))
+--> (1)
+\end{verbatim}
+
+\noindent A list of sorted holdings is the only
+argument to this function. The output is the indices
+of those sub-lists which are empty (excluding the last
+sub-list) and therefore harbour rests.
+
+
+%%%%%
+\subsection*{intervals-above-bass}\label{fun:intervals-above-bass}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \\
+Called by & \\
+Comments/see also & Deprecated.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(intervals-above-bass
+ 0 '((59 0 12) (63 1 13) (75 1 14)))
+--> (0 4 16)
+\end{verbatim}
+
+\noindent An index $n$ is provided as first argument;
+a list of lists is the second argument. The $n$th item
+of each sub-list is a MIDI note number, and these sub-
+lists are in order of ascending MIDI note number. The
+intervals above the bass are returned. It is possible
+to produce nonsense output if null values are
+interspersed with non-null values. I use the function
+chord-spacing in preference to the function
+intervals-above-bass.
+
+
+%%%%%
+\subsection*{sort-holding-types}\label{fun:sort-holding-types}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \nameref{fun:sort-by} \\
+Called by & \nameref{fun:spacing-holding-states} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(sort-holding-types
+ '(((72 1 2) (60 1 1) (56 0 0)) ((NIL NIL NIL))
+   ((58 1 3) (72 3 2) (58 3 1))))
+--> (((56 0 0) (60 1 1) (72 1 2)) ((NIL NIL NIL))
+     ((58 1 3) (58 3 1) (72 3 2)))
+\end{verbatim}
+
+\noindent The sub-lists are returned, ordered by MIDI
+note number and then holding-type (both ascending).
+The function checks for empty chords to avoid errors
+occurring in the sort function.
+
+
+%%%%%
+\subsection*{spacing}\label{fun:spacing}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \\
+Called by & \nameref{fun:beat-spacing-states}, \nameref{fun:beat-spacing-states<-},\newline \nameref{fun:spacing-holding-states} \\
+Comments/see also & \nameref{fun:intervals-above-bass}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(spacing 0 '((59 0 12) (63 1 13) (75 1 14)))
+--> (4 12)
+\end{verbatim}
+
+\noindent An index $n$ is provided as first argument;
+a list of lists is the second argument. The $n$th item
+of each sub-list is a MIDI note number, and these sub-lists are in order of ascending MIDI note number. The
+intervals between adjacent notes (chord spacing) are
+returned. It is possible to produce nonsense output
+if null values are interspersed with non-null
+values.
+
+
+%%%%%
+\subsection*{spacing-holding-states}\label{fun:spacing-holding-states}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/8/2010, 24/8/2010 \\
+Location & \nameref{sec:spacing-states} \\
+Calls & \nameref{fun:append-offtimes}, \nameref{fun:bass-steps},\newline \nameref{fun:enumerate-append}, \nameref{fun:index-rests}, \nameref{fun:nth-list},\newline \nameref{fun:nth-list-of-lists}, \nameref{fun:remove-nth-list},\newline \nameref{fun:sort-holding-types}, \nameref{fun:spacing} \\
+Called by & \\
+Comments/see also & \nameref{fun:beat-spacing-states}, \nameref{fun:beat-spacing-states<-}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(spacing-holding-states
+ '((0 74 1/2 1 84) (0 52 1 2 84) (1/2 76 1/4 1 84)
+   (3/4 78 1/4 1 84) (1 80 1/4 1 84) (5/4 81 1/4 1 84)
+   (3/2 83 1/2 1 84) (4 67 1 2 84) (4 64 1 2 84)
+   (4 79 1/2 1 84) (9/2 78 1/2 1 84) (5 67 1 2 84)
+   (5 64 1 2 84) (5 76 2 1 84)) "D Scarlatti L484" 2)
+--> ((((22) (1 0))
+      (NIL 1/2 "D Scarlatti L484"
+       ((0 52 1 2 84 1 1) (0 74 1/2 1 84 1/2 0))))
+     (((24) (3 0))
+      (0 1/4 "D Scarlatti L484"
+       ((0 52 1 2 84 1 1) (1/2 76 1/4 1 84 3/4 2))))
+     (((26) (2 0))
+      (0 1/4 "D Scarlatti L484"
+       ((0 52 1 2 84 1 1) (3/4 78 1/4 1 84 1 3))))
+     ((NIL (0))
+      (28 1/4 "D Scarlatti L484"
+       ((1 80 1/4 1 84 5/4 4))))
+     ((NIL (0))
+      (1 1/4 "D Scarlatti L484"
+       ((5/4 81 1/4 1 84 3/2 5))))
+     ((NIL (0))
+      (2 5/2 "D Scarlatti L484"
+       ((3/2 83 1/2 1 84 2 6))))
+     (((3 12) (1 1 0))
+      (-19 1/2 "D Scarlatti L484"
+       ((4 64 1 2 84 5 8) (4 67 1 2 84 5 7)
+        (4 79 1/2 1 84 9/2 9))))
+     (((3 11) (2 2 0))
+      (0 1/2 "D Scarlatti L484"
+       ((4 64 1 2 84 5 8) (4 67 1 2 84 5 7)
+        (9/2 78 1/2 1 84 5 10))))
+     (((3 9) (0 0 1))
+      (0 1 "D Scarlatti L484"
+       ((5 64 1 2 84 6 12) (5 67 1 2 84 6 11)
+        (5 76 2 1 84 7 13))))
+     ((NIL (2))
+      (12 1 "D Scarlatti L484"
+       ((5 76 2 1 84 7 13)))))
+\end{verbatim}
+
+\noindent This function takes datapoints as its
+argument, and some optional catalogue information
+about those datapoints. It converts the input into a
+list of sub-lists, with each sub-list consisting of a
+pair of lists. The first of the pair contains a chord
+spacing, followed by holding types relating to the
+notes of the chord. The second of the pair retains the
+following information: the step (in semitones) between
+the bass note of the previous chord and the current
+state; the duration of the state (which can exceed the
+minimum duration of the constituent datapoints if
+rests are present); the catalogue information; the
+relevant original datapoints, with offtimes and
+enumeration appended.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

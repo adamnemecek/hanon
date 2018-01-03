@@ -1,0 +1,586 @@
+\subsection{MIDI export}\label{sec:MIDI-export}
+
+The functions below are for exporting datapoints
+(dimensions for ontime in milliseconds, MIDI note
+number, duration in milliseconds, channel, and
+velocity) to a MIDI file. The main function is
+saveit.
+
+
+%%%%%
+\subsection*{convert-ontime-to-deltatime}\label{fun:convert-ontime-to-deltatime}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:create-midi-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(convert-ontime-to-deltatime 500)
+--> 24
+    0
+\end{verbatim}
+
+\noindent This function converts an ontime to a
+deltatime.
+
+
+%%%%%
+\subsection*{create-midi-events}\label{fun:create-midi-events}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 15/7/2013 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \nameref{fun:convert-ontime-to-deltatime},\newline \nameref{fun:make-midi-note-msg}, \nameref{fun:make-midi-pc-msg} \\
+Called by & \nameref{fun:create-MTrk} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(create-midi-events
+ '((0 36 1000 1 35) (0 48 1000 1 35) (500 60 500 7 40)
+   (0 1 0 1 255)))
+--> ((0 (144 36 35)) (48 (128 36 35)) (0 (144 48 35))
+     (48 (128 48 35)) (24 (150 60 40))
+     (48 (134 60 40)) (0 (192 0)))
+\end{verbatim}
+
+\noindent This function converts datapoints into the
+format required for the function
+create-midi-track-data.
+
+
+%%%%%
+\subsection*{create-midi-file}\label{fun:create-midi-file}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:save-as-midi}, \nameref{fun:saveit} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ outfilename
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/midi-export-test.mid"))
+(create-midi-file outfilename)
+--> #<BASIC-FILE-BINARY-OUTPUT-STREAM
+    ((concatenate
+      'string *MCStylistic-Oct2010-example-files-path*
+      "/midi-export-test.mid")/13 ISO-8859-1)
+    #x3000419BC3FD>
+\end{verbatim}
+
+\noindent This function creates an output stream.
+
+
+%%%%%
+\subsection*{create-midi-track-data}\label{fun:create-midi-track-data}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 15/7/2013 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \nameref{fun:make-var-len} \\
+Called by & \nameref{fun:create-MTrk} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(create-midi-track-data '((0 (193 1)) (2 (193 1))))
+--> (0 193 1 2 193 1)
+\end{verbatim}
+
+\noindent Each element of the variable midiEvents is
+of the format
+((deltaTime (byte3 byte2 byte1)).
+They should be sorted in the order for the file and
+their deltaTimes are relative to each other (each
+relative to the previous). This function creates an
+integer-stream representation.
+
+
+%%%%%
+\subsection*{create-midi-tracks}\label{fun:create-midi-tracks}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \nameref{fun:create-tempo-track}, \nameref{fun:create-MTrk} \\
+Called by & \nameref{fun:save-as-midi}, \nameref{fun:saveit} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(create-midi-tracks
+ '((0 1 0 1 255) (0 2 0 2 255) (0 3 0 3 255)
+   (0 4 0 4 255) (0 5 0 5 255) (0 6 0 6 255) 
+   (0 7 0 7 255) (0 8 0 8 255) (0 9 0 9 255)
+   (0 10 0 10 255) (0 11 0 11 255) (0 12 0 12 255)
+   (0 13 0 13 255) (0 14 0 14 255) (0 15 0 15 255)
+   (0 16 0 16 255) (0 60 1000 1 127)))
+--> ((77 84 114 107 0 0 0 4 0 255 47 0)
+     (77 84 114 107 0 0 0 15 0 192 0 0 144 60 127 48
+      128 60 127 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 193 1 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 194 2 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 195 3 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 196 4 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 197 5 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 198 6 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 199 7 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 200 8 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 201 9 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 202 10 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 203 11 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 204 12 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 205 13 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 206 14 0 255 47 0)
+     (77 84 114 107 0 0 0 7 0 207 15 0 255 47 0))
+\end{verbatim}
+
+\noindent This function takes datapoints and lists
+representing the ends of tracks, and converts them
+into the integer streams in preparation for the
+function write-to-midi-file.
+
+
+%%%%%
+\subsection*{create-MThd}\label{fun:create-MThd}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:save-as-midi}, \nameref{fun:saveit} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(create-MThd 17)
+--> (77 84 104 100 0 0 0 6 0 1 0 17 0 48)
+\end{verbatim}
+
+\noindent This function creates the integer stream
+representing a MIDI file's header data.
+
+
+%%%%%
+\subsection*{create-MTrk}\label{fun:create-MTrk}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \nameref{fun:create-midi-events}, \nameref{fun:create-midi-track-data},\newline \nameref{fun:fix-deltatime}, \nameref{fun:sort-by-deltatime}, \nameref{fun:split-bytes} \\
+Called by & \nameref{fun:create-midi-tracks} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(create-MTrk '((0 1 0 1 255) (0 60 1000 1 127)))
+--> (77 84 104 100 0 0 0 6 0 1 0 17 0 48)
+\end{verbatim}
+
+\noindent This function creates the integer stream
+representing one track in a MIDI file.
+
+
+%%%%%
+\subsection*{create-tempo-track}\label{fun:create-tempo-track}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \nameref{fun:split-bytes} \\
+Called by & \nameref{fun:create-midi-tracks} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(create-tempo-track)
+--> ((77 84 114 107 0 0 0 4 0 255 47 0))
+\end{verbatim}
+
+\noindent This function creates the integer
+representation for a MIDI file's tempo track.
+
+
+%%%%%
+\subsection*{fix-deltatime}\label{fun:fix-deltatime}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 15/7/2013 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:create-MTrk} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(fix-deltatime 40 '((0 (207 15))))
+--> ((-40 (207 15)))
+\end{verbatim}
+
+\noindent This function shifts all of the deltatimes
+back by the first argument.
+
+
+%%%%%
+\subsection*{get-channel-events}\label{fun:get-channel-events}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:create-midi-tracks} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(get-channel-events
+ 1
+ '((0 1 0 1 255) (0 2 0 2 255) (0 3 0 3 255)
+   (0 4 0 4 255) (0 5 0 5 255) (0 6 0 6 255) 
+   (0 7 0 7 255) (0 8 0 8 255) (0 9 0 9 255)
+   (0 10 0 10 255) (0 11 0 11 255) (0 12 0 12 255)
+   (0 13 0 13 255) (0 14 0 14 255) (0 15 0 15 255)
+   (0 16 0 16 255) (0 60 1000 1 127)))
+--> ((0 1 0 1 255) (0 60 1000 1 127))
+\end{verbatim}
+
+\noindent This function takes an integer between 1 and
+16 (inclusive) as its first argument, and a list of
+datapoints as its second argument. It returns elements
+of this list whose fourth element is equal to the
+first argument.
+
+
+%%%%%
+\subsection*{get-byte}\label{fun:get-byte}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:split-bytes} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(get-byte 3 7)
+--> 0
+\end{verbatim}
+
+\noindent This function converts an integer to bytes,
+starting at the rightmost index.
+
+
+%%%%%
+\subsection*{insert-program-changes}\label{fun:insert-program-changes}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:save-as-midi}, \nameref{fun:saveit} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(insert-program-changes '((0 60 1000 1 127)))
+--> ((0 1 0 1 255) (0 2 0 2 255) (0 3 0 3 255)
+     (0 4 0 4 255) (0 5 0 5 255) (0 6 0 6 255)
+     (0 7 0 7 255) (0 8 0 8 255) (0 9 0 9 255)
+     (0 10 0 10 255) (0 11 0 11 255) (0 12 0 12 255)
+     (0 13 0 13 255) (0 14 0 14 255) (0 15 0 15 255)
+     (0 16 0 16 255) (0 60 1000 1 127))
+\end{verbatim}
+
+\noindent This function inserts MIDI track headers as
+datapoints (signified by 255).
+
+
+%%%%%
+\subsection*{make-midi-note-msg}\label{fun:make-midi-note-msg}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:create-midi-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(make-midi-note-msg '(0 60 1000 1 127) 144)
+--> (144 60 127)
+\end{verbatim}
+
+\noindent This function creates MIDI note messages of
+the type processed by the function
+create-midi-track-data. It should be pointed out that
+\#x90 is for a note-on and \#x80 for a note-off.
+
+
+%%%%%
+\subsection*{make-midi-pc-msg}\label{fun:make-midi-pc-msg}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:create-midi-events} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(make-midi-pc-msg '(0 16 0 16 255))
+--> (207 15)
+\end{verbatim}
+
+\noindent This function creates MIDI PC messages of
+the type processed by the function
+create-midi-track-data. It should be pointed out that
+\#xC0 is for a program change.
+
+
+%%%%%
+\subsection*{make-var-len}\label{fun:make-var-len}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 15/7/2013 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:create-midi-track-data} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(make-var-len 1241)
+--> (137 89)
+\end{verbatim}
+
+\noindent This function converts integers to a binary-
+like representation. Adapted from \href{http://www.blitter.com/~russtopia/MIDI/~jglatt/}{http://www.blitter.com/$\sim$russtopia/MIDI/$\sim$jglatt/}.
+
+
+%%%%%
+\subsection*{save-as-midi}\label{fun:save-as-midi}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \nameref{fun:create-midi-file}, \nameref{fun:create-midi-tracks},\newline \nameref{fun:create-MThd}, \nameref{fun:insert-program-changes},\newline \nameref{fun:write-to-midi-file} \\
+Called by & \\
+Comments/see also & \nameref{fun:saveit}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(save-as-midi
+ "midi-export-test.mid"
+ '((0 36 1000 1 35) (0 48 1000 1 35) (500 60 500 7 40)
+   (1000 63 500 7 45) (1500 67 500 7 50)
+   (2000 72 500 7 55) (2500 75 500 7 60)
+   (3000 79 500 12 65) (3500 84 500 12 70)
+   (4000 79 500 12 75) (4500 75 500 12 80)
+   (5000 72 500 12 84) (5500 67 500 12 84)))
+--> (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/midi-export-test.mid")
+\end{verbatim}
+
+\noindent This function exports datapoints (dimensions
+for ontime in milliseconds, MIDI note number, duration
+in milliseconds, channel, and velocity) to a MIDI
+file. It can clip the end of the file, so to avoid
+this, use the function saveit.
+
+
+%%%%%
+\subsection*{saveit}\label{fun:saveit}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \nameref{fun:create-midi-file}, \nameref{fun:create-midi-tracks},\newline \nameref{fun:create-MThd}, \nameref{fun:insert-program-changes},\newline \nameref{fun:write-to-midi-file} \\
+Called by & \\
+Comments/see also & \nameref{fun:save-as-midi}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(saveit
+ (concatenate
+  'string
+  *MCStylistic-Oct2010-example-files-path*
+  "/midi-export-test.mid")
+ '((0 36 1000 1 35) (0 48 1000 1 35) (500 60 500 7 40)
+   (1000 63 500 7 45) (1500 67 500 7 50)
+   (2000 72 500 7 55) (2500 75 500 7 60)
+   (3000 79 500 12 65) (3500 84 500 12 70)
+   (4000 79 500 12 75) (4500 75 500 12 80)
+   (5000 72 500 12 84) (5500 67 500 12 84)))
+--> (concatenate
+     'string
+     *MCStylistic-Oct2010-example-files-path*
+     "/midi-export-test.mid")
+\end{verbatim}
+
+\noindent This function is very similar to the
+function save-as-midi (exporting datapoints with
+dimensions for ontime in milliseconds, MIDI note
+number, duration in milliseconds, channel, and
+velocity, to a MIDI file). The difference is that this
+function does not clip the end of the file.
+
+
+%%%%%
+\subsection*{sort-by-deltatime}\label{fun:sort-by-deltatime}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:create-MTrk} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(sort-by-deltatime '((24 (207 15)) (0 (207 15))))
+--> ((0 (207 15)) (24 (207 15)))
+\end{verbatim}
+
+\noindent This function sorts a list of lists
+ascending by the car of each list.
+
+
+%%%%%
+\subsection*{split-bytes}\label{fun:split-bytes}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \nameref{fun:get-byte} \\
+Called by & \nameref{fun:create-MTrk}, \nameref{fun:create-tempo-track} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(split-bytes 7 4)
+--> (0 0 0 7)
+\end{verbatim}
+
+\noindent This function splits a long integer into its
+high byte and low byte.
+
+
+%%%%%
+\subsection*{write-to-midi-file}\label{fun:write-to-midi-file}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 27/1/2009, 27/1/2009 \\
+Location & \nameref{sec:MIDI-export} \\
+Calls & \\
+Called by & \nameref{fun:save-as-midi}, \nameref{fun:saveit} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ outfilename
+ (concatenate
+  'string *MCStylistic-Oct2010-example-files-path*
+  "/midi-export-test.mid"))
+(write-to-midi-file
+ (create-midi-file outfilename)
+ '((77 84 104 100 0 0 0 6 0 1 0 17 0 48) 
+   (77 84 114 107 0 0 0 4 0 255 47 0)
+   (77 84 114 107 0 0 0 15 0 192 0 0 144 60 127 48 128
+    60 127 0 255 47 0) 
+   (77 84 114 107 0 0 0 7 0 193 1 0 255 47 0)
+   (77 84 114 107 0 0 0 7 0 194 2 0 255 47 0)))
+--> NIL
+\end{verbatim}
+
+\noindent This function will convert MIDI track events
+to bytes and write them to a specified file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

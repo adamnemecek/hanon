@@ -1,0 +1,15 @@
+
+(setq sort-index 1)
+(setq duration-index 3)
+(setq left-side (first generation-interval))
+(setq right-side (second generation-interval))
+(setq trimmed-template
+         (remove-datapoints-with-nth-item>
+          (remove-datapoints-with-nth-item<
+           dataset-template left-side 0)
+          right-side 0))
+
+
+
+
+

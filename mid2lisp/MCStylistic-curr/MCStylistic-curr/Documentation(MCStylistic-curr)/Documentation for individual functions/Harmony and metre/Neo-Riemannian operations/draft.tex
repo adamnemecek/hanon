@@ -1,0 +1,263 @@
+\subsection{Neo-Riemannian operations}\label{sec:NRO}
+
+The functions below are implementations of
+neo-Riemannian operations \citep*{lewin1987,cohn1998}.
+These include leading-note, relative, and parallel
+operations). At present they do not take correct pitch
+spelling into account. For instance, the operations
+`LPL' and `PLP' map C major to G$\sharp$ minor and
+A$\flat$ minor respectively, but both will be
+represented by pitch class 8.
+
+
+%%%%%
+\subsection*{chord-pair2NRO-string}\label{fun:chord-pair2NRO-string}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/2/2013, 24/2/2013 \\
+Location & \nameref{sec:NRO} \\
+Calls & \\
+Called by & \nameref{fun:chord-pairs2NRO-strings} \\
+Comments/see also & \nameref{fun:chord-pairs2NRO-strings},\newline \nameref{fun:NRO-string2chord-pairs},\newline \nameref{fun:NRO-strings2chord-pairs}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(chord-pair2NRO-string '(3 2) '(4 0))
+--> "LRL"
+(chord-pair2NRO-string '(7 0) '(2 0))
+--> "LR"
+(chord-pair2NRO-string '(3 2) '(10 2))
+--> "RL"
+(chord-pair2NRO-string '(0 0) '(5 2))
+--> "RLP"
+\end{verbatim}
+
+\noindent This function takes two chord pairs as
+arguments. It returns the neo-Riemannian operation(s)
+that transform the first chord into the second chord,
+as a string. It will return the shortest such string
+for this transformation, and if there are two of
+equal length, it will return one arbitrarily. The
+format of each input chord is a two-element list, with
+first element for the MIDI note number modulo 12 of
+the root of the chord, and the second element the
+class of the chord (0, major triad; 2, minor
+triad).
+
+
+%%%%%
+\subsection*{chord-pairs2NRO-strings}\label{fun:chord-pairs2NRO-strings}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/2/2013, 24/2/2013 \\
+Location & \nameref{sec:NRO} \\
+Calls & \nameref{fun:chord-pairs2NRO-strings} \\
+Called by & \\
+Comments/see also & \nameref{fun:chord-pair2NRO-string},\newline \nameref{fun:NRO-string2chord-pairs},\newline \nameref{fun:NRO-strings2chord-pairs}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(chord-pairs2NRO-strings '((3 2) (4 0) (7 0) (2 0)))
+--> ("LRL" "PR" "LR")
+\end{verbatim}
+
+\noindent This function takes a list of chord pairs as
+its argument (first element for the MIDI note number
+modulo 12 of the root of the chord, and the second
+element the class of the chord: 0, major triad; 2,
+minor triad). It returns a list of strings of length
+$n - 1$, where $n$ is the length of the input list.
+The strings are the neo-Riemannian operation(s)
+that transform chord $i$ into chord $i + 1$. It will
+return the shortest such string for each
+transformation, and if there are two of equal length,
+it will return one arbitrarily. The format of each
+input chord is a two-element list, with first element
+for the MIDI note number modulo 12 of the root of the
+chord, and the second element the class of the chord
+(0, major triad; 2, minor triad).
+
+
+%%%%%
+\subsection*{NRO-L}\label{fun:NRO-L}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/2/2013, 24/2/2013 \\
+Location & \nameref{sec:NRO} \\
+Calls & \\
+Called by & \nameref{fun:NRO-string2chord-pairs} \\
+Comments/see also & \nameref{fun:NRO-P}, \nameref{fun:NRO-R}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(NRO-L '(3 2))
+--> (11 0)
+(NRO-L '(11 0))
+--> (3 2)
+\end{verbatim}
+
+\noindent This function applies the neo-Riemannian
+leading-note operation to an input chord pair,
+represented as a two-element list, with first element
+for the MIDI note number modulo 12 of the root of the
+chord, and the second element the class of the chord
+(0, major triad; 2, minor triad).
+
+
+%%%%%
+\subsection*{NRO-P}\label{fun:NRO-P}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/2/2013, 24/2/2013 \\
+Location & \nameref{sec:NRO} \\
+Calls & \\
+Called by & \nameref{fun:NRO-string2chord-pairs} \\
+Comments/see also & \nameref{fun:NRO-L}, \nameref{fun:NRO-R}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(NRO-P '(3 2))
+--> (3 0)
+(NRO-P '(3 0))
+--> (3 2)
+\end{verbatim}
+
+\noindent This function applies the neo-Riemannian
+parallel operation to an input chord pair, represented
+as a two-element list, with first element for the MIDI
+note number modulo 12 of the root of the chord, and
+the second element the class of the chord (0, major
+triad; 2, minor triad).
+
+
+%%%%%
+\subsection*{NRO-R}\label{fun:NRO-R}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/2/2013, 24/2/2013 \\
+Location & \nameref{sec:NRO} \\
+Calls & \\
+Called by & \nameref{fun:NRO-string2chord-pairs} \\
+Comments/see also & \nameref{fun:NRO-L}, \nameref{fun:NRO-P}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(NRO-R '(3 2))
+--> (6 0)
+(NRO-R '(6 0))
+--> (3 2)
+\end{verbatim}
+
+\noindent This function applies the neo-Riemannian
+relative operation to an input chord pair, represented
+as a two-element list, with first element for the MIDI
+note number modulo 12 of the root of the chord, and
+the second element the class of the chord (0, major
+triad; 2, minor triad).
+
+
+%%%%%
+\subsection*{NRO-string2chord-pairs}\label{fun:NRO-string2chord-pairs}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/2/2013, 24/2/2013 \\
+Location & \nameref{sec:NRO} \\
+Calls & \nameref{fun:NRO-L}, \nameref{fun:NRO-P}, \nameref{fun:NRO-R} \\
+Called by & \nameref{fun:NRO-strings2chord-pairs} \\
+Comments/see also & \nameref{fun:chord-pair2NRO-string},\newline \nameref{fun:chord-pairs2NRO-strings},\newline \nameref{fun:NRO-strings2chord-pairs}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(NRO-string2chord-pairs "PRP" '(0 0))
+--> ((0 0) (0 2) (3 0) (3 2))
+\end{verbatim}
+
+\noindent This function applies the neo-Riemannian
+operations specified as a string in the first argument
+to an input chord pair (optional second argument),
+represented as a two-element list, with first element
+for the MIDI note number modulo 12 of the root of the
+chord, and the second element the class of the chord
+(0, major triad; 2, minor triad). The first element of
+the string is applied first. The first, all
+intermediate, and last chords are returned.
+
+
+%%%%%
+\subsection*{NRO-strings2chord-pairs}\label{fun:NRO-strings2chord-pairs}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 24/2/2013, 24/2/2013 \\
+Location & \nameref{sec:NRO} \\
+Calls & \nameref{fun:my-last}, \nameref{fun:NRO-string2chord-pairs} \\
+Called by & \\
+Comments/see also & \nameref{fun:chord-pair2NRO-string},\newline \nameref{fun:chord-pairs2NRO-strings},\newline \nameref{fun:NRO-string2chord-pairs}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(NRO-strings2chord-pairs '("PRP" "LR" "PRPL") '(1 0))
+--> ((1 0) (4 2) (9 2) (10 2))
+(NRO-strings2chord-pairs '("R" "L" "LRLR") '(0 0))
+--> ((0 0) (9 2) (5 0) (7 0))
+\end{verbatim}
+
+\noindent This function applies the neo-Riemannian
+operations specified as strings in the first argument
+to an input chord pair (optional second argument),
+represented as a two-element list, with first element
+for the MIDI note number modulo 12 of the root of the
+chord, and the second element the class of the chord
+(0, major triad; 2, minor triad). The first element of
+the string is applied first. There is a choice
+(optional third argument) between returning all
+intermediary chords, or just the final result of each
+NRO (default).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

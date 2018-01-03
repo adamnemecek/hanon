@@ -1,0 +1,216 @@
+\subsection{Vector operations}\label{sec:vector-operations}
+
+These functions allow common vector operations, such
+as taking norms, calculating dot products and distance
+functions.
+
+
+%%%%%
+\subsection*{dot-product}\label{fun:dot-product}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 9/1/2015, 9/1/2015 \\
+Location & \nameref{sec:vector-operations} \\
+Calls & \ref{fun:fibonacci-list}, \ref{fun:multiply-two-lists} \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(dot-product '(0 1 2) '(3 -1 4))
+--> 7.
+\end{verbatim}
+
+\noindent The dot product of two lists is returned. If
+$x = (x_1, x_2,\ldots, x_n)$ and
+$y = (y_1, y_2,\ldots, y_n)$, then the output is
+$\sum_{i = 1}^n x_i y_i$. Passing lists of different
+lengths may lead to errors.
+
+
+%%%%%
+\subsection*{fibonacci-list}\label{fun:fibonacci-list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 29/1/2010, 29/1/2010 \\
+Location & \nameref{sec:vector-operations} \\
+Calls & \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(fibonacci-list '(0 1 2 4 8))
+-->Ê(0 1 3 7 15)
+\end{verbatim}
+
+\noindent The $n$th element of the list returned is
+the sum of the previous $n-1$ elements, with the
+convention that a sum over an empty set is zero.
+
+
+%%%%%
+\subsection*{max-matrix}\label{fun:max-matrix}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 29/1/2010, 29/1/2010 \\
+Location & \nameref{sec:vector-operations} \\
+Calls & \\
+Called by & \nameref{fun:establishment-matrix} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(max-matrix '((4 0 -3) (-2 3 5) (0 0 0) (0 -1 3)))
+--> 5
+\end{verbatim}
+
+\noindent This function returns the maximum element in
+a matrix represented as a list of lists.
+
+
+%%%%%
+\subsection*{min-matrix}\label{fun:min-matrix}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 29/1/2010, 29/1/2010 \\
+Location & \nameref{sec:vector-operations} \\
+Calls & \\
+Called by & \nameref{fun:establishment-matrix} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(max-matrix '((4 0 -3) (-2 3 5) (0 0 0) (0 -1 3)))
+--> 5
+\end{verbatim}
+
+\noindent This function returns the maximum element in
+a matrix represented as a list of lists.
+
+
+%%%%%
+\subsection*{multiply-two-lists}\label{fun:multiply-two-lists}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 29/1/2010, 29/1/2010 \\
+Location & \nameref{sec:vector-operations} \\
+Calls & \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(multiply-two-lists '(4 7 -3) '(8 -2 -3))
+--> (32 -14 9)
+\end{verbatim}
+
+\noindent Multiplies two lists element-by-element. It
+is assumed that elements of list arguments are
+numbers, and the list arguments are of the same
+length. An empty first (but not second) argument will
+be tolerated.
+
+
+%%%%%
+\subsection*{normalise-0-1}\label{fun:normalise-0-1}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 29/1/2010, 29/1/2010 \\
+Location & \nameref{sec:vector-operations} \\
+Calls & \nameref{fun:normalise-0-1-checks-done} \\
+Called by & \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(normalise-0-1 '(4 7 -3 2))
+--> (7/10 1 0 1/2)
+\end{verbatim}
+
+\noindent Normalises data (linearly) to $[0, 1]$.
+
+
+%%%%%
+\subsection*{normalise-0-1-checks-done}\label{fun:normalise-0-1-checks-done}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 29/1/2010, 29/1/2010 \\
+Location & \nameref{sec:vector-operations} \\
+Calls & \\
+Called by & \nameref{fun:normalise-0-1} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(normalise-0-1-checks-done '(4 7 -3 2))
+--> (7/10 1 0 1/2)
+\end{verbatim}
+
+\noindent Normalises data (linearly) to $[0, 1]$,
+assuming that the data is not constant and that the
+min and max are not already 0, 1 respectively.
+
+
+%%%%%
+\subsection*{replace-nth-in-list-with-x}\label{fun:replace-nth-in-list-with-x}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/6/2013, 23/6/2013 \\
+Location & \nameref{sec:vector-operations} \\
+Calls & \\
+Called by & \nameref{fun:sky-line-clipped} \\
+Comments/see also & \nameref{fun:substitute-index-by-index-abs-x}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(replace-nth-in-list-with-x 3 '(0 52 55 0.5 1) 5.4)
+--> (0 52 55 5.4 1)
+\end{verbatim}
+
+\noindent This function replaces the nth item of a
+list with whatever is supplied as the third
+variable. Passing a value for n less than zero or
+greater than m, where m is one less than the length of
+the list, will result in an error.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,334 @@
+\subsection{Markov analyse backwards}\label{sec:markov-analyse-backwards}
+
+The functions here are very similar to those contained
+in the file markov-analyse.lisp. Whereas those
+functions are designed to analyse data according to a
+Markov-chain model that runs forward in time, these
+functions do the same for going backwards in time.
+
+
+%%%%%
+\subsection*{accumulate-to-stm$<$-}\label{fun:accumulate-to-stm<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 4/10/2010, 4/10/2010 \\
+Location & \nameref{sec:markov-analyse-backwards} \\
+Calls & \\
+Called by & \nameref{fun:present-to-stm<-} \\
+Comments/see also & \nameref{fun:accumulate-to-stm}, \nameref{fun:add-to-stm<-}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(accumulate-to-stm<-
+ '(((4) ("Piece A")) ((2) ("Piece A")))
+ '((2) (((5) ("Piece A"))))
+ '(((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+   ((2) (((5) ("Piece A"))))
+   ((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+   ((5) (((4) ("Piece B"))))))
+--> '(((2) (((4) ("Piece A")) ((5) ("Piece A"))))
+      ((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+      ((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+      ((5) (((4) ("Piece B")))))
+\end{verbatim}
+
+\noindent This function is similar to the function
+accumulate-to-stm, the difference being $X_n$ is
+looked up and $X_{n-1}$ accumulated to the state-
+transition matrix. The first argument is a listed
+state; the second is the relevant row of the state
+transition matrix; the third is the state transition
+matrix itself. This function is called when the state
+of the second item of the listed state has appeared in
+the state transition matrix before. The references of
+the event are included.
+
+
+%%%%%
+\subsection*{add-to-stm$<$-}\label{fun:add-to-stm<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 4/10/2010, 4/10/2010 \\
+Location & \nameref{sec:markov-analyse-backwards} \\
+Calls & \\
+Called by & \nameref{fun:present-to-stm<-} \\
+Comments/see also & \nameref{fun:accumulate-to-stm<-}, \nameref{fun:add-to-stm}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(add-to-stm<-
+ '(((4) ("Piece A")) ((3) ("Piece A")))
+ '(((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+   ((2) (((5) ("Piece A"))))
+   ((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+   ((5) (((4) ("Piece B"))))))
+--> '(((3) (((4) ("Piece A"))))
+      ((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+      ((2) (((5) ("Piece A"))))
+      ((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+      ((5) (((4) ("Piece B")))))
+\end{verbatim}
+
+\noindent This function is similar to the function
+add-to-stm, the difference being $X_n$ is looked up
+and $X_{n-1}$ added to the state-transition matrix.
+The first argument is a listed state; the second is
+the state transition matrix. This function is called
+when the state of the first item of the listed state
+has not appeared in the state transition matrix
+before. It is added.
+
+
+%%%%%
+\subsection*{construct-final-states}\label{fun:construct-final-states}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 4/10/2010, 4/10/2010 \\
+Location & \nameref{sec:markov-analyse-backwards} \\
+Calls & \nameref{fun:beat-spacing-states}, \nameref{fun:lastn},\newline \nameref{fun:spacing-holding-states} \\
+Called by & \\
+Comments/see also & \nameref{fun:construct-initial-states}, \nameref{fun:construct-stm},\newline \nameref{fun:construct-stm<-}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   variable-1
+   '((0 60 60 2 0) (0 63 62 1 0) (1 67 64 2 0)
+     (2 59 59 1 0)))
+  (setq
+   variable-2
+   '((0 64 62 1 0) (1 62 61 1 0) (1 69 65 2 0)
+     (2 66 63 1 0)))
+  (setq *variable-names* '(variable-1 variable-2))
+  (setq *catalogue* '("variable-1" "variable-2"))
+  (construct-final-states
+   *variable-names* *catalogue* "beat-spacing-states"
+   10 3 3 1))
+--> '(((3 (8))
+       (NIL NIL "variable-1"
+        ((2 59 59 1 0 3 3) (1 67 64 2 0 3 2))))
+      ((3 (3))
+       (NIL NIL "variable-2"
+        ((2 66 63 1 0 3 3) (1 69 65 2 0 3 2)))))
+\end{verbatim}
+
+\noindent This function is similar to the function
+construct-stm, the difference being $X_n$ is looked
+up and $X_{n-1}$ is accumulated or added to a state-
+transition matrix. This recursion analyses one
+variable name at a time, taking a catalogue name from
+the variable catalogue, and outputs final
+states accordingly.
+
+
+%%%%%
+\subsection*{construct-stm$<$-}\label{fun:construct-stm<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 4/10/2010, 4/10/2010 \\
+Location & \nameref{sec:markov-analyse-backwards} \\
+Calls & \nameref{fun:beat-spacing-states}, \nameref{fun:markov-analyse<-},\newline \nameref{fun:spacing-holding-states} \\
+Called by & \\
+Comments/see also & \nameref{fun:construct-final-states},\newline \nameref{fun:construct-initial-states}, \nameref{fun:construct-stm}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   variable-1
+   '((0 60 60 2 0) (0 63 62 1 0) (1 67 64 2 0)
+     (2 59 59 1 0)))
+  (setq
+   variable-2
+   '((0 64 62 1 0) (1 62 61 1 0) (1 69 65 2 0)
+     (2 66 63 1 0)))
+  (setq *variable-names* '(variable-1 variable-2))
+  (setq *catalogue* '("variable-1" "variable-2"))
+  (construct-stm<-
+   *variable-names* *catalogue* "beat-spacing-states"
+   3 3 1))
+--> "Finished"
+*transition-matrix*
+--> (((3 (3))
+      (((2 (7))
+        (4 2 "variable-2"
+         ((1 62 61 1 0 2 1) (1 69 65 2 0 3 2))))))
+     ((2 (7))
+      (((1 NIL)
+        (-2 -1 "variable-2"
+         ((0 64 62 1 0 1 0))))
+       ((1 (3))
+        (0 0 "variable-1"
+         ((0 60 60 2 0 2 0) (0 63 62 1 0 1 1))))))
+     ((3 (8))
+      (((2 (7))
+        (-1 -1 "variable-1"
+         ((0 60 60 2 0 2 0) (1 67 64 2 0 3 2)))))))
+\end{verbatim}
+
+\noindent This function is similar to the function
+construct-stm, the difference being $X_n$ is looked
+up and $X_{n-1}$ is accumulated or added to a state-
+transition matrix. This recursion analyses one
+variable name at a time, taking a catalogue name from
+the variable catalogue, and updates the transition
+matrix accordingly. The output "Finished" is
+preferable to the transition matrix, which is large
+enough that it can cause the Listener to crash.
+
+
+%%%%%
+\subsection*{markov-analyse$<$-}\label{fun:markov-analyse<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 4/10/2010, 4/10/2010 \\
+Location & \nameref{sec:markov-analyse-backwards} \\
+Calls & \nameref{fun:update-stm<-} \\
+Called by & \nameref{fun:construct-stm<-} \\
+Comments/see also & \nameref{fun:markov-analyse}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(markov-analyse<-
+ '(((3) ("Piece A")) ((6) ("Piece A"))
+   ((4) ("Piece A")) ((4) ("Piece A"))
+   ((3) ("Piece A")) ((2) ("Piece A"))))
+--> "Finished"
+*transition-matrix*
+--> '(((2) (((3) ("Piece A"))))
+      ((3) (((4) ("Piece A"))))
+      ((4) (((4) ("Piece A")) ((6) ("Piece A"))))
+      ((6) (((3) ("Piece A")))))
+\end{verbatim}
+
+\noindent This function is similar to the function
+markov-analyse, the difference being $X_n$ is looked
+up and $X_{n-1}$ is accumulated or added to a state-
+transition matrix. This function has one argument -
+some states which are to be analysed according to a
+backwards first-order Markov model. Note the need to
+define a variable here, *transition-matrix*. The
+output "Finished" is preferable to the transition
+matrix, which is large enough that it can cause the
+Listener to crash.
+
+
+%%%%%
+\subsection*{present-to-stm$<$-}\label{fun:present-to-stm<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 4/10/2010, 4/10/2010 \\
+Location & \nameref{sec:markov-analyse-backwards} \\
+Calls & \nameref{fun:add-to-stm<-}, \nameref{fun:accumulate-to-stm<-} \\
+Called by & \nameref{fun:update-stm<-} \\
+Comments/see also & \nameref{fun:present-to-stm}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(present-to-stm<-
+ '(((4) ("Piece A")) ((2) ("Piece A")))
+ '(((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+   ((2) (((5) ("Piece A"))))
+   ((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+   ((5) (((4) ("Piece B"))))))
+--> '(((2) (((4) ("Piece A")) ((5) ("Piece A"))))
+      ((1) (((5) ("Piece A")) ((4) ("Piece B"))))
+      ((4) (((1) ("Piece B")) ((2) ("Piece C"))))
+      ((5) (((4) ("Piece B")))))
+\end{verbatim}
+
+\noindent This function is similar to the function
+present-to-stm, the difference being $X_n$ is looked
+up and $X_{n-1}$ is accumulated or added to a state-
+transition matrix. The function calls either the
+function accumulate-to-stm<-, or add-to-stm<-,
+depending on whether the first argument, a listed-
+state, has appeared in the second argument, a state-
+transition matrix, before. The example above results
+in accumulate-to-stm<- being called, as the state of
+(2) has occurred before. However, changing this state
+to (3) in the argument would result in add-to-stm<-
+being called.
+
+
+%%%%%
+\subsection*{update-stm$<$-}\label{fun:update-stm<-}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 4/10/2010, 4/10/2010 \\
+Location & \nameref{sec:markov-analyse-backwards} \\
+Calls & \nameref{fun:present-to-stm<-} \\
+Called by & \nameref{fun:markov-analyse<-} \\
+Comments/see also & \nameref{fun:update-stm}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(update-stm<-
+ '((((3) ("Piece A")) ((6) ("Piece A")))
+   (((6) ("Piece A")) ((4) ("Piece A")))
+   (((4) ("Piece A")) ((4) ("Piece A")))
+   (((4) ("Piece A")) ((3) ("Piece A")))
+   (((3) ("Piece A")) ((2) ("Piece A"))))
+ nil)
+--> '(((2) (((3) ("Piece A"))))
+      ((3) (((4) ("Piece A"))))
+      ((4) (((4) ("Piece A")) ((6) ("Piece A"))))
+      ((6) (((3) ("Piece A")))))
+\end{verbatim}
+
+\noindent This function is similar to the function
+update-stm, the difference being $X_n$ is looked
+up and $X_{n-1}$ is accumulated or added to a state-
+transition matrix. This function has as its argument
+listed states, and it applies the function
+present-to-stm<- recursively to these listed states.
+The variable *transition-matrix* is updated as it
+proceeds.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

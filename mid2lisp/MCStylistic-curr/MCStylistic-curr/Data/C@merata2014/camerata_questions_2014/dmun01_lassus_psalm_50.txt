@@ -1,0 +1,390 @@
+  <question number="41" music_file="lassus_psalm_50.xml" divisions="2">
+    <text>E5</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="6" start_offset="3"
+               end_bar="6" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="2" end_divisions="2"
+               start_bar="9" start_offset="5"
+               end_bar="9" end_offset="5" />
+    </answer>
+  </question>
+
+  <question number="42" music_file="lassus_psalm_50.xml" divisions="1">
+    <text>dotted minim</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="1"
+               end_bar="2" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="3"
+               end_bar="4" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="14" start_offset="3"
+               end_bar="15" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="18" start_offset="1"
+               end_bar="18" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="21" start_offset="3"
+               end_bar="22" end_offset="1" />
+    </answer>
+  </question>
+
+  <question number="43" music_file="lassus_psalm_50.xml" divisions="1">
+    <text>A# crotchet</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="7" start_offset="1"
+               end_bar="7" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="7" start_offset="4"
+               end_bar="7" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="13" start_offset="4"
+               end_bar="13" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="14" start_offset="4"
+               end_bar="14" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="23" start_offset="2"
+               end_bar="23" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="44" music_file="lassus_psalm_50.xml" divisions="1">
+    <text>F# semibreve</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="14" start_offset="3"
+               end_bar="15" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="23" start_offset="1"
+               end_bar="23" end_offset="4" />
+    </answer>
+  </question>
+
+  <question number="45" music_file="lassus_psalm_50.xml" divisions="1">
+    <text>F3 sharp in the &quot;Alt&quot;</text>
+  </question>
+
+  <question number="46" music_file="lassus_psalm_50.xml" divisions="1">
+    <text>minim on the word &quot;Der&quot;</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="1"
+               end_bar="1" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="3"
+               end_bar="2" end_offset="4" />
+    </answer>
+  </question>
+
+  <question number="47" music_file="lassus_psalm_50.xml" divisions="1">
+    <text>minim B on the word &quot;im&quot;</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="2"
+               end_bar="4" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="48" music_file="lassus_psalm_50.xml" divisions="1">
+    <text>minim followed by a minim</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="3"
+               end_bar="3" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="3"
+               end_bar="5" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="5" start_offset="1"
+               end_bar="5" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="5" start_offset="3"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="1"
+               end_bar="6" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="3"
+               end_bar="7" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="7" start_offset="1"
+               end_bar="7" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="7" start_offset="3"
+               end_bar="8" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="8" start_offset="1"
+               end_bar="8" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="3"
+               end_bar="10" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="3"
+               end_bar="11" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="15" start_offset="1"
+               end_bar="15" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="16" start_offset="2"
+               end_bar="17" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="17" start_offset="1"
+               end_bar="17" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="17" start_offset="3"
+               end_bar="18" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="19" start_offset="1"
+               end_bar="19" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="19" start_offset="4"
+               end_bar="20" end_offset="3" />
+    </answer>
+  </question>
+
+  <question number="49" music_file="lassus_psalm_50.xml" divisions="1">
+    <text>melodic rising minor third</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="4"
+               end_bar="2" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="1"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="4"
+               end_bar="11" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="2"
+               end_bar="11" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="13" start_offset="2"
+               end_bar="13" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="18" start_offset="1"
+               end_bar="19" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="4"
+               end_bar="3" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="11" start_offset="1"
+               end_bar="11" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="13" start_offset="1"
+               end_bar="13" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="2"
+               end_bar="3" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="7" start_offset="3"
+               end_bar="8" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="12" start_offset="3"
+               end_bar="12" end_offset="4" />
+    </answer>
+  </question>
+
+  <question number="50" music_file="lassus_psalm_50.xml" divisions="1">
+    <text>melodic minor sixth</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="5" start_offset="2"
+               end_bar="5" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="4" start_offset="4"
+               end_bar="5" end_offset="2" />
+    </answer>
+  </question>
+

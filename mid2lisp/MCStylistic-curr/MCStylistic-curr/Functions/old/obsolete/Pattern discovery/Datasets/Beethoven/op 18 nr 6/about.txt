@@ -1,0 +1,4 @@
+About dataset.txt for Beethoven's op 18 nr 6
+Tuesday 4 May 2010
+
+The file dataset.txt contains bars 1-8 of the second movement (Adagio ma non troppo) of Ludwig van Beethoven's String Quartet in Bb Major, op 18 nr 6.

@@ -1,0 +1,524 @@
+\subsection{Empirical preliminaries}\label{sec:empirical-preliminaries}
+
+These functions make it possible to form empirical
+$n$-dimensional distributions. One of the applications
+of these empirical distributions is to adapt pattern
+interest \citep*{conklin2008a} for polyphonic
+music.
+
+
+%%%%%
+\subsection*{accumulate-to-mass}\label{fun:accumulate-to-mass}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:present-to-mass} \\
+Comments/see also & \nameref{fun:add-to-mass}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(accumulate-to-mass
+ '(6 72) '((6 72) 1/4)
+ '(((6 72) 1/4) ((4 0.1) 1/2)) 1/4)
+--> (((6 72) 1/2) ((4 0.1) 1/2))
+\end{verbatim}
+
+\noindent This function takes four arguments: a
+datapoint $\mathbf{d}$; an element (to be updated) of
+the emerging empirical probability mass function $L$;
+$L$ itself is the third argument; and the fourth
+argument is $\mu$, the reciprocal of the number of
+datapoints that have been observed. This function has
+been called because $\mathbf{d}$ is new to the
+empirical mass---it is added with mass $\mu$.
+
+
+%%%%%
+\subsection*{add-to-mass}\label{fun:add-to-mass}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:present-to-mass} \\
+Comments/see also & \nameref{fun:accumulate-to-mass}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(add-to-mass '(6 72) '(((4 0.1) 2/3)) 1/3)
+--> (((6 72) 1/3) ((4 0.1) 2/3))
+\end{verbatim}
+
+\noindent This function takes three arguments: a
+datapoint $\mathbf{d}$; an emerging empirical
+probability mass function $L$; and the third argument
+is $\mu$, the reciprocal of the number of datapoints
+that have been observed. This function has been called
+because $\mathbf{d}$ already forms part $\lambda$ of
+the mass. This element is increased to $\lambda +
+\mu$.
+
+
+%%%%%
+\subsection*{direct-product-of-n-sets}\label{fun:direct-product-of-n-sets}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \nameref{fun:direct-product-of-two-sets} \\
+Called by & \nameref{fun:likelihood-of-pattern-or-translation}, \nameref{fun:likelihood-of-translations-geometric-mean} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(direct-product-of-n-sets
+ '((1 2) ((59) (60)) (-4 -2)))
+--> ((1 59 -4) (1 59 -2) (1 60 -4) (1 60 -2) (2 59 -4)
+     (2 59 -2) (2 60 -4) (2 60 -2)).
+\end{verbatim}
+
+\noindent This function takes a single argument
+(assumed to be a list of sets of numbers or sets of
+sets), and returns the direct product of these
+sets.
+
+
+%%%%%
+\subsection*{direct-product-of-two-sets}\label{fun:direct-product-of-two-sets}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:direct-product-of-n-sets} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(direct-product-of-two-sets '(1/3 1 2) '(59 60))
+--> ((1/3 59) (1/3 60) (1 59) (1 60) (2 59) (2 60))
+\end{verbatim}
+
+\noindent This function takes two arguments (assumed
+to be sets of numbers or sets of sets), and returns
+the direct product of these sets.
+
+
+%%%%%
+\subsection*{empirical-mass}\label{fun:empirical-mass}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \nameref{fun:present-to-mass} \\
+Called by & \nameref{fun:likelihood-of-pattern-or-translation}, \nameref{fun:likelihood-of-translations-geometric-mean} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(empirical-mass '((4 0) (4 0) (0 4)) '())
+--> (((0 4) 1/3) ((4 0) 2/3))
+\end{verbatim}
+
+\noindent This function returns the empirical
+probability mass function $L$ for a dataset listed
+$\mathbf{d}_1^\ast, \mathbf{d}_2^\ast,\ldots,
+\mathbf{d}_n^\ast$.
+
+
+%%%%%
+\subsection*{events-with-these-ontime-others}\label{fun:events-with-these-ontime-others}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \nameref{fun:events-with-this-ontime-other},\newline \nameref{fun:index-1st-sublist-item>=}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:my-last} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(events-with-these-ontime-others
+ '((6 63) (7 96) (9 112))
+ '((23/4 86 1/4 2 46) (6 55 1/2 1 37)
+   (6 63 1/3 1 37) (6 63 1/2 2 34) (7 91 1 1 56)
+   (7 96 1/2 1 73) (7 96 1 1 95) (7 108 3/2 2 50)
+   (17/2 109 1/2 2 49) (9 95 1 1 71)
+   (9 98 1 1 71) (9 102 1 1 71) (9 112 3/4 2 73)) 1 2)
+--> ((6 1/3) (6 1/2) (7 1/2) (7 1) (9 3/4))
+\end{verbatim}
+
+\noindent The first argument to this function is a
+pattern, under the projection of ontime and MIDI note
+number (in which case the variable other-index is 1)
+or morphetic pitch (in which case other-index is 2).
+The corresponding members of the full dataset are
+sought out and returned as ontime-other pairs.
+
+
+%%%%%
+\subsection*{events-with-this-ontime-other}\label{fun:events-with-this-ontime-other}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:events-with-these-ontime-others} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(events-with-this-ontime-other
+ '(7 96)
+ '((23/4 86 1/4 2 46) (6 55 1/2 1 37)
+   (6 63 1/3 1 37) (6 63 1/2 2 34) (7 91 1 1 56)
+   (7 96 1/2 1 73) (7 96 1 1 95) (7 108 3/2 2 50)
+   (17/2 109 1/2 2 49) (9 95 1 1 71)
+   (9 98 1 1 71) (9 102 1 1 71) (9 112 3/4 2 73)) 1 2)
+--> ((7 1/2) (7 1))
+\end{verbatim}
+
+\noindent The first argument to this function is a
+datapoint, under the projection of ontime and MIDI
+note number (in which case the variable other-index is
+1) or morphetic pitch (in which case other-index is
+2). The corresponding members of the full dataset are
+sought out and returned as ontime-other pairs.
+
+
+%%%%%
+\subsection*{likelihood-of-pattern-or-translation}\label{fun:likelihood-of-pattern-or-translation}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \nameref{fun:constant-vector}, 
+\newline \nameref{fun:direct-product-of-n-sets}, \nameref{fun:empirical-mass},\newline \nameref{fun:likelihood-of-subset},\newline \nameref{fun:orthogonal-projection-not-unique-equalp}, \nameref{fun:potential-n-dim-translations} \\
+Called by & \\
+Comments/see also & \nameref{fun:likelihood-of-translations-geometric-mean}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(likelihood-of-pattern-or-translation
+ '((0 60 60 1) (1 62 61 1/2) (2 64 62 1/3)
+   (3 60 60 1))
+ '((0 60 60 1) (1 62 61 1/2) (2 64 62 1/3) (3 60 60 1)
+   (4 62 61 1) (5 64 62 1/2) (6 66 63 1/3) (7 62 61 1)
+   (8 69 65 3) (11 59 59 1) (12 60 60 1)))
+--> 9/14641 + 4/14641 = 13/14641
+
+(likelihood-of-pattern-or-translation
+ '((0 60 1) (1 61 1) (2 62 1) (3 60 1))
+ '((0 60 1) (1 61 1) (1 66 1/2) (3/2 67 1/2) (2 62 1) 
+   (2 68 1) (5/2 66 1/2) (3 60 1)))
+--> 1/4*1/8*1/8*1/4 = 1/1024
+
+(likelihood-of-pattern-or-translation
+ '((0 60) (1 61) (2 62) (3 60))
+ '((0 60) (1 61) (1 66) (3/2 67) (2 62) 
+   (2 68) (5/2 66) (3 60)))
+--> 1/4*1/8*1/8*1/4 + 1/4*1/8*1/8*1/4 = 1/512
+
+(likelihood-of-pattern-or-translation
+ '((0 1) (1 1) (2 1) (3 1))
+ '((0 1) (1 1) (1 1/2) (3/2 1/2) (2 1) 
+   (2 1/2) (5/2 1/2) (3 1)))
+--> 1/16 + 1/16 = 1/8
+\end{verbatim}
+
+\noindent This function takes a pattern and the
+dataset in which the pattern occurs. It calculates the
+potential translations of the pattern in the dataset
+and returns the sum of their likelihoods.
+
+
+%%%%%
+\subsection*{likelihood-of-subset}\label{fun:likelihood-of-subset}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:likelihood-of-pattern-or-translation} \\
+Comments/see also & \nameref{fun:likelihood-of-subset-geometric-mean}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(likelihood-of-subset
+ '((60 60 1) (62 61 1/2) (64 62 1/3) (60 60 1))
+ '(((60 60 1) 3/11) ((62 61 1/2) 1/11)
+   ((64 62 1/3) 1/11) ((62 61 1) 2/11)
+   ((64 62 1/2) 1/11) ((66 63 1/3) 1/11)
+   ((69 65 3) 1/11) ((59 59 1) 1/11)))
+--> 9/14641
+\end{verbatim}
+
+\noindent This function takes a pattern-palette and
+the empirical mass for the dataset-palette in which
+the pattern occurs. The product of the individual
+masses is returned, and reverts to zero if any pattern
+points do not occur in the empirical mass.
+
+
+%%%%%
+\subsection*{likelihood-of-subset-geometric-mean}\label{fun:likelihood-of-subset-geometric-mean}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \\
+Called by & \nameref{fun:likelihood-of-translations-geometric-mean} \\
+Comments/see also & \nameref{fun:likelihood-of-subset}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(likelihood-of-subset-geometric-mean
+ '((60 60 1) (62 61 1/2) (64 62 1/3) (60 60 1)) 1/4
+ '(((60 60 1) 3/11) ((62 61 1/2) 1/11)
+   ((64 62 1/3) 1/11) ((62 61 1) 2/11)
+   ((64 62 1/2) 1/11) ((66 63 1/3) 1/11)
+   ((69 65 3) 1/11) ((59 59 1) 1/11)))
+--> 0.1574592
+\end{verbatim}
+
+\noindent This function takes a pattern-palette, the
+reciprocal length of that pattern, and the empirical
+mass for the dataset-palette in which the pattern
+occurs. The geometric mean of the individual masses is
+returned, and reverts to zero if any pattern points do
+not occur in the empirical mass.
+
+
+%%%%%
+\subsection*{likelihood-of-translations-geometric-mean}\label{fun:likelihood-of-translations-geometric-mean}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \nameref{fun:constant-vector}, \nameref{fun:direct-product-of-n-sets},\newline \nameref{fun:empirical-mass},\newline \nameref{fun:likelihood-of-subset-geometric-mean}, \nameref{fun:orthogonal-projection-not-unique-equalp}, \nameref{fun:potential-n-dim-translations}, \nameref{fun:translation} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(likelihood-of-translations-geometric-mean
+ '((0 60 60 1) (1 62 61 1/2) (2 64 62 1/3)
+   (3 60 60 1))
+ '((0 60 60 1) (1 62 61 1/2) (2 64 62 1/3) (3 60 60 1)
+   (4 62 61 1) (5 64 62 1/2) (6 66 63 1/3) (7 62 61 1)
+   (8 69 65 3) (11 59 59 1) (12 60 60 1)))
+--> (9/14641)^(1/4) + (4/14641)^(1/4) = 0.2860241
+
+(likelihood-of-translations-geometric-mean
+ '((0 60 1) (1 61 1) (2 62 1) (3 60 1))
+ '((0 60 1) (1 61 1) (1 66 1/2) (3/2 67 1/2) (2 62 1) 
+   (2 68 1) (5/2 66 1/2) (3 60 1)))
+--> (1/4*1/8*1/8*1/4)^(1/4) = 0.17677668
+
+(likelihood-of-translations-geometric-mean
+ '((0 60) (1 61) (2 62) (3 60))
+ '((0 60) (1 61) (1 66) (3/2 67) (2 62) 
+   (2 68) (5/2 66) (3 60)))
+--> (1/4*1/8*1/8*1/4)^(1/4) + (1/4*1/8*1/8*1/4)^(1/4)
+ = 0.35355335
+
+(likelihood-of-translations-geometric-mean
+ '((0 1) (1 1) (2 1) (3 1))
+ '((0 1) (1 1) (1 1/2) (3/2 1/2) (2 1) 
+   (2 1/2) (5/2 1/2) (3 1)))
+--> (1/16)^(1/4) + (1/16)^(1/4) = 1.
+\end{verbatim}
+
+\noindent This function takes a pattern and the
+dataset in which the pattern occurs. It calculates the
+potential translations of the pattern in the dataset
+and returns the sum of the geometric means of their
+likelihoods.
+
+Note that this is not really a likelihood, as it is
+possible for probabilities to be greater than 1.
+
+
+%%%%%
+\subsection*{likelihood-of-translations-reordered}\label{fun:likelihood-of-translations-reordered}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \nameref{fun:constant-vector},\newline \nameref{fun:direct-product-of-n-sets},\newline \nameref{fun:likelihood-of-subset},\newline \nameref{fun:orthogonal-projection-not-unique-equalp}, \nameref{fun:potential-n-dim-translations}, \nameref{fun:translation} \\
+Called by & \nameref{fun:evaluate-variables-of-pattern2hash} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(likelihood-of-translations-reordered
+ '((0 60 60 1) (1 62 61 1/2) (2 64 62 1/3)
+   (3 60 60 1))
+ '((60 60 1) (62 61 1/2) (64 62 1/3) (60 60 1)
+   (62 61 1) (64 62 1/2) (66 63 1/3) (62 61 1)
+   (69 65 3) (59 59 1) (60 60 1))
+ '(((60 60 1) 3/11) ((59 59 1) 1/11) ((69 65 3) 1/11)
+   ((62 61 1) 2/11) ((66 63 1/3) 1/11)
+   ((64 62 1/2) 1/11) ((64 62 1/3) 1/11)
+   ((62 61 1/2) 1/11)))
+--> 9/14641 + 4/14641 = 13/14641
+\end{verbatim}
+
+\noindent This function takes a pattern and the
+dataset in which the pattern occurs. It calculates the
+potential translations of the pattern in the dataset
+and returns the sum of their likelihoods. Note the
+order (and mandate) of the arguments is different to
+the original version of this function, which is called
+likelihood-of-pattern-or-translation.
+
+
+%%%%%
+\subsection*{potential-1-dim-translations}\label{fun:potential-1-dim-translations}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \nameref{fun:constant-vector}, \nameref{fun:nth-list-of-lists},\newline \nameref{fun:orthogonal-projection-unique-equalp} \\
+Called by & \nameref{fun:potential-n-dim-translations} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(potential-1-dim-translations
+ '(60 60 1)
+ '((60 60 1) (62 61 1/2) (64 62 1/3) (60 60 1)
+   (62 61 1) (64 62 1/2) (66 63 1/3) (62 61 1)
+   (69 65 3) (59 59 1) (60 60 1)) 0)
+--> (-1 0 2 4 6 9)
+\end{verbatim}
+
+\noindent This function takes three arguments, the
+first member of a pattern palette, the dataset palette
+and an index $i$. First of all, the dataset is
+projected uniquely along the dimension of index,
+creating a vector $\mathbf{u}$. Then the $i$th member
+of the first-pattern-palette is subtracted from each
+member of $\mathbf{u}$, giving a list of potential
+translations along this dimension.
+
+
+%%%%%
+\subsection*{potential-n-dim-translations}\label{fun:potential-n-dim-translations}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \nameref{fun:add-to-list}, \nameref{fun:first-n-naturals},\newline \nameref{fun:potential-1-dim-translations} \\
+Called by & \nameref{fun:likelihood-of-pattern-or-translation}, \nameref{fun:likelihood-of-translations-geometric-mean} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(potential-n-dim-translations
+ '(60 60 1)
+ '((60 60 1) (62 61 1/2) (64 62 1/3) (60 60 1)
+   (62 61 1) (64 62 1/2) (66 63 1/3) (62 61 1)
+   (69 65 3) (59 59 1) (60 60 1)))
+--> ((-1 0 2 4 6 9) (-1 0 1 2 3 5) (-2/3 -1/2 0 2))
+\end{verbatim}
+
+\noindent This function takes two arguments, the first
+member of a pattern palette, the dataset palette and
+an index. The function potential-n-dim-translations is
+applied recursively to an increment.
+
+
+%%%%%
+\subsection*{present-to-mass}\label{fun:present-to-mass}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 20/10/2009, 20/10/2009 \\
+Location & \nameref{sec:empirical-preliminaries} \\
+Calls & \nameref{fun:accumulate-to-mass}, \nameref{fun:add-to-mass} \\
+Called by & \nameref{fun:empirical-mass} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(present-to-mass '(0 4) '(((4 0) 2/3)) 1/3)
+--> (((0 4) 1/3) ((4 0) 2/3))
+\end{verbatim}
+
+\noindent This function takes three arguments: a
+datapoint $\mathbf{d}$, an empirical probability mass
+function $L$ which is in the process of being
+calculated, and $\mu$, the reciprocal of the number of
+datapoints that have been observed. If $\mathbf{d}$ is
+new to the empirical mass, it is added with mass
+$\mu$, and if it already forms part $\lambda$ of the
+mass, then this component is increased to $\lambda +
+\mu$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+Parameters
+
+a - power in the logistic function, (2, 4).
+
+beta_1 - minimum cardinality, (5, 10, 20).
+
+beta_2 - if |P| >= beta_2 then P gets two cluster centres, (10, 20).
+
+beta_3 - if |P| >= beta_3 then P gets three cluster centres, (15, 30).

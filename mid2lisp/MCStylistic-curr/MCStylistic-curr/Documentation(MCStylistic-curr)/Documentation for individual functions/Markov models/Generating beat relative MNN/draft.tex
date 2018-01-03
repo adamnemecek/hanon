@@ -1,0 +1,260 @@
+\subsection{Generating beat relative MNN}\label{sec:generating-beat-relative-MNN}
+
+The main function here is called
+\nameref{fun:generate-beat-rel-MNN->}. It is embedded
+in Racchman-Jun2014, and is similar to
+\nameref{fun:generate-beat-MNN-spacing->} from
+Racchman-Oct2010. The difference is that the MIDI note
+numbers in \nameref{fun:generate-beat-rel-MNN->} (and
+Racchman-Jun2014) are assumed to be relative to a
+global tonic. Given initial states, a state transition
+matrix, an upper limit for ontime, a template point
+set, and the tonic pitch closest (tpc) to its mean
+MIDI note number, this function generates points
+(notes, among other output) that conform to various
+criteria, which can be specified using the optional
+arguments. The main criterion that has been tested for
+\nameref{fun:generate-beat-rel-MNN->} so far is not
+too many consecutive states coming from the same
+source. It is not clear whether having to control for
+range or expectancy (as in Racchman-Oct2010) is
+necessary here. Some unusual pauses have been noted in
+the output already, however, so this will need
+checking.
+
+
+%%%%%
+\subsection*{checklistp-rel}\label{fun:checklistp-rel}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 1/6/2014, 17/8/2014 \\
+Location & \nameref{sec:generating-beat-relative-MNN} \\
+Calls & \nameref{fun:index-item-1st-doesnt-occur}, \nameref{fun:lastn},\newline \nameref{fun:my-last} \\
+Called by & \nameref{fun:generate-beat-rel-MNN->},\newline \nameref{fun:generate-beat-rel-MNN-forcing->} \\
+Comments/see also & \nameref{fun:checklist<-p-rel}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ states
+ '(((1 (-15 4))
+    ("Complicated"
+     ((0 50 54 3/2 1) (0 69 65 1 0)) (65 63) (-1 0)))
+   ((5/4 (-15 2))
+    ("Complicated"
+     ((72 50 54 1 1) (289/4 67 64 1/4 0))
+     (65 63) (-1 0)))
+   ((3/2 (-8 0))
+    ("Am_I_wrong"
+     ((449/2 55 57 1/2 1) (449/2 63 62 1/2 0))
+     (63 62) (-3 0)))
+   ((2 (-3))
+    ("Am_I_wrong" ((185 60 60 1/2 1))
+     (63 62) (-3 0)))))
+(setq point-set nil)
+(setq template-segments nil)
+(setq checklist '("originalp"))
+(setq c-sources 3)
+(checklistp-rel
+ states point-set template-segments checklist
+ c-sources)
+--> T.
+\end{verbatim}
+
+\noindent A simpler version of the function
+\nameref{fun:checklistp} that just checks whether the
+sources are all the same. Note the location of the
+sources within the context have changed for
+Racchman-Jun2014 compared to Racchman-Oct2010, from
+third to first.
+
+
+%%%%%
+\subsection*{generate-beat-rel-MNN-$>$}\label{fun:generate-beat-rel-MNN->}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 1/6/2014, 17/8/2014 \\
+Location & \nameref{sec:generating-beat-relative-MNN} \\
+Calls & \nameref{fun:checklistp-rel}, \nameref{fun:choose-one},\newline \nameref{fun:choose-one-with-beat},\newline \nameref{fun:index-1st-sublist-item>=}, \nameref{fun:my-last},\newline \nameref{fun:segments-strict}, \nameref{fun:sort-dataset-asc},\newline \nameref{fun:states2datapoints-by-rel},\newline \nameref{fun:translate-datapoints-to-first-ontime} \\
+Called by & \\
+Comments/see also & \nameref{fun:generate-beat-MNN-spacing->}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(progn
+  (setq
+   temp-path
+   (merge-pathnames
+    (make-pathname
+     :directory
+     '(:relative "Racchman-Jun2014 example"))
+  *MCStylistic-MonthYear-example-files-results-path*))
+  (setq
+   initial-states
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative "Racchman-Jun2014 example")
+      :name "initial-states" :type "txt")
+ *MCStylistic-MonthYear-example-files-results-path*)))
+  (setq
+   stm
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative "Racchman-Jun2014 example")
+      :name "transition-matrix" :type "txt")
+ *MCStylistic-MonthYear-example-files-results-path*)))
+  (setq no-ontimes> 12)
+  (setq
+   dataset-all
+   (read-from-file
+    (merge-pathnames
+     (make-pathname
+      :directory
+      '(:relative "softEmotivePop" "lisp")
+      :name "Young_and_beautiful" :type "txt")
+     *MCStylistic-MonthYear-data-path*)))
+  (setq
+   template-fsm (fifth-steps-mode dataset-all))
+  (setq
+   trans-pair&c-dataset
+   (centre-dataset template-fsm dataset-all))
+  (setq template-tpc (first trans-pair&c-dataset))
+  (setq beats-in-bar 4)
+  (setq checklist (list "originalp"))
+  (setq scale 1000)
+  "Yes!")
+
+(setq
+ *rs*
+ #.(CCL::INITIALIZE-MRG31K3P-STATE 119640237
+    1896132409 1283053466 2078949444 1948704030
+    110577318))
+(setq time-a (get-internal-real-time))
+(setq
+ output
+ (generate-beat-rel-MNN->
+  initial-states stm no-ontimes> dataset-all
+  template-tpc checklist beats-in-bar))
+(setq time-b (get-internal-real-time))
+(setq
+ time-taken
+ (float
+  (/
+   (- time-b time-a)
+   internal-time-units-per-second)))
+--> 81.822464
+(write-to-file
+ (cons time-taken output)
+ (merge-pathnames
+  (make-pathname
+   :name "Racchman-Jun2014-sample-output" :type "txt")
+  temp-path))
+(saveit
+ (merge-pathnames
+  (make-pathname
+   :name "Racchman-Jun2014-sample-output" :type "mid")
+  temp-path)
+ (modify-to-check-dataset (second output) scale))
+(firstn 11 (second output))
+--> ((0 50 54 3/2 1) (0 69 65 3/2 0) (0 74 68 3/2 0)
+     (0 78 70 3/2 0) (3/2 50 54 1/2 1) (3/2 69 65 2 0)
+     (3/2 74 68 2 0) (3/2 78 70 2 0) (2 50 54 3/2 1)
+     (7/2 50 54 1/2 1) (7/2 69 65 1/2 0))
+\end{verbatim}
+
+\noindent This function is embedded in
+Racchman-Jun2014, and is similar to
+\nameref{fun:generate-beat-MNN-spacing->} from
+Racchman-Oct2010. The difference is that the MIDI note
+numbers in \nameref{fun:generate-beat-rel-MNN->} (and
+Racchman-Jun2014) are assumed to be relative to a
+global tonic. Given initial states, a state-transition
+matrix, an upper limit for ontime, a template point
+set, and the tonic pitch closest (tpc) to its mean
+MIDI note number, this function generates points
+(notes, among output) that conform to various
+criteria, which can be specified using the optional
+arguments. At present, the criteria are things like:
+number of failures tolerated at any point before
+process terminated (c-failures); not too many
+consecutive states from the same source (c-sources).
+A record, named index-failures, is kept of how many
+times a generated state fails to meet the criteria.
+When a threshold c-failures is exceeded at any state
+index, the penultimate state is removed and generation
+continues. If the value of c-failures is exceeded for
+the first state, a message is returned. This function
+returns the states as well as the points, and also
+index-failures and i, the total number of
+iterations.
+
+
+%%%%%
+\subsection*{states2datapoints-by-rel}\label{fun:states2datapoints-by-rel}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 1/6/2014, 17/8/2014 \\
+Location & \nameref{sec:generating-beat-relative-MNN} \\
+Calls & \nameref{fun:add-to-list}, \nameref{fun:fibonacci-list},\newline \nameref{fun:half-state2datapoints-by-lookup},\newline \nameref{fun:nth-list-of-lists}, \nameref{fun:state-durations-by-beat} \\
+Called by & \nameref{fun:generate-beat-rel-MNN->} \\
+Comments/see also & \nameref{fun:states2datapoints-by-lookup}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq 
+ states
+ '(((1 (-12 -5))
+    ("C-6-3" ((0 52 55 1 1) (0 59 59 1 1))
+     (64 62) (4 0)))
+   ((2 (0))
+    ("C-7-2" ((4 62 61 3/2 0)) (62 61) (2 0)))
+   ((7/2 (-1))
+    ("C-6-4" ((125/2 59 59 1/2 0)) (60 60) (0 0)))
+   ((1 (-12 -5 4))
+    ("C-6-3"
+     ((0 52 55 1 1) (0 59 59 1 1) (0 66 63 2 0))
+     (64 62) (4 0)))
+   ((2 (4))
+    ("C-6-4" ((7 64 62 1 0)) (60 60) (0 0)))
+   ((3 (2))
+    ("C-6-4" ((8 64 62 1 0)) (60 60) (0 0)))
+   ((1 "rest")
+    ("C-6-3" nil (64 62) (4 0)))
+   ((3/2 (2))
+    ("C-7-2" ((13/2 64 62 1/2 0)) (62 61) (2 0)))
+   ((2 (4))
+    ("C-7-2" ((7 66 63 1/2 0)) (62 61) (2 0)))
+   ((3 (5))
+    ("C-7-2" ((8 67 64 1 0)) (62 61) (2 0)))
+   ((1 (-8 -1 7))
+    ("C-6-3"
+     ((72 56 57 3 1) (72 63 61 3 1) (72 71 66 3 1))
+     (64 62) (4 0)))))
+(states2datapoints-by-rel states 3 60 60)
+--> ((0 48 53 1 1) (0 55 57 1 1) (1 60 60 3/2 0)
+     (5/2 59 59 1/2 0) (3 48 53 1 1) (3 55 57 1 1)
+     (3 62 61 1 0) (4 64 62 1 0) (5 64 62 1 0)
+     (13/2 62 61 1/2 0) (7 64 62 1 0) (8 65 63 1 0)
+     (9 52 55 3 1) (9 59 59 3 1) (9 67 64 3 1))
+\end{verbatim}
+
+This function applies the function
+\nameref{fun:half-state2datapoints-by-lookup}
+recursively to a list of states. It is very similar
+to the function
+\nameref{fun:states2datapoints-by-lookup}.
+
+

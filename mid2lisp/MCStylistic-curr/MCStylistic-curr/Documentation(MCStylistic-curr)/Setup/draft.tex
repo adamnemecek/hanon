@@ -1,0 +1,32 @@
+\chapter{Setup}\label{chap:setup}
+
+\section{Installing Clozure Common Lisp}\label{sec:installing-ccl}
+
+There are many versions of Common Lisp, one of which is Clozure Common Lisp (CCL). Information about CCL can be found at\\[0.4cm] \href{http://ccl.clozure.com/}{http://ccl.clozure.com/}\\[0.4cm]%, as well as a link to the CCL Wiki:\\[0.2cm] \href{http://trac.clozure.com/ccl/}{http://trac.clozure.com/ccl/}.\\[0.2cm]
+For download information, please see:\\[0.4cm]
+\href{http://ccl.clozure.com/download.html}{http://ccl.clozure.com/download.html}.\\[0.4cm]
+This page recommends getting CCL via Subversion. I have found the archive files (link below the comments on Subversion) and \href{ftp://ftp.clozure.com/pub/release/1.7/ccl-1.7-darwinx86.dmg}{\textbf{this CCL 1.7 disk image}} (ftp://ftp.clozure.com/pub/release/1.7/ccl-1.7-darwinx86.dmg) for Mac to work just as well. More recent updates of CCL for Mac do not seem so stable.
+
+If you require more information on installing CCL, please consult the online documentation:\\[0.4cm] \href{http://ccl.clozure.com/manual/index.html}{http://ccl.clozure.com/manual/index.html}.
+
+
+\section{Loading MCStylistic}\label{sec:loading-MCStylistic}
+
+% The recommended location for the MCStylistic-Aug2013 folder is in a new folder (which you need to create) called \emph{MCStylistic}, in CCL's (or your preferred Lisp implementation's) application folder.
+The default path for MCStylistic-Aug2013 is
+\\[0.4cm]
+/Users/Shared/
+\\[0.4cm]
+If you wish to move MCStylistic-Aug2013, or any of the other data, example files, or Lisp functions to other locations, then please do so, carry on reading, and see the next footnote.
+
+The folder MCStylistic-Aug2013 contains a file called \emph{setup.lisp}. To load the MCStylistic package, open up CCL (or your preferred Lisp implementation) and open \emph{setup.lisp}.\footnote{To use the MCStylistic-Aug2013 package from a location other than `/Users/Shared/', go to line 13 of \emph{setup.lisp} (four lines down from \texttt{*MCStylistic-Aug2013-path*}) and change the strings to specify your preferred location. Following the definition of \texttt{*MCStylistic-Aug2013-path*} are definitions for the locations of some sample music data, example files, and not least the Lisp functions, all of which can be altered if you wish. When finished making changes, please double-check your pathnames and save \emph{setup.lisp}.} Now execute all of the text in \emph{setup.lisp}: from the program menu select Lisp $\rightarrow$ Execute All, or use the keyboard shortcut Command-Shift-E. A Listener window should open up, and messages will begin to appear as paths, variables, and functions are defined. Finally, you should see a message in the Listener that reads `Welcome to MCStylistic-Aug2013.' This means you are ready to begin.
+
+Each time you wish to use the MCStylistic package, the ritual of executing all of the text in \emph{setup.lisp} must be observed. Before moving on, a couple of tips for using Lisp:
+\begin{itemize}
+\item Peter Seibel's \href{http://www.gigamonkeys.com/book/}{Practical Common Lisp}, \href{http://cl-cookbook.sourceforge.net/}{The Common Lisp Cookbook}, and \href{http://stackoverflow.com/}{Stack Overflow} address \%95 of questions/problems I encounter with Common Lisp. \href{http://www.paulgraham.com/lisp.html}{Paul Graham's Lisp site} is also great, and contains some articles about the history of Lisp.
+\item in CCL it is possible to highlight code between parentheses by double-clickling either the opening or closing parenthesis;
+\item a semicolon can be used to comment-out the remainder of a line of code;
+\item the symbol combination `\#$|$' begins a commented paragraph, and `$|$\#' ends a commented paragraph.
+\end{itemize}
+
+

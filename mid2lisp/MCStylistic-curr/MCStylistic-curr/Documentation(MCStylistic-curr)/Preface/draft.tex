@@ -1,0 +1,36 @@
+\chapter*{Preface}\label{chap:preface}
+
+MCStylistic supports research in \textbf{M}usic theory, music \textbf{C}ognition, and \textbf{Stylistic} composition. It is free, cross-platform, and written in Common Lisp. In terms of algorithmic highlights, MCStylistic contains the following.
+\begin{itemize}
+\item The Stravinsqi algorithm takes as input a piece of digital staff notation and a natural language query, such as `submediant triad followed five bars later by a perfect cadence'. It returns the time window(s) at which events corresponding to the query occur in the music \citep*{collins2014}. This work represents a step towards an easy-to-use, high-level music-theoretic search engine.
+\item The HarmAn algorithm performs automatic chord labelling \citep*{pardo2002}. I have extended its capability to automatic functional harmonic analysis.
+\item The Inner Metric Analysis algorithm analyses the time-varying prevalence of different metric levels \citep*{volk2008}.
+\item The Keyscape algorithm visualises local and global key regions \citep*{sapp2005}, which in turn builds on probe-tone profiles \citep*{krumhansl1990,aarden2003};
+\item The Structure Induction Algorithm \citep*[SIA,][]{meredith2002,meredith2003,meredith2006b} and its extensions \citep{collins2010b,collins2011a,collins2011b} attempt to discover perceptually salient or musically important repetitions within a given piece of music. (Parallelised and more up-to-date versions of these algorithms are available via PattDisc, a Matlab package I maintain.)
+\item In the spirit of Experiments in Musical Intelligence \citep*[EMI,][]{cope1996,cope2001,cope2005}, two of my algorithms for generating stylistic compositions (Racchman-Oct2010, Sec.~\ref{sec:ex:Racchman-Oct2010}, and Racchmaninof-Oct2010, see \citeauthor{collins2015}, in press, or Sec.~\ref{sec:ex:Racchmaninof-Oct2010}) are included also.
+\end{itemize}
+
+Chapter \ref{chap:setup} gets you setup with Common Lisp, but if you are already running a version, please jump straight to loading MCStylistic (Sec.~\ref{sec:loading-MCStylistic}).
+
+Chapter \ref{chap:import-export} gives examples for importing and exporting files of various formats. (It is difficult to do much of any substance until you can import a file, work on it in the Lisp environment, and then export it to another file as saved work.)
+
+Chapter \ref{chap:example-code} is devoted to coding examples, and splits into six sections. Section~\ref{sec:stravinsqi} gives an overview of the capabilites of the Stravinsqi algorithm, which stands for STaff Representation Analysed VIa Natural language String Query Input. Section~\ref{sec:func-harm-anal} provides examples of functional harmonic analysis with the HarmAn-$>$roman algorithm. Section~\ref{sec:disc&rate-musical-patterns} contains code for discovering and rating musical patterns, along with an explanation. Sections~\ref{sec:ex:Racchman-Oct2010} and \ref{sec:ex:Racchmaninof-Oct2010} exemplify two models for generating stylistic compositions. The models are called Racchman-Oct2010 and Racchmaninof-Oct2010, standing for RAndom Constrained CHain of Markovian Nodes with INheritance Of Form. Section~\ref{sec:eval-mirex-patt-disc} is a guide to using the evaluation functions for the MIREX pattern discovery task:
+\begin{verbatim}
+ http://www.music-ir.org/mirex/wiki/2013:
+   Discovery\_of\_Repeated\_Themes\_\%26\_Sections
+\end{verbatim}
+
+The longest chapter by far is Chapter \ref{chap:individual-functions}. It contains documentation for each individual function that is included in the package MCStylistic-Jun2014.
+
+\section*{New highlights in MCStylistic-Jun2014}
+
+\begin{enumerate}
+\item Anacrusis handling in kern import.
+\item Import of lyric, articulation, rest, and tie data from kern files.
+\item The Stravinsqi algorithm, for taking a natural language query and searching digital staff notation for musical events that correspond to the query.
+\item Texutre identification.
+\item Extension of \nameref{fun:HarmAn->} to functional harmonic analysis.
+\item Re-checked Chopin mazurka data for errors.
+\end{enumerate}
+
+%check out some aspect of my work on algorithms for pattern discovery in music or automated stylistic composition, or they want to try the code with a view to writing some code themselves. Either way, great! This documentation is written with the above activities in mind.  

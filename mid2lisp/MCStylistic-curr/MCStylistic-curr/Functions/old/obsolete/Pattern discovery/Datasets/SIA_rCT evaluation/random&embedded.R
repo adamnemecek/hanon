@@ -1,0 +1,17 @@
+dataset.1 <- read.csv("/Applications/CCL/Lisp code/Pattern discovery/Datasets/SIA_rCT evaluation/embeddings/D-250.csv", header=FALSE)
+# attach(mini.dataset)
+plot(dataset.1[,1], dataset.1[,2], cex=.5, pch=4, xlab="x", ylab="y")
+# axis(2, at = c(1:25), labels = c(1:25))
+grid(col="darkgray")
+
+dataset.2 <- read.csv("/Applications/CCL/Lisp code/Pattern discovery/Datasets/SIA_rCT evaluation/embeddings/D-250-sf2.csv", header=FALSE)
+dim(dataset.2)
+# attach(dataset)
+plot(dataset.2[,1], dataset.2[,2], cex=.5)
+# axis(2, at = c(1:25), labels = c(1:25))
+grid(col="darkgray")
+
+embedded <- read.csv("/Applications/CCL/Lisp code/Pattern discovery/Datasets/embeddings/D-ca-300-20.csv", header=FALSE)
+dim(embedded)
+plot(embedded[1:500,1], embedded[1:500,2], cex=.5)
+grid()

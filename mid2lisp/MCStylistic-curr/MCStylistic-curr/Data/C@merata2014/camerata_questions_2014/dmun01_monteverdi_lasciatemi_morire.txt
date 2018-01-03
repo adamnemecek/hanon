@@ -1,0 +1,432 @@
+  <question number="51" music_file="monteverdi_lasciatemi_morire.xml" divisions="4">
+    <text>A natural</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="1" start_offset="5"
+               end_bar="1" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="5" start_offset="13"
+               end_bar="5" end_offset="16" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="8" start_offset="1"
+               end_bar="8" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="10" start_offset="13"
+               end_bar="10" end_offset="16" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="11" start_offset="1"
+               end_bar="11" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="16" start_offset="13"
+               end_bar="16" end_offset="16" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="23" start_offset="9"
+               end_bar="23" end_offset="12" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="25" start_offset="9"
+               end_bar="25" end_offset="12" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="25" start_offset="13"
+               end_bar="25" end_offset="16" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="27" start_offset="5"
+               end_bar="27" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="31" start_offset="13"
+               end_bar="31" end_offset="16" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="34" start_offset="1"
+               end_bar="34" end_offset="16" />
+    </answer>
+  </question>
+
+  <question number="52" music_file="monteverdi_lasciatemi_morire.xml" divisions="1">
+    <text>whole note</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="3"
+               end_bar="4" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="5" start_offset="3"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="1"
+               end_bar="6" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="7" start_offset="1"
+               end_bar="7" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="29" start_offset="3"
+               end_bar="30" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="31" start_offset="3"
+               end_bar="32" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="32" start_offset="1"
+               end_bar="32" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="33" start_offset="1"
+               end_bar="33" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="34" start_offset="1"
+               end_bar="34" end_offset="4" />
+    </answer>
+  </question>
+
+  <question number="53" music_file="monteverdi_lasciatemi_morire.xml" divisions="1">
+    <text>half note Db</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="1"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="32" start_offset="1"
+               end_bar="32" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="54" music_file="monteverdi_lasciatemi_morire.xml" divisions="1">
+    <text>fermata A natural</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="34" start_offset="1"
+               end_bar="34" end_offset="4" />
+    </answer>
+  </question>
+
+  <question number="55" music_file="monteverdi_lasciatemi_morire.xml" divisions="1">
+    <text>quarter note F in the Alto</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="4"
+               end_bar="3" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="4"
+               end_bar="6" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="15" start_offset="2"
+               end_bar="15" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="23" start_offset="3"
+               end_bar="23" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="29" start_offset="4"
+               end_bar="29" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="32" start_offset="4"
+               end_bar="32" end_offset="4" />
+    </answer>
+  </question>
+
+  <question number="56" music_file="monteverdi_lasciatemi_morire.xml" divisions="4">
+    <text>eighth note on the word &quot;che&quot;</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="8" start_offset="13"
+               end_bar="8" end_offset="14" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="9" start_offset="5"
+               end_bar="9" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="10" start_offset="7"
+               end_bar="10" end_offset="8" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="19" start_offset="5"
+               end_bar="19" end_offset="6" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="19" start_offset="13"
+               end_bar="19" end_offset="14" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="4" end_divisions="4"
+               start_bar="20" start_offset="15"
+               end_bar="20" end_offset="16" />
+    </answer>
+  </question>
+
+  <question number="57" music_file="monteverdi_lasciatemi_morire.xml" divisions="1">
+    <text>dotted quarter note followed by eighth note</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="3"
+               end_bar="2" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="9" start_offset="3"
+               end_bar="9" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="1"
+               end_bar="10" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="13" start_offset="1"
+               end_bar="13" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="18" start_offset="1"
+               end_bar="18" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="20" start_offset="1"
+               end_bar="20" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="20" start_offset="3"
+               end_bar="20" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="23" start_offset="3"
+               end_bar="23" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="25" start_offset="3"
+               end_bar="25" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="28" start_offset="3"
+               end_bar="28" end_offset="4" />
+    </answer>
+  </question>
+
+  <question number="58" music_file="monteverdi_lasciatemi_morire.xml" divisions="1">
+    <text>falling minor sixth</text>
+  </question>
+
+  <question number="59" music_file="monteverdi_lasciatemi_morire.xml" divisions="1">
+    <text>minor ninth</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="3"
+               end_bar="1" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="6" start_offset="2"
+               end_bar="6" end_offset="2" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="17" start_offset="1"
+               end_bar="17" end_offset="1" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="27" start_offset="3"
+               end_bar="27" end_offset="3" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="32" start_offset="2"
+               end_bar="32" end_offset="2" />
+    </answer>
+  </question>
+
+  <question number="60" music_file="monteverdi_lasciatemi_morire.xml" divisions="1">
+    <text>polyphony</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="1" start_offset="1"
+               end_bar="8" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="10" start_offset="1"
+               end_bar="15" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="19" start_offset="1"
+               end_bar="25" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="29" start_offset="1"
+               end_bar="34" end_offset="4" />
+    </answer>
+  </question>
+

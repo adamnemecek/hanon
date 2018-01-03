@@ -1,0 +1,311 @@
+\subsection{Evaluation heuristics}\label{sec:evaluation-heuristics}
+
+These functions implement definitions of coverage,
+compactness, and compression ratio
+\citep{meredith2003,forth2009}.
+
+
+%%%%%
+\subsection*{compactness}\label{fun:compactness}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:index-item-1st-occurs}, \nameref{fun:my-last} \\
+Called by & \\
+Comments/see also & \nameref{fun:compact-subpatterns-more-output}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(compactness
+ '((1 2) (2 4)) '((1 2) (2 -1) (2 4) (3 6) (5 2))
+ 0.2 1 "straight down")
+--> 2/3
+\end{verbatim}
+
+\noindent The ratio of the number of points in the
+pattern to the number of points in the region spanned
+by the pattern. Both pattern and dataset are assumed
+to be sorted ascending. At present the only admissible
+definition of region is `straight down' (which means
+`lexicographic', cf.~Def.~2.10 in
+\citeauthor{collins2011b},
+\citeyear{collins2011b}).
+
+
+%%%%%
+\subsection*{compactness-max}\label{fun:compactness-max}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:compactness-min-max}, \nameref{fun:translation} \\
+Called by & \nameref{fun:heuristics-pattern-translators-pair} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(compactness-max
+ '((1 2) (2 4)) '((0 0) (1 2) (3 -2))
+ '((1 2) (2 -1) (2 0) (2 4) (3 0) (3 1) (3 3) (3 6)
+   (4 0) (5 1) (5 2))
+ 0.2 1 "straight down" 2)
+--> 2/3
+\end{verbatim}
+
+\noindent The function compactness is applied to each
+occurrence of a pattern and the maximum compactness
+returned.
+
+
+%%%%%
+\subsection*{compactness-min-max}\label{fun:compactness-min-max}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:index-item-1st-occurs}, \nameref{fun:my-last} \\
+Called by & \nameref{fun:compactness-max} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(compactness-max
+ '((1 2) (2 4)) '((0 0) (1 2) (3 -2))
+ '((1 2) (2 -1) (2 0) (2 4) (3 0) (3 1) (3 3) (3 6)
+   (4 0) (5 1) (5 2))
+ 0.2 1 "straight down" 2)
+--> 2/3
+\end{verbatim}
+
+\noindent The function compactness is applied to each
+occurrence of a pattern and the maximum compactness
+returned.
+
+
+%%%%%
+\subsection*{compression-ratio}\label{fun:compression-ratio}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:coverage} \\
+Called by & \nameref{fun:heuristics-pattern-translators-pair} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\begin{verbatim}
+(compactness-min-max
+ '((1 2) (2 4)) '((1 2) (2 -1) (2 4) (3 6) (5 2))
+ 0.2 1 "straight down")
+--> 2/3
+\end{verbatim}
+
+\noindent The ratio of the number of points in the
+pattern to the number of points in the region spanned
+by the pattern. Both pattern and dataset are assumed
+to be sorted ascending. At present the only admissible
+definition of region is `straight down' (which means
+`lexicographic', cf.~Def.~2.10 in
+\citeauthor{collins2011b},
+\citeyear{collins2011b}).
+
+%%%%%
+\subsection*{cover-ratio}\label{fun:cover-ratio}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:coverage} \\
+Called by & \nameref{fun:heuristics-pattern-translators-pair} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(cover-ratio
+ '((1 2) (2 4)) '((0 0) (1 2))
+ '((1 2) (2 4) (3 6) (5 2) (6 1)) 0.2 t t)
+--> 3/5
+\end{verbatim}
+
+\noindent The ratio between the number of uncovered
+datapoints in the dataset that are members of
+occurrences of the pattern, to the total number of
+uncovered datapoints in the dataset.
+
+
+%%%%%
+\subsection*{coverage}\label{fun:coverage}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:intersection-multidimensional}, \nameref{fun:translations},\newline \nameref{fun:unions-multidimensional-sorted-asc} \\
+Called by & \nameref{fun:compression-ratio}, \nameref{fun:cover-ratio},\newline \nameref{fun:heuristics-pattern-translators-pair} \\
+Comments/see also & \nameref{fun:coverage-mod-2nd-n}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(coverage
+ '((1 2) (2 4)) '((0 0) (1 2))
+ '((1 2) (2 4) (3 6) (5 2) (6 1)) t t)
+--> 3
+\end{verbatim}
+
+\noindent The number of datapoints in the dataset that
+are members of occurrences of the pattern.
+
+
+%%%%%
+\subsection*{coverage-mod-2nd-n}\label{fun:coverage-mod-2nd-n}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:intersection-multidimensional},\newline \nameref{fun:translations-mod-2nd-n},\newline\nameref{fun:unions-multidimensional-sorted-asc} \\
+Called by & \nameref{fun:compression-ratio}, \nameref{fun:cover-ratio},\newline \nameref{fun:heuristics-pattern-translators-pair} \\
+Comments/see also & \nameref{fun:coverage}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(coverage-mod-2nd-n
+ '((1 2) (2 4)) '((0 0) (1 2))
+ '((1 2) (2 4) (3 6) (5 2) (6 1)) 12 t t)
+--> 3
+\end{verbatim}
+
+\noindent The number of datapoints in the dataset that
+are members of occurrences of the pattern.
+Translations are carried out modulo the fourth
+argument.
+
+
+%%%%%
+\subsection*{heuristics-pattern-translators-pair}\label{fun:heuristics-pattern-translators-pair}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:compactness-max}, \nameref{fun:compression-ratio},\newline \nameref{fun:cover-ratio}, \nameref{fun:coverage} \\
+Called by & \nameref{fun:heuristics-pattern-translators-pairs} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(heuristics-pattern-translators-pair
+ '((1 2) (2 4)) '((0 0) (1 2) (3 -2))
+ '((1 2) (2 -1) (2 0) (2 4) (3 0) (3 1) (3 3) (3 6)
+   (4 0) (5 1) (5 2)) '(t t t t t t)
+   0.2 0.25 1 0.25 1 "straight down" 11)
+--> (5 5/11 1 2/3 2 3)
+\end{verbatim}
+
+\noindent A pattern and its translators in a projected
+dataset are supplied as arguments to this function,
+along with an indicator vector that indicates which
+heuristics out of coverage, cover ratio, compression
+ratio, compactness, $|P|$ and $|T(P, D)|$ should be
+calculated.
+
+
+%%%%%
+\subsection*{heuristics-pattern-translators-pairs}\label{fun:heuristics-pattern-translators-pairs}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:heuristics-pattern-translators-pair} \\
+Called by & \nameref{fun:musicological-heuristics} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(heuristics-pattern-translators-pairs
+ '((((1 2) (2 4)) ((0 0) (1 2) (3 -2)))
+   (((1 2) (2 0)) ((0 0) (2 0))))
+ '((1 2) (2 -1) (2 0) (2 4) (3 0) (3 1) (3 2) (3 6)
+   (4 0) (5 1) (5 2)) '(t t t t t t)
+   0.2 0.25 1 0.25 1 "straight down" 11)
+--> ((5 5/11 1 2/3 2 3) (4 4/11 1 2/3 2 2))
+
+\end{verbatim}
+
+\noindent The function
+heuristics-pattern-translators-pair is applied
+recursively to pairs of pattern-translators.
+
+
+%%%%%
+\subsection*{musicological-heuristics}\label{fun:musicological-heuristics}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 13/1/2010, 13/1/2010 \\
+Location & \nameref{sec:evaluation-heuristics} \\
+Calls & \nameref{fun:heuristics-pattern-translators-pairs}, \nameref{fun:normalise-0-1} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(musicological-heuristics
+ '((((1 2) (2 4)) ((0 0) (1 2) (3 -2)))
+   (((1 2) (2 0)) ((0 0) (2 0)))
+   (((1 2) (2 4) (4 0)) ((0 0) (1 2) (2 -4))))
+ '((1 2) (2 -1) (2 0) (2 4) (3 -2) (3 0) (3 1)
+   (3 2) (3 6) (4 0) (5 1) (5 2) (6 -4))
+ 0.25 1 0.25 1 "straight down" 11)
+--> ((1 1 1) (1 1 0))
+
+\end{verbatim}
+
+\noindent The function
+heuristics-pattern-translators-pairs is applied to
+pattern-translator pairs with the heuristics indicator
+set to compression ratio and compactness (max). The
+values are normalised (linearly) to $[0, 1]$ and
+returned as two lists.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

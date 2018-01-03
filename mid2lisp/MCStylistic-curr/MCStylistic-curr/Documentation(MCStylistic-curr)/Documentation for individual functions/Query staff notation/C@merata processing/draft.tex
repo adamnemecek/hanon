@@ -1,0 +1,350 @@
+\subsection{C@merata processing}\label{sec:c@merata-processing}
+
+Top-level functions for the MediaEval 2014
+C@merata task.
+
+
+%%%%%
+\subsection*{Stravinsqi-Jun2014}\label{fun:Stravinsqi-Jun2014}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:c@merata-processing} \\
+Calls & \nameref{fun:append-ontimes-to-time-signatures}, \nameref{fun:articulation-and-event-time-intervals}, \nameref{fun:c@merata2014-question-file2question-string},\newline \nameref{fun:c@merata2014-write-answer},\newline \nameref{fun:cadence-time-intervals},\newline \nameref{fun:cross-check-compound-questions},\newline \nameref{fun:duration-time-intervals},\newline \nameref{fun:duration-n-pitch-class-time-intervals},\newline \nameref{fun:followed-by-splitter},\newline \nameref{fun:harmonic-interval-of-a},\newline \nameref{fun:index-item-1st-doesnt-occur},\newline \nameref{fun:kern-file2dataset-by-col},\newline \nameref{fun:kern-file2ontimes-signatures},\newline \nameref{fun:kern-file2tie-set-by-col},\newline \nameref{fun:nadir-apex-time-intervals},\newline \nameref{fun:pitch-class-time-intervals},\newline \nameref{fun:melodic-interval-of-a},\newline \nameref{fun:rest-duration-time-intervals},\newline \nameref{fun:staves-info2staff-n-clef-names},\newline \nameref{fun:texture-time-intervals},\newline \nameref{fun:tied-and-event-time-intervals},\newline \nameref{fun:triad-time-intervals},\newline \nameref{fun:triad-inversion-time-intervals},\newline \nameref{fun:word-time-intervals},\newline \nameref{fun:word-and-event-time-intervals} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq question-number "004")
+(setq
+ question-path&name
+ (merge-pathnames
+  (make-pathname
+   :directory
+   '(:relative
+     "C@merata2014" "training_v1")
+   :name "training_v1" :type "xml")
+  *MCStylistic-MonthYear-data-path*))
+(setq
+ notation-path
+ (merge-pathnames
+  (make-pathname
+   :directory
+   '(:relative
+     "C@merata2014" "training_v1"))
+  *MCStylistic-MonthYear-data-path*))
+(setq notation-name "f3")
+(Stravinsqi-Jun2014
+ question-number question-path&name
+ notation-path notation-name)
+--> (wrote the following to text file)
+  <question number="004" music_file="f3.xml" divisions="4">
+    <text>"F# followed by a major sixth"</text>
+    <answer>
+      <passage start_beats="3" start_beat_type="8"
+               end_beats="3" end_beat_type="8"
+               start_divisions="4" end_divisions="4"
+               start_bar="2" start_offset="6"
+               end_bar="2" end_offset="6" />
+    </answer>
+  </question>
+\end{verbatim}
+
+\noindent This function reads a question string from
+an xml file, loads a piece/excerpt of music to which
+the question refers, analyses the music so as to
+answer the question, and writes the answer to a
+different xml results file.
+
+
+%%%%%
+\subsection*{c@merata2014-question-file2question-string}\label{fun:c@merata2014-question-file2question-string}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:c@merata-processing} \\
+Calls & \nameref{fun:read-from-file-arbitrary}, \nameref{fun:replace-all} \\
+Called by & \nameref{fun:Stravinsqi-Jun2014} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq question-number "004")
+(setq
+ question-path&name
+ (merge-pathnames
+  (make-pathname
+   :directory
+   '(:relative
+     "C@merata2014" "training_v1")
+   :name "training_v1" :type "xml")
+  *MCStylistic-MonthYear-data-path*))
+(setq notation-name "f3")
+(c@merata-question-file2question-string
+ question-number question-path&name notation-name)
+--> ("harmonic interval of a minor sixth" 4)
+\end{verbatim}
+
+\noindent This function retrieves a natural-language
+question string from an xml file, and also retrieves
+the value stored in the divisions field.
+
+
+%%%%%
+\subsection*{c@merata2014-write-answer}\label{fun:c@merata2014-write-answer}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:c@merata-processing} \\
+Calls & \nameref{fun:bar-n-beat-number-of-ontime}, \nameref{fun:row-of-max-ontime<=ontime-arg} \\
+Called by & \nameref{fun:Stravinsqi-Jun2014} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ question-string
+ "F# followed two crotchets later by a G")
+(setq division 1)
+(setq time-intervals '((4 8) (8 10)))
+(setq ontimes-signatures '((1 4 4 0) (5 3 8 16)))
+(setq question-number "004")
+(setq
+ notation-path
+ (merge-pathnames
+  (make-pathname
+   :directory
+   '(:relative
+     "C@merata2014" "training_v1"))
+  *MCStylistic-MonthYear-data-path*))
+(setq notation-name "f3")
+(c@merata2014-write-answer
+ question-string division time-intervals
+ ontimes-signatures question-number
+ notation-path notation-name)
+--> (wrote the following to text file)
+  <question number="004" music_file="f3.xml" divisions="1">
+    <text>"F# followed two crotchets later by a G"</text>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="2" start_offset="1"
+               end_bar="2" end_offset="4" />
+    </answer>
+    <answer>
+      <passage start_beats="4" start_beat_type="4"
+               end_beats="4" end_beat_type="4"
+               start_divisions="1" end_divisions="1"
+               start_bar="3" start_offset="1"
+               end_bar="3" end_offset="2" />
+    </answer>
+  </question>
+\end{verbatim}
+
+\noindent This function takes a list of time intervals
+as its main argument and writes them to an xml-style
+file, conforming to the MediaEval 2014 C@amerata
+standard.
+
+
+%%%%%
+\subsection*{cross-check-compound-question}\label{fun:cross-check-compound-question}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:c@merata-processing} \\
+Calls & \nameref{fun:bar-n-beat-number-of-ontime}, \nameref{fun:my-last}, \newline \nameref{fun:ontime-of-bar-n-beat-number} \\
+Called by & \nameref{fun:cross-check-compound-questions} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+; questions, ontimes-signatures, and ans-list as in
+; cross-check-compound-questions
+(setq iq 0)
+(setq ia 2)
+(setq it 0)
+(cross-check-compound-question
+ questions ontimes-signatures ans-list na iq ia it)
+--> ((0 2 0) ((1 0 1)))
+\end{verbatim}
+
+\noindent This function is a helper function for
+\nameref{fun:cross-check-compound-questions}. It takes
+a time-interval answer for question component $i$
+(where the question is of the compound variety) and
+looks at the time offset specified for question
+component $i + 1$ to calculate the target ontime at
+which an event should occur. It has to be quite
+subtle because this offset could be expressed as a
+quantity of note values or bar numbers.
+
+
+%%%%%
+\subsection*{cross-check-compound-questions}\label{fun:cross-check-compound-questions}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:c@merata-processing} \\
+Calls & \nameref{fun:cross-check-compound-question},\newline \nameref{fun:matching-pursuit} \\
+Called by & \nameref{fun:Stravinsqi-Jun2014} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ questions
+ '(("F#" nil) ("crotchet" 2 "bars")
+   ("perfect 5th" 3)))
+(setq ontimes-signatures '((1 4 4 0) (5 3 8 16)))
+(setq
+ ans-list
+ '(
+   (; ans-fn1 - duration-fn
+    ; q1 - pitch
+    nil
+    (; q2 - duration
+     (0 1) (1 2) (8 9))
+    (; q3 - harmonic interval
+     (1 7) (2 4)))
+   (; ans-fn2 melodic-interval-fn
+    ; q1 - pitch
+    nil
+    ; q2 - duration
+    nil
+    (; q3 - harmonic interval
+     (4 7) (12 14)))
+   (; ans-fn3 - pitch-fn
+    (; q1 - pitch
+     (0 2) (2 5))
+    (; q2 - duration
+     (8 9) (12 14) (14 15))
+    ; q3 - harmonic interval
+    nil)
+   (; ans-fn4 - harmonic-interval-fn
+    ; q1 - pitch
+    nil
+    (; q2 - duration
+     (0 12) (12 14) (14 15))
+    (; q3 - harmonic interval
+     (4 7) (11 13) (14 15)))))
+; (0 2) (8 9) (12 14) Candidate time intervals
+; (0 2 0) (1 0 2) (2 3 1) Candidate indices in ans-list
+(cross-check-compound-questions
+ questions ontimes-signatures ans-list)
+--> ((0 13))
+
+(setq
+ questions
+ '(("F" NIL) ("crotchet" 0) ("perfect fifth" 3)))
+(setq
+ ans-list
+ '(
+   (; ans-fn1 - duration-fn
+    (; q1 - pitch
+     (1 2) (7 8) (9 10))
+    (; q2 - duration
+     (0 1) (2 3) (8 9))
+    (; q3 - harmonic interval
+     (1 7) (2 4)))
+   (; ans-fn2 melodic-interval-fn
+    (; q1 - pitch
+     (0 2))
+    ; q2 - duration
+    nil
+    (; q3 - harmonic interval
+     (4 7) (12 14)))
+   (; ans-fn3 - pitch-fn
+    (; q1 - pitch
+     (0 2) (6 8))
+    (; q2 - duration
+     (8 9) (12 14) (14 15))
+    ; q3 - harmonic interval
+    nil)
+   (; ans-fn4 - harmonic-interval-fn
+    ; q1 - pitch
+    nil
+    (; q2 - duration
+     (0 12) (12 14) (14 15))
+    (; q3 - harmonic interval
+     (5 7) (11 13) (14 15)))))
+; (0 2) (2 3) (6 8) Candidate time intervals
+; (0 2 0) (1 0 1) (2 3 0) Candidate indices in ans-list
+(cross-check-compound-questions
+ questions ontimes-signatures ans-list)
+--> ((1 7) (7 13) (0 7) (0 7) (6 13))
+\end{verbatim}
+
+\noindent This function looks across an answer list
+for individual components that could be combined to
+form answers to compound questions. The answer list
+is ordered first by answer function, then by question
+number, then by time interval answering a question.
+
+
+%%%%%
+\subsection*{matching-pursuit}\label{fun:matching-pursuit}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 17/6/2014, 17/6/2014 \\
+Location & \nameref{sec:c@merata-processing} \\
+Calls & \nameref{fun:bar-n-beat-number-of-ontime}, \nameref{fun:ontime-of-bar-n-beat-number} \\
+Called by & \nameref{fun:cross-check-compound-questions} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(setq
+ assoc-list
+ '(((0 0 0) NIL)
+   ((0 0 1) ((1 0 2) (1 2 0)))
+   ((0 0 2) ((1 0 2) (1 2 0)))
+   ((0 1 0) ((1 0 2) (1 2 0)))
+   ((0 2 0) ((1 0 2) (1 2 0)))
+   ((0 2 1) NIL)
+   ((1 0 0) NIL)
+   ((1 0 1) ((2 1 0) (2 3 0)))
+   ((1 0 2) ((2 3 1)))
+   ((1 2 0) ((2 3 1)))
+   ((1 2 1) NIL)
+   ((1 2 2) NIL)
+   ((1 3 0) NIL)
+   ((1 3 1) NIL)
+   ((1 3 2) NIL)))
+(matching-pursuit assoc-list '(0 2 0))
+--> ((0 2 0) (1 0 2) (2 3 1))
+\end{verbatim}
+
+\noindent This function `pursues' a probe list across
+an assoc list, returning subsequent entries so long
+as the chain of probes continues. For instance, in the
+example, list \texttt{(1 0 2)} is in the list indexed
+by \texttt{(0 2 0)}, so we return the latter then look
+it up and see \texttt{(2 3 1)} is in the list indexed
+by \texttt{(0 2 0)}, so we return it etc.
+
+I am concerned that this function does not do
+everything it ought. For example, how would
+\texttt{((0 2 0) (1 0 2) (2 3 1))} emerge: it is a
+legitimate chain but I do not see how it is returned.
+More testing required!

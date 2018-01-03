@@ -1,0 +1,118 @@
+
+
+
+
+(progn
+  (setq
+   dataset-all2
+   (read-from-file
+    "/Users/tec69/Open/Music/Datasets/C-30-2-ed.txt"))
+  (setq
+   dataset-template2
+   (subseq dataset-all2 0 120))
+  "Yes!")
+
+(setq
+ dataset-template
+ '((27 39 48 1 1) (27 63 62 1/2 0) (111/4 72 67 1/4 0)
+   (28 51 55 1 1) (28 60 60 1 1) (28 68 65 1 1)
+   (28 84 74 1 0) (29 82 73 1/3 0) (88/3 80 72 1/3 0)
+   (89/3 77 70 1/3 0) (30 39 48 1 1) (30 79 71 1/2 0)
+   (61/2 77 70 1/2 0) (31 51 55 1 1) (31 55 57 1 1)
+   (31 61 61 1 1) (31 75 69 1/2 0) (63/2 73 68 1/2 0)
+   (32 51 55 1 1) (32 55 57 1 1) (32 61 61 1 1)
+   (32 70 66 1/2 0) (65/2 65 63 1/2 0) (33 44 51 2 1)
+   (33 63 62 1/2 0) (135/4 72 67 1/4 0) (34 51 55 1 1)
+   (34 60 60 1 1) (34 68 65 1 0)))
+(setq
+ template-segments
+ '((27
+    ((27 39 48 1 1 28 91) (27 63 62 1/2 0 55/2 92)))
+   (55/2 ((27 39 48 1 1 28 91)))
+   (111/4
+    ((27 39 48 1 1 28 91) (111/4 72 67 1/4 0 28 93)))
+   (28
+    ((28 51 55 1 1 29 94) (28 60 60 1 1 29 95)
+     (28 68 65 1 1 29 96) (28 84 74 1 0 29 97)))
+   (29 ((29 82 73 1/3 0 88/3 98)))
+   (88/3 ((88/3 80 72 1/3 0 89/3 99)))
+   (89/3 ((89/3 77 70 1/3 0 30 100)))
+   (30
+    ((30 39 48 1 1 31 101) (30 79 71 1/2 0 61/2 102)))
+   (61/2
+    ((30 39 48 1 1 31 101) (61/2 77 70 1/2 0 31 103)))
+   (31
+    ((31 51 55 1 1 32 104) (31 55 57 1 1 32 105)
+     (31 61 61 1 1 32 106) (31 75 69 1/2 0 63/2 107)))
+   (63/2
+    ((31 51 55 1 1 32 104) (31 55 57 1 1 32 105)
+     (31 61 61 1 1 32 106) (63/2 73 68 1/2 0 32 108)))
+   (32
+    ((32 51 55 1 1 33 109) (32 55 57 1 1 33 110)
+     (32 61 61 1 1 33 111) (32 70 66 1/2 0 65/2 112)))
+   (65/2
+    ((32 51 55 1 1 33 109) (32 55 57 1 1 33 110)
+     (32 61 61 1 1 33 111) (65/2 65 63 1/2 0 33 113)))
+   (33
+    ((33 44 51 2 1 35 114) (33 63 62 1/2 0 67/2 115)))
+   (67/2 ((33 44 51 2 1 35 114)))
+   (135/4
+    ((33 44 51 2 1 35 114)
+     (135/4 72 67 1/4 0 34 116)))
+   (34
+    ((33 44 51 2 1 35 114) (34 51 55 1 1 35 117)
+     (34 60 60 1 1 35 118) (34 68 65 1 0 35 119)))))
+
+(setq checklist (list "originalp"))
+(setq beats-in-bar 3)
+(setq c-failures 10)
+(setq c-sources 3)
+(setq c-bar 12)
+(setq c-min 7)
+(setq c-max 7)
+(setq c-beats 12)
+(setq c-prob 0.1)
+
+
+(setq template-segments
+         (butlast
+          (segments-strict
+           dataset-template 1 3)))
+(setq final-MNN
+         (if template-segments
+           (second
+            (first
+             (second (my-last template-segments))))
+           60))
+(setq final-MPN
+         (if template-segments
+           (third
+            (first
+             (second (my-last template-segments))))
+           60))
+(setq i 1)
+(setq index-failures (list 0))
+(setq states<-
+         (list
+          (if template-segments
+            (choose-one-with-beat
+             (+
+              (mod
+               (first (my-last template-segments))
+               beats-in-bar) 1)
+             final-states)
+            (choose-one final-states))))
+(setq datapoints
+         (translate-datapoints-to-last-ontime
+          (first (my-last template-segments)) 0
+          (states2datapoints-by-lookup<-
+           states<- beats-in-bar final-MNN
+           final-MPN)))
+(setq next-state
+         (choose-one
+          (second
+           (assoc
+            (first (first states<-)) stm<-
+            :test #'equalp))))
+
+

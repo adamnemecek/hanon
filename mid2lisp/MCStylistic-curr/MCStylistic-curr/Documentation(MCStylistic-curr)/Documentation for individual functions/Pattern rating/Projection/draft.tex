@@ -1,0 +1,328 @@
+\subsection{Projection}\label{sec:projection}
+
+The main functions of use here are for creating
+projections of datasets \citep{meredith2002}, which
+is a precursor to pattern discovery.
+
+
+%%%%%
+\subsection*{difference-list}\label{fun:difference-list}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \nameref{fun:remove-nth}, \nameref{fun:subtract-list-from-each-list} \\
+Called by & \\
+Comments/see also & Deprecated.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(difference-list '((8 -2 -3) (4 6 6) (4 7 -3)))
+--> ((-4 8 9) (-4 9 0) (4 -8 -9) (0 1 -9) (4 -9 0)
+     (0 -1 9))
+\end{verbatim}
+
+\noindent The argument to this function is a list
+consisting of sublists of equal lengths. For
+$i = 1, 2,\ldots, n$, the $i$th sublist $S$ is removed
+from the argument to give a list $L$, and the function
+subtract-list-from-each-list is applied.
+
+
+%%%%%
+\subsection*{difference-lists}\label{fun:difference-lists}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 8/3/2013, 8/3/2013 \\
+Location & \nameref{sec:projection} \\
+Calls & \nameref{fun:subtract-two-lists} \\
+Called by & \nameref{fun:most-frequent-difference-vector} \\
+Comments/see also & 
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(difference-lists
+ '((2 1) (2 2)) '((8 -2) (4 6) (4 7)))
+--> ((6 -3) (2 5) (2 6) (6 -4) (2 4) (2 5))
+\end{verbatim}
+
+\noindent The arguments to this function are two
+lists, assumed to be of the same dimension (that is,
+each sublist has the same length), but possibly of
+different lengths. The difference between each pair of
+sublist items is computed and output as a single list.
+
+
+%%%%%
+\subsection*{index-1st-sublist-item$<=$}\label{fun:index-1st-sublist-item<=}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \\
+Called by & \nameref{fun:test-equal<subset} \\
+Comments/see also & \nameref{fun:index-nth-sublist-item<=},\newline \nameref{fun:index-1st-sublist-item<}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(index-1st-sublist-item<=
+ 6 '(14 14 14 11 7 7 6 6 4 1 1 0 0))
+--> 6
+\end{verbatim}
+
+\noindent This function takes two arguments: a real
+number $x$ and a list $L$ of real numbers. It returns
+the index of the first element of $L$ which is less
+than or equal to $x$.
+
+
+%%%%%
+\subsection*{index-1st-sublist-item$>=$}\label{fun:index-1st-sublist-item>=}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \\
+Called by & \nameref{fun:test-equal<subset} \\
+Comments/see also & \nameref{fun:index-nth-sublist-item>=},\newline \nameref{fun:index-1st-sublist-item>}
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(index-1st-sublist-item>=
+ 4 '(0 0 0 1 1 4 6 6 7 7 11 14 14 14))
+--> 5
+\end{verbatim}
+
+\noindent This function takes two arguments: a real
+number $x$ and a list $L$ of real numbers. It returns
+the index of the first element of $L$ which is greater
+than or equal to $x$.
+
+
+%%%%%
+\subsection*{is-maximal-translatable-pattern}\label{fun:is-maximal-translatable-pattern}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \nameref{fun:difference-list}, \nameref{fun:maximal-translatable-pattern} \\
+Called by & \\
+Comments/see also & A more efficient implementation is required.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(is-maximal-translatable-pattern
+ '((0 1/2) (1/2 1/2))
+ '((0 1/2) (1/2 1/2) (1 1/2) (1 1) (2 3) (5 1/2)
+   (11/2 1/2)))
+--> (5 0)
+\end{verbatim}
+
+\noindent Two arguments are supplied to this function:
+a pattern $P$ and a dataset $D$. If $P$ is a maximal
+translatable pattern in $D$ for some vector
+$\mathbf{u}$, then $\mathbf{u}$ is returned. NIL is
+returned otherwise.
+
+
+%%%%%
+\subsection*{maximal-translatable-pattern}\label{fun:maximal-translatable-pattern}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \nameref{fun:add-two-lists}, \nameref{fun:subtract-two-lists}, \nameref{fun:vector<vector} \\
+Called by & \nameref{fun:is-maximal-translatable-pattern} \\
+Comments/see also & Should be deprecated by implementing a version analogous to \nameref{fun:translators-of-pattern-in-dataset} from \citet{ukkonen2003}. See also \nameref{fun:maximal-translatable-pattern-mod-2nd-n}.
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(maximal-translatable-pattern
+ '(2 0)
+ '((0 1/2) (0 1) (1 1) (2 1/2) (2 1) (3 2)))
+--> ((0 1) (0 1/2))
+\end{verbatim}
+
+\noindent This function assumes that the dataset is
+sorted ascending. This enables a more efficient search
+for the maximal translatable pattern of an arbitrary
+vector u, searching in some dataset $D$, defined by
+$\MTP(\mathbf{u}, D) = \{ \mathbf{d} \in D :
+\mathbf{d} + \mathbf{u} \in D \}$.
+
+
+%%%%%
+\subsection*{nth-list-index}\label{fun:nth-list-index}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \\
+Called by & \nameref{fun:orthogonal-projection-not-unique-equalp} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(nth-list-index '(1 1 0 1 0))
+--> (0 1 3)
+\end{verbatim}
+
+\noindent This function returns the value of the
+increment $i$ if the $i$th element of the input list
+is equal to 1.
+
+
+%%%%%
+\subsection*{orthogonal-projection-not-unique-equalp}\label{fun:orthogonal-projection-not-unique-equalp}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \nameref{fun:nth-list}, \nameref{fun:nth-list-index} \\
+Called by & \nameref{fun:orthogonal-projection-unique-equalp} \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(orthogonal-projection-not-unique-equalp
+ '((2 4 -1 6 9) (0 0 4 2 -7) (-3 -2 -1 -1 1)
+   (12 0 -7 5 3) (1 2 3 4 3) (1 2 5 4 5))
+ '(1 1 0 1 0))
+--> ((2 4 6) (0 0 2) (-3 -2 -1) (12 0 5) (1 2 4)
+     (1 2 4))
+\end{verbatim}
+
+\noindent Given a set of vectors (all members of the
+same $n$-dimensional vector space), and an $n$-tuple
+of zeros and ones indicating a particular orthogonal
+projection, this function returns the projected set of
+vectors.
+
+
+%%%%%
+\subsection*{orthogonal-projection-unique-equalp}\label{fun:orthogonal-projection-unique-equalp}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \nameref{fun:orthogonal-projection-not-unique-equalp}, \nameref{fun:sort-dataset-asc} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(orthogonal-projection-unique-equalp
+ '((2 4 -1 6 9) (0 0 4 2 -7) (-3 -2 -1 -1 1)
+   (12 0 -7 5 3) (1 2 3 4 3) (1 2 5 4 5)
+   (12 0 -6 5 4) (-3 -2 1 -1 0) (12 0 -7 5 4))
+ '(1 1 0 1 0))
+--> ((2 4 6) (0 0 2) (-3 -2 -1) (12 0 5) (1 2 4))
+\end{verbatim}
+
+\noindent Given a set of vectors (all members of the
+same $n$-dimensional vector space), and an $n$-tuple
+of zeros and ones indicating a particular orthogonal
+projection, this function returns the projected set of
+vectors. Coincidences are reduced to single
+vectors.
+
+
+%%%%%
+\subsection*{pair-off-lists}\label{fun:pair-off-lists}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(pair-off-lists '("asc" "asc" "asc") '(0 1 2))
+--> (("asc" 0) ("asc" 1) ("asc" 2))
+\end{verbatim}
+
+\noindent Two lists A and B of equal length are
+provided as arguments to this function. The first
+element $a_1$ of $A$ is paired off with the first
+element $b_1$ of $B$ to become the first sublist of a
+new list, and so on for $a_2$ and $b_2$, $a_3$ and
+$b_3$.
+
+
+%%%%%
+\subsection*{test-equal$<$subset}\label{fun:test-equal<subset}
+
+\vspace{0.3cm}
+\begin{tabular}{r|p{8cm}}
+Started, last checked & 23/7/2009, 23/7/2009 \\
+Location & \nameref{sec:projection} \\
+Calls & \nameref{fun:index-1st-sublist-item<=}, \newline \nameref{fun:index-1st-sublist-item>=}, \nameref{fun:my-last}, \newline \nameref{fun:nth-list-of-lists}, \nameref{fun:test-equal<list-elements} \\
+Called by & \\
+Comments/see also &
+\end{tabular}
+
+\vspace{0.5cm}
+\noindent Example:
+\begin{verbatim}
+(test-equal<subset '((4 6) (6 5) (6 5) (6 7))
+ '((0 1) (0 2) (1 3) (1 4) (4 6) (6 5) (6 7)
+   (7 9) (7 10) (11 11) (14 1) (14 3) (14 14)))
+--> T
+\end{verbatim}
+
+\noindent There are two arguments to this function,
+both lists of $n$-tuples. If when written as sets, the
+first argument is a subset of the second, then T is
+returned. Otherwise NIL is returned (and an empty
+first argument is permissible). The $<$ in the
+function name indicates that a subfunction,
+test-equal$<$list-elements, assumes an argument has
+been sorted ascending by each of its elements.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
