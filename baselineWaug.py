@@ -11,7 +11,7 @@ path = "C:/Users/admin_local/Dropbox/drumgen"
 path = "C:/Users/admin_local/Dropbox/hanon"
 # path = "/Users/irisren/Dropbox/hanon"
 path = "/home/iris/Dropbox/hanon/midi"
-path = "/home/iris/hanon/midi"
+# path = "/home/iris/hanon/midi"
 
 allpit = []
 piecenum = 0
@@ -50,16 +50,16 @@ patpitlens=[]
 patdurlens=[]
 patpitdurlens=[]
 #20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1
-for sup in [30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10]:
+for sup in [30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2]:
     print(sup)
 
     relim_input = itemmining.get_relim_input(allpit)
-    print(len(relim_input))
+    print("length relim_input:" + str(len(relim_input)))
     for item in relim_input:
-        print(len(item))
+        print("length item:"+str(len(item)))
         print(item)
     item_sets = itemmining.relim(relim_input, min_support=sup)
-    print(item_sets)
+    print("length item_sets:"+str(item_sets))
 
     #rules = assocrules.mine_assoc_rules(item_sets, min_support=sup, min_confidence=0.5)
 
@@ -97,7 +97,7 @@ for sup in [30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10]:
     # print(chrallpit)
 
     allpat = seqmining.freq_seq_enum(chrallpit, sup)
-    print(len(allpat))
+    print("length allpat:"+str(len(allpat)))
     # print(allpat)
     patdurlens.append(len(allpat))
 
